@@ -6,18 +6,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.helpers.text.method.MetroPasswordTransformationMethod;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class Login extends AppCompatActivity {
 
+    private EditText mTxtUsername;
+    private EditText mTxtPassword;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mTxtUsername = (EditText) findViewById(R.id.txt_username);
+        mTxtPassword = (EditText) findViewById(R.id.txt_password);
+
+        mTxtPassword.setTransformationMethod(MetroPasswordTransformationMethod.getInstance());
     }
 
     @Override
