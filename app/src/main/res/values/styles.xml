@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="TextAppearance.CustomFont.Light" parent="TextAppearance.AppCompat">
+      <item name="fontPath">fonts/segoe_ui_light.ttf</item>
+    </style>
+
+    <style name="TextAppearance.CustomFont.Headline" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontPath">fonts/segoe_ui_light.ttf</item>
+    </style>
+
+    <style name="TextAppearance.CustomFont.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="fontPath">fonts/segoe_ui_light.ttf</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.CustomFont.Subhead" parent="TextAppearance.AppCompat.Subhead">
+        <item name="fontPath">fonts/segoe_ui_semilight.ttf</item>
+    </style>
+
+    <style name="TextAppearance.CustomFont.Body1" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontPath">fonts/segoe_ui_semilight.ttf</item>
+    </style>
+
+    <style name="AppStyle.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="android:displayOptions">useLogo|showHome|showTitle</item>
+        <item name="elevation">0dp</item>
+        <item name="displayOptions">useLogo|showHome|showTitle</item>
+        <item name="android:titleTextStyle">@style/AppStyle.ActionBar.TextStyle</item>
+        <item name="titleTextStyle">@style/AppStyle.ActionBar.TextStyle</item>
+    </style>
+
+    <style name="AppStyle.ActionBar.TextStyle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">21sp</item>
+        <item name="fontPath">fonts/segoe_ui_light.ttf</item>
+    </style>
+
+    <style name="AppStyle.ActionMode" parent="Widget.AppCompat.ActionMode">
+        <item name="background">?attr/colorPrimary</item>
+        <item name="elevation">0dp</item>
+        <item name="titleTextStyle">@style/AppStyle.ActionBar.TextStyle</item>
+    </style>
+
+    <style name="AppStyle.Button" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="fontPath">fonts/segoe_ui_semilight.ttf</item>
+    </style>
+
+    <style name="AppStyle.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/material_edit_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="AppStyle.EditText.Borderless" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/material_edit_text_borderless</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- Alert Dialog Pro -->
+    <!--<style name="AppStyle.Dialog.FlavoredMaterialLight" parent="Theme.AlertDialogPro.Material.Light">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorControlActivated">@color/color_control_activated</item>
+    </style>-->
+
+</resources>

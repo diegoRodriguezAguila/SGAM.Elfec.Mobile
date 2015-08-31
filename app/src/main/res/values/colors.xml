@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_primary">#18468D</color>
+    <color name="color_primary_dark">#15386F</color>
+    <color name="color_accent">#02296A</color>
+    <color name="color_control_normal">#303030</color>
+    <color name="color_control_activated">#18468D</color>
+    <color name="color_control_highlight">#15386F</color>
+    <color name="color_button_normal">#02296A</color>
+    <color name="soft_background_gray">#FAFAFA</color>
+    <color name="background_gray">#F5F5F5</color>
+    <color name="border_soft_gray">#E7E7E7</color>
+    <color name="soft_background_gray_unselected">#D1D1D1</color>
+    <color name="mdtp_accent_color">@color/color_accent</color>
+	<color name="mdtp_accent_color_dark">@color/color_primary_dark</color>
+</resources>

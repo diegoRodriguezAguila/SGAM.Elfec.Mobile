@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SGAM Elfec</string>
+
+    <string name="title_app_desc">Elfec S.A. SGAM</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Login -->
+    <string name="btn_login">Ingresar</string>
+    <string name="hint_username">Usuario</string>
+    <string name="hint_password">Contraseña</string>
+</resources>
