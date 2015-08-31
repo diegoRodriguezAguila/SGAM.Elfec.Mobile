@@ -1,46 +1,77 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    android:baselineAligned="false"
-    android:background="?attr/colorPrimary"
     tools:context=".Login">
 
-    <TextView android:text="@string/title_app_desc" android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
+        android:text="@string/title_app_desc"
         android:textAppearance="@style/TextAppearance.CustomFont.Headline"
-        android:textSize="32sp"/>
+        android:textColor="@android:color/white"
+        android:textSize="32sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_height="0dp"
-        android:layout_weight="1">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        style="@style/AppStyle.EditText.Borderless"
-        android:hint="@string/hint_username"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="24dp"
-        style="@style/AppStyle.EditText.Borderless"
-        android:hint="@string/hint_password"/>
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:onClick="btnLoginClick"
-        android:text="@string/btn_login" />
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_login"
+            android:layout_gravity="start"
+            android:textAppearance="@style/TextAppearance.CustomFont.Headline"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:textSize="26sp" />
+
+        <com.elfec.sgam.view.widgets.ClearableEditText
+            style="@style/AppStyle.EditText.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="@dimen/btn_top_margin"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/user"
+            android:drawableStart="@drawable/user"
+            android:drawableRight="@drawable/btn_clear_edit_text"
+            android:drawableEnd="@drawable/btn_clear_edit_text"
+            android:hint="@string/hint_username" />
+
+        <com.elfec.sgam.view.widgets.ClearableEditText
+            style="@style/AppStyle.EditText.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:drawablePadding="4dp"
+            android:layout_marginTop="@dimen/edit_text_top_margin"
+            android:drawableLeft="@drawable/password"
+            android:drawableStart="@drawable/password"
+            android:drawableRight="@drawable/btn_clear_edit_text"
+            android:drawableEnd="@drawable/btn_clear_edit_text"
+            android:inputType="textPassword"
+            android:hint="@string/hint_password" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/btn_top_margin"
+            android:onClick="btnLoginClick"
+            android:text="@string/btn_login" />
     </LinearLayout>
 </LinearLayout>
