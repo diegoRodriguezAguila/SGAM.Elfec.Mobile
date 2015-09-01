@@ -4,4 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="edit_text_top_margin">22dp</dimen>
     <dimen name="btn_top_margin">26dp</dimen>
+    <dimen name="txt_size_app_name">32sp</dimen>
+    <dimen name="txt_size_clock">56sp</dimen>
+    <dimen name="top_margin_clock">0dp</dimen>
+    <dimen name="login_progress_size">40dp</dimen>
 </resources>

@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.elfec.sgam.settings.AppPreferences;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -15,6 +17,7 @@ public class ElfecApp extends Application {
         super.onCreate();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/segoe_ui.ttf").setFontAttrId(R.attr.fontPath).build());
+        JodaTimeAndroid.init(this);
         AppPreferences.initialize(this);
     }
 

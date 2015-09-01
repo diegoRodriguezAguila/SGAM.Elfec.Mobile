@@ -36,6 +36,7 @@
         <item name="colorControlHighlight">@color/color_control_highlight</item>
         <item name="colorButtonNormal">@color/color_button_normal</item>
         <item name="buttonStyle">@style/AppStyle.Button</item>
+        <item name="android:buttonStyle">@style/AppStyle.Button</item>
         <item name="editTextStyle">@style/AppStyle.EditText</item>
         <item name="android:editTextStyle">@style/AppStyle.EditText</item>
         <item name="android:textSelectHandleLeft">@drawable/text_select_handle_left_material</item>

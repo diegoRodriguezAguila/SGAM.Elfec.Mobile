@@ -9,4 +9,12 @@
     <string name="btn_login">Ingresar</string>
     <string name="hint_username">Usuario</string>
     <string name="hint_password">Contraseña</string>
+    <string name="errors_in_fields">Los campos tienen errores, reviselos para poder continuar</string>
+    <string name="msg_login_user">Validando usuario&#8230;</string>
+
+
+    <!-- Dialogos -->
+    <string name="btn_ok">Aceptar</string>
+    <string name="btn_cancel">Cancelar</string>
+
 </resources>
