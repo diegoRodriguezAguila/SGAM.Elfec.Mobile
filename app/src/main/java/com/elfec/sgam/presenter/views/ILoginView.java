@@ -1,7 +1,7 @@
 package com.elfec.sgam.presenter.views;
 
 /**
- * Abstracción de la vista de login
+ * Abstracción de la vista de logIn
  */
 public interface ILoginView {
     /**
@@ -16,11 +16,6 @@ public interface ILoginView {
      */
     String getPassword();
 
-    /**
-     * Obtiene el IMEI del dispositivo
-     * @return el IMEI del dispositivo
-     */
-    String getIMEI();
 
     /**
      * Notifica al usuario que hay errores en los campos

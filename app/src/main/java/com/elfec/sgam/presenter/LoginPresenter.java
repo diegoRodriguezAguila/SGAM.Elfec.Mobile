@@ -19,7 +19,7 @@ public class LoginPresenter {
     /**
      * Inicia el proceso de logeo del usuario
      */
-    public void login(){
+    public void logIn(){
 
     }
 }

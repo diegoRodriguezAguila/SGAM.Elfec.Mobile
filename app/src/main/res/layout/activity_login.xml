@@ -85,8 +85,6 @@
             android:layout_marginTop="@dimen/edit_text_top_margin"
             android:drawableLeft="@drawable/password"
             android:drawableStart="@drawable/password"
-            android:drawableRight="@drawable/btn_clear_edit_text"
-            android:drawableEnd="@drawable/btn_clear_edit_text"
             android:inputType="textPassword"
             android:hint="@string/hint_password" />
 

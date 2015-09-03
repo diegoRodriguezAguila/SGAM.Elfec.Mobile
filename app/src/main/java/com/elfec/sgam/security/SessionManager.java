@@ -1,9 +1,21 @@
 package com.elfec.sgam.security;
 
+import android.support.annotation.NonNull;
+
+import com.elfec.sgam.business_logic.web_services.RestEndpointFactory;
+import com.elfec.sgam.business_logic.web_services.api_endpoints.ISessionsEndpoint;
 import com.elfec.sgam.model.User;
+import com.elfec.sgam.model.callbacks.ResultCallback;
+import com.elfec.sgam.model.web_services.RemoteSession;
 import com.elfec.sgam.settings.AppPreferences;
 
 import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by drodriguez on 31/08/2015.
@@ -53,18 +65,41 @@ public class SessionManager {
     }
 
     /**
-     * Inicia o sobreescribe la sesión para el usuario actual
+     * Se conecta remotamente a los webservices para realizar un inicio de sesión
+     * En caso de ser exitoso el inicio de sesión se guarda al usuario y su token de
+     * autenticación actual y se inicializa en las variables de sesion el usuario logeado<br/><br/>
+     * <p/>
+     * Este método es asincrono, utilice el callback para tomar acciones
      *
-     * @param user usuario del que se quiere iniciar la sesión
+     * @param username usuario a iniciar sesión
+     * @param password contraseña
+     * @param callback llamada al logearse
      */
-    public void openSession(User user) {
-        AppPreferences.instance().setLoggedUsername(user.getUsername());
+    public void logIn(final String username, final String password,
+                      final @NonNull ResultCallback<User> callback) {
+        final List<Exception> errors = new ArrayList<>();
+        RestEndpointFactory
+            .create(ISessionsEndpoint.class)
+            .logIn(new RemoteSession(username, password), new Callback<User>() {
+                @Override
+                public void success(User user, Response response) {
+                    //TODO save user
+                    AppPreferences.instance().setLoggedUsername(username);
+                    callback.onSuccess(user);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    errors.add(error);
+                    callback.onFailure(errors);
+                }
+            });
     }
 
     /**
      * Cierra la sesión, eliminando todas las variables de sesión actuales
      */
-    public void closeSession() {
+    public void logOut() {
         AppPreferences.instance().setLoggedUsername(null);
     }
 
