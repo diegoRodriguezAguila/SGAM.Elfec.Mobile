@@ -2,11 +2,10 @@ package com.elfec.sgam.security;
 
 import android.support.annotation.NonNull;
 
-import com.elfec.sgam.business_logic.web_services.RestEndpointFactory;
-import com.elfec.sgam.business_logic.web_services.api_endpoints.ISessionsEndpoint;
+import com.elfec.sgam.business_logic.web_services.RetrofitErrorInterpreter;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.callbacks.ResultCallback;
-import com.elfec.sgam.model.web_services.RemoteSession;
+import com.elfec.sgam.model.exceptions.InvalidPasswordException;
 import com.elfec.sgam.settings.AppPreferences;
 
 import java.lang.ref.SoftReference;
@@ -16,6 +15,7 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
 
 /**
  * Created by drodriguez on 31/08/2015.
@@ -75,26 +75,62 @@ public class SessionManager {
      * @param password contraseña
      * @param callback llamada al logearse
      */
-    public void logIn(final String username, final String password,
-                      final @NonNull ResultCallback<User> callback) {
-        final List<Exception> errors = new ArrayList<>();
-        RestEndpointFactory
-            .create(ISessionsEndpoint.class)
-            .logIn(new RemoteSession(username, password), new Callback<User>() {
-                @Override
-                public void success(User user, Response response) {
-                    //TODO save user
-                    AppPreferences.instance().setLoggedUsername(username);
-                    callback.onSuccess(user);
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    errors.add(error);
-                    callback.onFailure(errors);
-                }
-            });
+    public void logIn(String username, String password, final @NonNull ResultCallback<User> callback) {
+        final UserAccountsManager uAccManager = new UserAccountsManager();
+        User user = uAccManager.accountToUser(uAccManager.findUserAccount(username));
+        if(user==null)
+            remoteLogIn(username, password, callback);
+        else localLogIn(uAccManager, user, password, callback);
     }
+
+    /**
+     * Se conecta remotamente a los webservices para realizar un inicio de sesión
+     * En caso de ser exitoso el inicio de sesión se guarda al usuario y su token de
+     * autenticación actual y se inicializa en las variables de sesion el usuario logeado
+     * @param username usuario a iniciar sesión
+     * @param password contraseña
+     * @param callback llamada al logearse
+     */
+    private void remoteLogIn(String username, String password, @NonNull final ResultCallback<User> callback) {
+        final List<Exception> errors = new ArrayList<>();
+        new ServerTokenAuth().singIn(username, password, new Callback<User>() {
+            @Override
+            public void success(User user, Response response) {
+                setCurrentSession(user);
+                callback.onSuccess(user);
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                errors.add(RetrofitErrorInterpreter.interpretException(User.class, error));
+                callback.onFailure(errors);
+            }
+        });
+    }
+
+
+    private void localLogIn(UserAccountsManager uAccManager, @NonNull User user,
+                            String password,
+                            @NonNull ResultCallback<User> callback) {
+        final List<Exception> errors = new ArrayList<>();
+        if(uAccManager.userPasswordIsValid(user, password)) {
+            setCurrentSession(user);
+            callback.onSuccess(user);
+        }
+        else{
+            errors.add(new InvalidPasswordException());
+            callback.onFailure(errors);
+        }
+    }
+
+    /**
+     * Asigna las variables de la sesión actual
+     * @param user usuario de la sesión actual
+     */
+    private void setCurrentSession(User user) {
+        AppPreferences.instance().setLoggedUsername(user.getUsername());
+        AppPreferences.instance().setLoggedToken(user.getAuthenticationToken());
+    }
+
 
     /**
      * Cierra la sesión, eliminando todas las variables de sesión actuales
@@ -110,5 +146,13 @@ public class SessionManager {
      */
     public String getLoggedInUsername() {
         return AppPreferences.instance().getLoggedUsername();
+    }
+
+    /**
+     * Obtiene el token del usuario logeado actual
+     * @return null si es que ningun usuario inició sesión
+     */
+    public String getLoggedInToken(){
+        return AppPreferences.instance().getLoggedToken();
     }
 }

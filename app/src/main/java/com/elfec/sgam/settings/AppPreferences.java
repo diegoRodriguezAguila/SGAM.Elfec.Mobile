@@ -15,7 +15,8 @@ import java.lang.ref.SoftReference;
  */
 public class AppPreferences {
 
-    private final String LOGGED_USERNAME = "loggedUsername";
+    private final String LOGGED_USERNAME = "logged-username";
+    private final String LOGGED_USER_TOKEN = "logged-user-token";
 
     /**
      * Contexto
@@ -38,7 +39,7 @@ public class AppPreferences {
      *
      * @param context context
      */
-    public static void initialize(Context context) {
+    public static void init(Context context) {
         AppPreferences.context = context;
     }
 
@@ -77,6 +78,26 @@ public class AppPreferences {
      */
     public AppPreferences setLoggedUsername(String loggedUsername) {
         preferences.edit().putString(LOGGED_USERNAME, loggedUsername).commit();
+        return this;
+    }
+
+    /**
+     * Obtiene el token del usuario logeado actual
+     *
+     * @return null si es que ninguno se ha logeado
+     */
+    public String getLoggedToken() {
+        return preferences.getString(LOGGED_USER_TOKEN, null);
+    }
+
+    /**
+     * Asigna el token del usuario logeado actual, sobreescribe cualquier token que haya
+     * sido logeado antes
+     *
+     * @return la instancia actual de PreferencesManager
+     */
+    public AppPreferences setLoggedToken(String loggedUsername) {
+        preferences.edit().putString(LOGGED_USER_TOKEN, loggedUsername).commit();
         return this;
     }
 
