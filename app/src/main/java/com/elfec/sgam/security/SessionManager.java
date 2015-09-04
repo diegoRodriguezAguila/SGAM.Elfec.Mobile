@@ -65,7 +65,8 @@ public class SessionManager {
     }
 
     /**
-     * Se conecta remotamente a los webservices para realizar un inicio de sesión
+     * Busca la cuenta de usuario local, si existe se realiza un logeo local, caso contrario
+     * se conecta remotamente a los webservices para realizar un inicio de sesión
      * En caso de ser exitoso el inicio de sesión se guarda al usuario y su token de
      * autenticación actual y se inicializa en las variables de sesion el usuario logeado<br/><br/>
      * <p/>
@@ -79,7 +80,7 @@ public class SessionManager {
         final UserAccountsManager uAccManager = new UserAccountsManager();
         User user = uAccManager.accountToUser(uAccManager.findUserAccount(username));
         if(user==null)
-            remoteLogIn(username, password, callback);
+            remoteLogIn(uAccManager, username, password, callback);
         else localLogIn(uAccManager, user, password, callback);
     }
 
@@ -87,28 +88,37 @@ public class SessionManager {
      * Se conecta remotamente a los webservices para realizar un inicio de sesión
      * En caso de ser exitoso el inicio de sesión se guarda al usuario y su token de
      * autenticación actual y se inicializa en las variables de sesion el usuario logeado
+     * @param uAccManager user account manager
      * @param username usuario a iniciar sesión
      * @param password contraseña
      * @param callback llamada al logearse
      */
-    private void remoteLogIn(String username, String password, @NonNull final ResultCallback<User> callback) {
+    private void remoteLogIn(final UserAccountsManager uAccManager, String username,
+                             final String password, @NonNull final ResultCallback<User> callback) {
         final List<Exception> errors = new ArrayList<>();
         new ServerTokenAuth().singIn(username, password, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
                 setCurrentSession(user);
+                uAccManager.registerUserAccount(user, password);
                 callback.onSuccess(user);
             }
             @Override
             public void failure(RetrofitError error) {
-                errors.add(RetrofitErrorInterpreter.interpretException(User.class, error));
+                errors.add(RetrofitErrorInterpreter.interpretException(error));
                 callback.onFailure(errors);
             }
         });
     }
 
-
-    private void localLogIn(UserAccountsManager uAccManager, @NonNull User user,
+    /**
+     * Verifica la contraseña del usuario y realiza un login local
+     * @param uAccManager  user account manager
+     * @param user usuario
+     * @param password contraseña
+     * @param callback llamada al logearse
+     */
+    private void localLogIn(final UserAccountsManager uAccManager, @NonNull User user,
                             String password,
                             @NonNull ResultCallback<User> callback) {
         final List<Exception> errors = new ArrayList<>();

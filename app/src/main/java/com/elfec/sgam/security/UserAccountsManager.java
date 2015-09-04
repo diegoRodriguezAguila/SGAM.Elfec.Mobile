@@ -33,6 +33,19 @@ public class UserAccountsManager {
     }
 
     /**
+     * Registra una cuenta del usuario especificado
+     * @param user usuario
+     * @param password contraseña
+     */
+    public void registerUserAccount(User user, String password){
+        final Account account = new Account(user.getUsername(), User.ACCOUNT_TYPE);
+        // Creating the account on the device and setting the auth token we got
+        // (Not setting the auth token will cause another call to the server to authenticate the user)
+        mAccountManager.addAccountExplicitly(account, password, null);
+        mAccountManager.setAuthToken(account, User.TOKEN_TYPE, user.getAuthenticationToken());
+    }
+
+    /**
      * Verifica que el password corresponda al usuario especificado
      * @param user nombre usuario
      * @param password  contraseña
