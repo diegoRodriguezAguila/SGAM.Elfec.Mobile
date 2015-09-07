@@ -9,7 +9,7 @@
     <string name="btn_login">Ingresar</string>
     <string name="hint_username">Usuario</string>
     <string name="hint_password">Contraseña</string>
-    <string name="errors_in_fields">Los campos tienen errores, reviselos para poder continuar</string>
+    <string name="msg_fields_no_empty">Los campos no pueden estar vacios, reviselos para poder continuar</string>
     <string name="msg_login_user">Validando usuario&#8230;</string>
 
 

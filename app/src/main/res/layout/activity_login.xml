@@ -58,7 +58,11 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:textSize="26sp" />
-
+        <LinearLayout
+            android:id="@+id/layout_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <com.elfec.sgam.view.widgets.ClearableEditText
             android:id="@+id/txt_username"
             style="@style/AppStyle.EditText.Borderless"
@@ -95,6 +99,7 @@
             android:layout_marginTop="@dimen/btn_top_margin"
             android:onClick="btnLoginClick"
             android:text="@string/btn_login" />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_loading"
             android:layout_width="match_parent"
@@ -110,6 +115,7 @@
             app:matProg_barColor="@color/soft_background_gray"
             app:matProg_progressIndeterminate="true" />
             <TextView
+                android:id="@+id/txt_waiting_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/msg_login_user"
@@ -117,6 +123,31 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:textAppearance="@style/TextAppearance.CustomFont.Headline"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_errors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/edit_text_top_margin"
+            android:baselineAligned="false"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txt_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/txt_error_color"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:textAppearance="@style/TextAppearance.CustomFont.Light"
+                android:textSize="@dimen/txt_error_size"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/btn_ok"
+                android:layout_gravity="end"
+                android:onClick="btnClearErrorClick"/>
         </LinearLayout>
     </LinearLayout>
     <android.support.design.widget.CoordinatorLayout

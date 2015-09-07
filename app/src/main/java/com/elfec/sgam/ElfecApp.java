@@ -3,7 +3,6 @@ package com.elfec.sgam;
 import android.app.Application;
 
 import com.elfec.sgam.settings.AppPreferences;
-import com.raizlabs.android.dbflow.config.FlowManager;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -19,7 +18,7 @@ public class ElfecApp extends Application {
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/segoe_ui.ttf").setFontAttrId(R.attr.fontPath).build());
         JodaTimeAndroid.init(this);
-        FlowManager.init(this);
+       // FlowManager.init(this);
         AppPreferences.init(this);
     }
 

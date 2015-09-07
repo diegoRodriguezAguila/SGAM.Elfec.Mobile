@@ -11,7 +11,7 @@
     <color name="background_gray">#F5F5F5</color>
     <color name="border_soft_gray">#E7E7E7</color>
     <color name="soft_background_gray_unselected">#D1D1D1</color>
-    <color name="txt_error_color">#E7B972</color>
+    <color name="txt_error_color">#FFE70D</color>
     <color name="mdtp_accent_color">@color/color_accent</color>
 	<color name="mdtp_accent_color_dark">@color/color_primary_dark</color>
 </resources>

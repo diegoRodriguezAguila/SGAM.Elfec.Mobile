@@ -3,6 +3,7 @@ package com.elfec.sgam.business_logic.web_services;
 import android.nfc.FormatException;
 
 import com.elfec.sgam.model.exceptions.ServerConnectException;
+import com.elfec.sgam.model.exceptions.ServerSideException;
 import com.elfec.sgam.model.web_services.RestError;
 
 import org.apache.http.HttpStatus;
@@ -23,6 +24,8 @@ public class RetrofitErrorInterpreter {
      */
     public static Exception interpretException(RetrofitError error){
         if(error.getKind() == RetrofitError.Kind.HTTP){
+            if(error.getResponse().getStatus()==HttpStatus.SC_INTERNAL_SERVER_ERROR)
+                return new ServerSideException();
             RestError body = (RestError) error.getBodyAs(RestError.class);
             return new Exception(body.message);
         }

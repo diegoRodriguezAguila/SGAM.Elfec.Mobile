@@ -7,4 +7,5 @@
     <dimen name="txt_size_clock">76sp</dimen>
     <dimen name="top_margin_clock">15dp</dimen>
     <dimen name="login_progress_size">45dp</dimen>
+    <dimen name="txt_error_size">22sp</dimen>
 </resources>
