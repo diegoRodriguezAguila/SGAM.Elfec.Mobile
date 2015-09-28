@@ -1,7 +1,6 @@
 package com.elfec.sgam.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 /**
  * Created by drodriguez on 31/08/2015.
@@ -12,11 +11,9 @@ public class User {
     public static final String TOKEN_TYPE = "login-token";
     public static final String ACCOUNT_TYPE = "com.elfec.sgam";
 
-    @Expose
     private String username;
-
-    @SerializedName("authentication_token")
     private String authenticationToken;
+    private List<Role> roles;
 
     public User(){}
 
@@ -41,6 +38,14 @@ public class User {
 
     public void setAuthenticationToken(String authenticationToken) {
         this.authenticationToken = authenticationToken;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     //endregion

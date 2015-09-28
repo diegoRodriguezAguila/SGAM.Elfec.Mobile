@@ -2,15 +2,13 @@ package com.elfec.sgam.security;
 
 import android.support.annotation.NonNull;
 
-import com.elfec.sgam.business_logic.web_services.RetrofitErrorInterpreter;
+import com.elfec.sgam.web_services.RetrofitErrorInterpreter;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.callbacks.ResultCallback;
 import com.elfec.sgam.model.exceptions.InvalidPasswordException;
 import com.elfec.sgam.settings.AppPreferences;
 
 import java.lang.ref.SoftReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -87,7 +85,7 @@ public class SessionManager {
     /**
      * Se conecta remotamente a los webservices para realizar un inicio de sesión
      * En caso de ser exitoso el inicio de sesión se guarda al usuario y su token de
-     * autenticación actual y se inicializa en las variables de sesion el usuario logeado
+     * autenticación actual y se inicializa en las variables de sesión el usuario logeado
      * @param uAccManager user account manager
      * @param username usuario a iniciar sesión
      * @param password contraseña
@@ -95,7 +93,6 @@ public class SessionManager {
      */
     private void remoteLogIn(final UserAccountsManager uAccManager, String username,
                              final String password, @NonNull final ResultCallback<User> callback) {
-        final List<Exception> errors = new ArrayList<>();
         new ServerTokenAuth().singIn(username, password, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
@@ -105,8 +102,7 @@ public class SessionManager {
             }
             @Override
             public void failure(RetrofitError error) {
-                errors.add(RetrofitErrorInterpreter.interpretException(error));
-                callback.onFailure(errors);
+                callback.onFailure(RetrofitErrorInterpreter.interpretException(error));
             }
         });
     }
@@ -121,14 +117,12 @@ public class SessionManager {
     private void localLogIn(final UserAccountsManager uAccManager, @NonNull User user,
                             String password,
                             @NonNull ResultCallback<User> callback) {
-        final List<Exception> errors = new ArrayList<>();
         if(uAccManager.userPasswordIsValid(user, password)) {
             setCurrentSession(user);
             callback.onSuccess(user);
         }
         else{
-            errors.add(new InvalidPasswordException());
-            callback.onFailure(errors);
+            callback.onFailure(new InvalidPasswordException());
         }
     }
 

@@ -1,4 +1,4 @@
-package com.elfec.sgam.business_logic.web_services.api_endpoints;
+package com.elfec.sgam.web_services.api_endpoints;
 
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.web_services.RemoteSession;

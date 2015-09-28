@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.elfec.sgam.business_logic.web_services.RetrofitErrorInterpreter;
+import com.elfec.sgam.web_services.RetrofitErrorInterpreter;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.view.Login;
 

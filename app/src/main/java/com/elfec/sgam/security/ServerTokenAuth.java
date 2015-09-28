@@ -2,8 +2,8 @@ package com.elfec.sgam.security;
 
 import android.support.annotation.NonNull;
 
-import com.elfec.sgam.business_logic.web_services.RestEndpointFactory;
-import com.elfec.sgam.business_logic.web_services.api_endpoints.ISessionsEndpoint;
+import com.elfec.sgam.web_services.RestEndpointFactory;
+import com.elfec.sgam.web_services.api_endpoints.ISessionsEndpoint;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.web_services.RemoteSession;
 

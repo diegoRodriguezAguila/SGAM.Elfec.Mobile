@@ -19,7 +19,7 @@ public class MessageListFormatter {
 	 * @param errors errores
 	 * @return Mensaje de lista de errores
 	 */
-	public static Spanned fotmatHTMLFromErrors(List<Exception> errors) {
+	public static Spanned formatHTMLFromErrors(List<Exception> errors) {
 		StringBuilder str = new StringBuilder();
 		int size = errors.size();
 		if (size == 1)
@@ -38,8 +38,8 @@ public class MessageListFormatter {
 	 * @param objects lista de objetos
 	 * @return Mensaje de lista de objetos
 	 */
-	public static <T> Spanned fotmatHTMLStringFromObjectList(List<T> objects,
-			AttributePicker<String, T> attributePicker) {
+	public static <T> Spanned formatHTMLStringFromObjectList(List<T> objects,
+															 AttributePicker<String, T> attributePicker) {
 		StringBuilder str = new StringBuilder();
 		int size = objects.size();
 		if (size == 1)
@@ -59,7 +59,7 @@ public class MessageListFormatter {
 	 * @param messages lista de mensajes
 	 * @return Mensaje de lista de mensajes
 	 */
-	public static Spanned fotmatHTMLFromStringList(List<String> messages) {
+	public static Spanned formatHTMLFromStringList(List<String> messages) {
 		StringBuilder str = new StringBuilder();
 		int size = messages.size();
 		if (size == 1)

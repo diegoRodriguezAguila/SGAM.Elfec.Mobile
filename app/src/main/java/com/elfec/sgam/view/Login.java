@@ -144,7 +144,7 @@ public class Login extends AppCompatActivity implements ILoginView {
                  mLayoutLoading.clearAnimation();
                  mLayoutLoading.setVisibility(View.GONE);
                  mTxtErrorMessage.setText( MessageListFormatter
-                         .fotmatHTMLFromErrors(validationErrors));
+                         .formatHTMLFromErrors(validationErrors));
                  mLayoutErros.setVisibility(View.VISIBLE);
                  mLayoutErros.startAnimation(slideLeftAnim);
              }

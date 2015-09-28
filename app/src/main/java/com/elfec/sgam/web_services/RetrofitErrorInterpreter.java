@@ -1,4 +1,4 @@
-package com.elfec.sgam.business_logic.web_services;
+package com.elfec.sgam.web_services;
 
 import android.nfc.FormatException;
 
