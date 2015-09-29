@@ -2,7 +2,6 @@ package com.elfec.sgam.web_services.api_endpoints;
 
 import com.elfec.sgam.model.Device;
 
-import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -14,8 +13,8 @@ import retrofit.http.Path;
 public interface IDevicesEndpoint {
 
     @GET("/devices/{imei}")
-    void getDevice(@Path("imei") String imei, Callback<Device> cb);
+    Device getDevice(@Path("imei") String imei);
 
     @POST("/devices")
-    void registerDevice(@Body Device device, Callback<Device> cb);
+    Device registerDevice(@Body Device device);
 }

@@ -47,6 +47,7 @@ public class Device {
         this.camera = camera;
         this.sdMemoryCard = sdMemoryCard;
         this.gmailAccount = gmailAccount;
+        this.status = 2;
     }
 
     //region Getters Setters
