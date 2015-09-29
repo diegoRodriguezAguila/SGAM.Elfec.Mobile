@@ -1,7 +1,10 @@
 package com.elfec.sgam.web_services;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
+import com.raizlabs.android.dbflow.structure.ModelAdapter;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -57,6 +60,14 @@ public class RestEndpointFactory {
                 .setEndpoint(url)
                 .setConverter(new GsonConverter(new GsonBuilder()
                         .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                        .setExclusionStrategies(new ExclusionStrategy() {
+                            @Override
+                            public boolean shouldSkipField(FieldAttributes f) {
+                                return f.getDeclaredClass().equals(ModelAdapter.class);
+                            }
+                            @Override
+                            public boolean shouldSkipClass(Class<?> clazz) { return false; }
+                        })
                         .create()))
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
@@ -64,7 +75,6 @@ public class RestEndpointFactory {
                         request.addHeader("Accept", "application/json");
                         request.addHeader("Content-Type", "application/json");
                         if (username != null && authToken != null) {
-
                             request.addHeader("X-Api-Username", username);
                             request.addHeader("X-Api-Token", authToken);
                         }
