@@ -10,13 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.elfec.sgam.web_services.RetrofitErrorInterpreter;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.view.Login;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Autenticador de las cuentas de elfec
@@ -66,18 +61,11 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         if (TextUtils.isEmpty(authToken)) {
             final String password = am.getPassword(account);
             if (password != null) {
-                new ServerTokenAuth().singIn(account.name, password, new Callback<User>() {
-                    @Override
-                    public void success(User user, Response resp) {
-                        response.onResult(getTokenBundle(account, user.getAuthenticationToken()));
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        response.onError(RetrofitErrorInterpreter.getStatus(error), error.getMessage());
-                    }
-                });
-                return null;
+                try {
+                    User user = new ServerTokenAuth().singIn(account.name, password);
+                    return getTokenBundle(account, user.getAuthenticationToken());
+                }
+                catch (Exception e){}
             }
         }
         //Token válido

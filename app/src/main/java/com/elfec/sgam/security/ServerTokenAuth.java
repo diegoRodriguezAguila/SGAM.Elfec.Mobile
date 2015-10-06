@@ -1,13 +1,9 @@
 package com.elfec.sgam.security;
 
-import android.support.annotation.NonNull;
-
-import com.elfec.sgam.web_services.RestEndpointFactory;
-import com.elfec.sgam.web_services.api_endpoints.ISessionsEndpoint;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.web_services.RemoteSession;
-
-import retrofit.Callback;
+import com.elfec.sgam.web_services.RestEndpointFactory;
+import com.elfec.sgam.web_services.api_endpoints.ISessionsEndpoint;
 
 /**
  * Clase que hace request del token con credenciales del usuario
@@ -20,11 +16,10 @@ public class ServerTokenAuth {
      *
      * @param username usuario a iniciar sesión
      * @param password contraseña
-     * @param callback llamada al logearse
      */
-    public void singIn(final String username,final String password, final @NonNull Callback<User> callback) {
-        RestEndpointFactory
+    public User singIn(final String username,final String password) {
+        return RestEndpointFactory
                 .create(ISessionsEndpoint.class)
-                .logIn(new RemoteSession(username, password), callback);
+                .logIn(new RemoteSession(username, password));
     }
 }

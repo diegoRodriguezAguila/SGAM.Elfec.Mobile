@@ -2,17 +2,15 @@ package com.elfec.sgam.security;
 
 import android.support.annotation.NonNull;
 
-import com.elfec.sgam.web_services.RetrofitErrorInterpreter;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.callbacks.ResultCallback;
 import com.elfec.sgam.model.exceptions.InvalidPasswordException;
 import com.elfec.sgam.settings.AppPreferences;
+import com.elfec.sgam.web_services.RetrofitErrorInterpreter;
 
 import java.lang.ref.SoftReference;
 
-import retrofit.Callback;
 import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 /**
@@ -93,18 +91,18 @@ public class SessionManager {
      */
     private void remoteLogIn(final UserAccountsManager uAccManager, String username,
                              final String password, @NonNull final ResultCallback<User> callback) {
-        new ServerTokenAuth().singIn(username, password, new Callback<User>() {
-            @Override
-            public void success(User user, Response response) {
-                setCurrentSession(user);
-                uAccManager.registerUserAccount(user, password);
-                callback.onSuccess(user);
-            }
-            @Override
-            public void failure(RetrofitError error) {
-                callback.onFailure(RetrofitErrorInterpreter.interpretException(error));
-            }
-        });
+        try {
+            User user = new ServerTokenAuth().singIn(username, password);
+            setCurrentSession(user);
+            uAccManager.registerUserAccount(user, password);
+            callback.onSuccess(user);
+        }
+        catch (RetrofitError error) {
+            callback.onFailure(RetrofitErrorInterpreter.interpretException(error));
+        }
+        catch (Exception e){
+            callback.onFailure(e);
+        }
     }
 
     /**

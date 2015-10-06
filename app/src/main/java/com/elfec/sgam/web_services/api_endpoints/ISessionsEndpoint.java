@@ -15,7 +15,7 @@ import retrofit.http.Path;
 public interface ISessionsEndpoint {
 
     @POST("/sessions")
-    void logIn(@Body RemoteSession session, Callback<User> cb);
+    User logIn(@Body RemoteSession session);
 
     @DELETE("/sessions/{id}")
     void logOut(@Path("id") String token, Callback cb);
