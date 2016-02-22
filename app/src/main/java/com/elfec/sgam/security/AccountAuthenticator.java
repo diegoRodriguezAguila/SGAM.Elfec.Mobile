@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.elfec.sgam.model.User;
 import com.elfec.sgam.view.Login;
 
 /**
@@ -61,14 +60,13 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         if (TextUtils.isEmpty(authToken)) {
             final String password = am.getPassword(account);
             if (password != null) {
-                try {
-                    User user = new ServerTokenAuth().singIn(account.name, password);
-                    return getTokenBundle(account, user.getAuthenticationToken());
-                }
-                catch (Exception e){}
+                    SessionManager.instance().remoteLogIn(account.name, password).
+                            subscribe(user->{
+                                response.onResult(getTokenBundle(account, user.getAuthenticationToken()));
+                            }, e->{response.onError(401, e.getMessage());});
             }
         }
-        //Token v·lido
+        //Token v√°lido
         else return getTokenBundle(account, authToken);
         return addAccount(response, account.type, authTokenType, null, options);
     }

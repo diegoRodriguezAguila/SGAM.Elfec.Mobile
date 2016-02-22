@@ -32,3 +32,5 @@
 -keep class retrofit.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
+
+-dontwarn java.lang.invoke.*

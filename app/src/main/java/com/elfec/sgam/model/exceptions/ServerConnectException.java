@@ -4,7 +4,7 @@ package com.elfec.sgam.model.exceptions;
 import java.net.ConnectException;
 
 /**
- * Excepción que se lanza cuando no se pudo conectar al servidor por algún motivo
+ * ExcepciÃ³n que se lanza cuando no se pudo conectar al servidor por algÃºn motivo
  */
 public class ServerConnectException extends ConnectException {
 
@@ -21,7 +21,8 @@ public class ServerConnectException extends ConnectException {
 
     @Override
     public String getMessage(){
-        return "No se pudo establecer conexión con el servidor, asegurese de que está conectado a internet!"+
+        return "No se pudo establecer conexiÃ³n con el servidor, asegurese de que estÃ¡ conectado a" +
+                " internet!"+
                 (extraInfo!=null? ("\n<i>"+extraInfo+"</i>"):"");
     }
 }

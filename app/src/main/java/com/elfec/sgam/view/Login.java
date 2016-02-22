@@ -23,8 +23,6 @@ import com.elfec.sgam.helpers.ui.KeyboardHelper;
 import com.elfec.sgam.presenter.LoginPresenter;
 import com.elfec.sgam.presenter.views.ILoginView;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -50,7 +48,7 @@ public class Login extends AppCompatActivity implements ILoginView {
     @Bind(R.id.txt_waiting_message)
     protected TextView mTxtWaitingMessage;
     @Bind(R.id.layout_errors)
-    protected LinearLayout mLayoutErros;
+    protected LinearLayout mLayoutErrors;
     @Bind(R.id.txt_error_message)
     protected TextView mTxtErrorMessage;
     private Animation slideLeftAnim;
@@ -113,7 +111,7 @@ public class Login extends AppCompatActivity implements ILoginView {
      * @param v vista
      */
     public void btnClearErrorClick(View v) {
-        mLayoutErros.setVisibility(View.GONE);
+        mLayoutErrors.setVisibility(View.GONE);
         mTxtPassword.setText("");
         mLayoutLoginForm.setVisibility(View.VISIBLE);
         mLayoutLoginForm.startAnimation(slideLeftAnim);
@@ -139,50 +137,36 @@ public class Login extends AppCompatActivity implements ILoginView {
     }
 
     @Override
-    public void showLoginErrors(final List<Exception> validationErrors) {
-         runOnUiThread(new Runnable() {
-             @Override
-             public void run() {
-                 mLayoutLoading.clearAnimation();
-                 mLayoutLoading.setVisibility(View.GONE);
-                 mTxtErrorMessage.setText( MessageListFormatter
-                         .formatHTMLFromErrors(validationErrors));
-                 mLayoutErros.setVisibility(View.VISIBLE);
-                 mLayoutErros.startAnimation(slideLeftAnim);
-             }
+    public void showLoginErrors(final Exception... validationErrors) {
+         runOnUiThread(() -> {
+             mLayoutLoading.clearAnimation();
+             mLayoutLoading.setVisibility(View.GONE);
+             mTxtErrorMessage.setText( MessageListFormatter
+                     .formatHTMLFromErrors(validationErrors));
+             mLayoutErrors.setVisibility(View.VISIBLE);
+             mLayoutErrors.startAnimation(slideLeftAnim);
          });
     }
 
     @Override
     public void showWaiting() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mLayoutLoginForm.setVisibility(View.GONE);
-                mLayoutLoading.setVisibility(View.VISIBLE);
-                mLayoutLoading.startAnimation(slideLeftAnim);
-            }
+        runOnUiThread(() -> {
+            mLayoutLoginForm.setVisibility(View.GONE);
+            mLayoutLoading.setVisibility(View.VISIBLE);
+            mLayoutLoading.startAnimation(slideLeftAnim);
         });
     }
 
     @Override
     public void updateWaiting(@StringRes final int strId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTxtWaitingMessage.setText(strId);
-            }
-        });
+        runOnUiThread(() -> mTxtWaitingMessage.setText(strId));
     }
 
     @Override
     public void hideWaiting() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mLayoutLoading.clearAnimation();
-                mLayoutLoading.setVisibility(View.GONE);
-            }
+        runOnUiThread(() -> {
+            mLayoutLoading.clearAnimation();
+            mLayoutLoading.setVisibility(View.GONE);
         });
     }
 

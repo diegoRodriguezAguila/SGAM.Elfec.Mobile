@@ -3,23 +3,23 @@ package com.elfec.sgam.helpers.ui;
 import android.os.SystemClock;
 
 /**
- * Helper para el control de múltiples clicks seguidos a un mismo botón
+ * Helper para el control de mÃºltiples clicks seguidos a un mismo botÃ³n
  * 
  * @author drodriguez
  *
  */
 public class ButtonClicksHelper {
 	/**
-	 * Tiempo mínimo entre clicks a un boton
+	 * Tiempo mÃ­nimo entre clicks a un boton
 	 */
 	private static final int TIME_BETWEEN_CLICKS = 650;
 	/**
-	 * último click realizado
+	 * ï¿½ltimo click realizado
 	 */
 	private static long lastClickTime = 0;
 
 	/**
-	 * Verifica si pasó el mínimo tiempo requerido entre clicks
+	 * Verifica si pasÃ³ el mÃ­nimo tiempo requerido entre clicks
 	 * {@link #TIME_BETWEEN_CLICKS} para realizar un click
 	 * 
 	 * @return true si es que se permite hacer un click

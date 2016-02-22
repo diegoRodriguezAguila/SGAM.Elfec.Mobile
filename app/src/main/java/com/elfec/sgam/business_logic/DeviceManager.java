@@ -17,82 +17,59 @@ import android.view.WindowManager;
 
 import com.elfec.sgam.helpers.file.FileHelper;
 import com.elfec.sgam.model.Device;
-import com.elfec.sgam.model.callbacks.ResultCallback;
 import com.elfec.sgam.model.exceptions.AuthPendingDeviceException;
 import com.elfec.sgam.model.exceptions.UnauthorizedDeviceException;
 import com.elfec.sgam.security.SessionManager;
 import com.elfec.sgam.settings.AppPreferences;
-import com.elfec.sgam.web_services.RestEndpointFactory;
-import com.elfec.sgam.web_services.RetrofitErrorInterpreter;
-import com.elfec.sgam.web_services.api_endpoints.IDevicesEndpoint;
-
-import org.apache.http.HttpStatus;
+import com.elfec.sgam.web_service.RestEndpointFactory;
+import com.elfec.sgam.web_service.api_endpoint.DeviceService;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
 
-import retrofit.RetrofitError;
+import retrofit2.HttpException;
+import rx.Observable;
 
 /**
- * LÛgica de negocio de dispositivo
+ * L√≥gica de negocio de dispositivo
  */
 @SuppressWarnings("deprecation")
 public class DeviceManager {
 
     /**
-     * Valida si este dispositivo est· registrado y habilitado para ingresar al sistema
+     * Valida si este dispositivo est√° registrado y habilitado para ingresar al sistema
      *
-     * @param cb callback
+     * @return observable de dispositivo
      */
-    public void validateDevice(final ResultCallback<Device> cb) {
-        final String username = SessionManager.instance().getLoggedInUsername();
-        final String authToken = SessionManager.instance().getLoggedInToken();
-        try {
-            Device device = RestEndpointFactory.create(IDevicesEndpoint.class, username, authToken)
-                    .getDevice(getImei(AppPreferences.getApplicationContext()));
-            checkDeviceStatus(device);
-            cb.onSuccess(device);
-        } catch (RetrofitError error) {
-            if (error.getResponse().getStatus() != HttpStatus.SC_NOT_FOUND)
-                cb.onFailure(RetrofitErrorInterpreter.interpretException(error));
-            else {
-                registerDevice(new ResultCallback<Device>() {
-                    @Override
-                    public void onSuccess(Device result) {
-                        cb.onFailure(new AuthPendingDeviceException());
+    public Observable<Device> validateDevice() {
+        return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
+                .getLoggedInUser())
+                .getDevice(getImei(AppPreferences.getApplicationContext()))
+                .doOnNext(this::checkDeviceStatus)
+                .onErrorResumeNext(t -> {
+                    if (t instanceof HttpException) {
+                        if (((HttpException) t).code() == HttpURLConnection.HTTP_NOT_FOUND)
+                            return registerDevice();
                     }
-
-                    @Override
-                    public void onFailure(Exception... errors) {
-                        cb.onFailure(new UnauthorizedDeviceException(), errors[0]);
-                    }
+                    return Observable.error(t);
                 });
-            }
-        } catch (Exception e) {
-            cb.onFailure(e);
-        }
     }
 
     /**
      * Realiza las llamadas remotas para registrar este dispositivo en el servidor
      *
-     * @param cb callback
+     * @return observable de dispositivo
      */
-    public void registerDevice(final ResultCallback<Device> cb) {
-        final String username = SessionManager.instance().getLoggedInUsername();
-        final String authToken = SessionManager.instance().getLoggedInToken();
-        try {
-            Device device = RestEndpointFactory.create(IDevicesEndpoint.class, username, authToken)
-                    .registerDevice(createDevice());
-            cb.onSuccess(device);
-        } catch (RetrofitError error) {
-            cb.onFailure(RetrofitErrorInterpreter.interpretException(error));
-        }
+    public Observable<Device> registerDevice() {
+        return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
+                .getLoggedInUser())
+                .registerDevice(createDevice());
     }
 
 
     /**
-     * Verifica el estado del dispositivo, si es que no est· autorizado lanza la debida excepciÛn
+     * Verifica el estado del dispositivo, si es que no est√° autorizado lanza la debida excepci√≥n
      *
      * @param device {@link Device} dispositivo
      * @throws UnauthorizedDeviceException
@@ -108,7 +85,7 @@ public class DeviceManager {
     }
 
     /**
-     * Crea una representaciÛn de este dispositivo
+     * Crea una representaci√≥n de este dispositivo
      *
      * @return {@link Device} que representa este dispositivo
      */
@@ -127,10 +104,10 @@ public class DeviceManager {
     }
 
     /**
-     * Obtienen el tamaÒo de la pantalal en inchs
+     * Obtienen el tama√±o de la pantalal en inchs
      *
      * @param context context
-     * @return tamaÒo en inchs de la pantalla
+     * @return tama√±o en inchs de la pantalla
      */
     public double getScreenSize(Context context) {
         Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -142,14 +119,13 @@ public class DeviceManager {
 
         DisplayMetrics dm = new DisplayMetrics();
         display.getMetrics(dm);
-        if (Build.VERSION.SDK_INT >= 17){
+        if (Build.VERSION.SDK_INT >= 17) {
             display.getRealSize(size);
             width = size.x;
             height = size.y;
             densityX = dm.xdpi;
             densityY = dm.ydpi;
-        }
-        else{
+        } else {
             width = dm.widthPixels;
             height = dm.heightPixels;
             densityX = dm.densityDpi;
@@ -189,10 +165,10 @@ public class DeviceManager {
     }
 
     /**
-     * Obtiene el tamaÒo de la memory card en GB
+     * Obtiene el tama√±o de la memory card en GB
      *
      * @param context context
-     * @return tamaÒo memory card en GigaBytes, null si no hay memoria conectada
+     * @return tama√±o memory card en GigaBytes, null si no hay memoria conectada
      */
     private Double getSDMemoryCardSize(Context context) {
         File extSDCard = FileHelper.getExternalSDCardDirectory(context);
@@ -205,9 +181,9 @@ public class DeviceManager {
     }
 
     /**
-     * Obtiene la resoluciÛn en megapixeles de la c·mara trasera
+     * Obtiene la resoluci√≥n en megapixeles de la c√°mara trasera
      *
-     * @return resoluciÛn en megapixeles
+     * @return resoluci√≥n en megapixeles
      */
     private double getBackCameraResolutionInMp() {
         int noOfCameras = Camera.getNumberOfCameras();

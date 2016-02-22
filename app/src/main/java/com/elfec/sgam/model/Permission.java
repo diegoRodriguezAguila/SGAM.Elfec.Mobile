@@ -10,7 +10,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 @Table(databaseName = SGAMDataBase.NAME)
 public class Permission extends BaseModelWithId {
     public static final Permission ADMIN_ACCESS = new Permission ("ACCESO_APP_ADMINISTRADOR",
-            "Acceso al sistema de gestión de aplicaciones móviles");
+            "Acceso al sistema de gestiÃ³n de aplicaciones mÃ³viles");
     @Column
     private String name;
     @Column

@@ -41,7 +41,7 @@ public class MetroPasswordTransformationMethod
     /**
      * /**
      * Obtiene una instancia del password Transformation method
-     * con el caracter de los par·metros
+     * con el caracter de los par√°metros
      * @param dot caracter
      * @return {@link PasswordTransformationMethod}
      */
@@ -50,9 +50,7 @@ public class MetroPasswordTransformationMethod
             Field field = PasswordTransformationMethod.class.getDeclaredField("DOT");
             field.setAccessible(true);
             field.set(null, dot);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return PasswordTransformationMethod.getInstance();

@@ -10,7 +10,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
- * Aplicación que extiende de la aplicación android
+ * AplicaciÃ³n que extiende de la aplicaciÃ³n android
  */
 public class ElfecApp extends Application {
     @Override

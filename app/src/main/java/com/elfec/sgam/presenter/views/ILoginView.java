@@ -1,9 +1,7 @@
 package com.elfec.sgam.presenter.views;
 
-import java.util.List;
-
 /**
- * Abstracción de la vista de logIn
+ * AbstracciÃ³n de la vista de logIn
  */
 public interface ILoginView extends IWaitingView {
     /**
@@ -27,7 +25,7 @@ public interface ILoginView extends IWaitingView {
     /**
      * Muestra los errores ocurridos durante el intento de login
      *
-     * @param validationErrors errores de validación de lógin
+     * @param validationErrors errores de validaciÃ³n de login
      */
-    void showLoginErrors(List<Exception> validationErrors);
+    void showLoginErrors(Exception... validationErrors);
 }

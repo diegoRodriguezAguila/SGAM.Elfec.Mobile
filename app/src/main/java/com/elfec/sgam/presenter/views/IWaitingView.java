@@ -3,7 +3,7 @@ package com.elfec.sgam.presenter.views;
 import android.support.annotation.StringRes;
 
 /**
- * Abstracción de una vista en la que se debe realizar una espera
+ * AbstracciÃ³n de una vista en la que se debe realizar una espera
  */
 public interface IWaitingView {
     /**

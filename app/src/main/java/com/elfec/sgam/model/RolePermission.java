@@ -7,7 +7,7 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 /**
- * Tabla de union para asignación de permisos a roles
+ * Tabla de union para asignaciÃ³n de permisos a roles
  */
 @Table(databaseName = SGAMDataBase.NAME)
 public class RolePermission extends BaseModelWithId {

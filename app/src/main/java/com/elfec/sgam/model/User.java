@@ -49,4 +49,14 @@ public class User {
     }
 
     //endregion
+
+    /***
+     * Verifica si el usuario actual se puede autenticar
+     * para ello tiene que tener asignados los valores del token de autenticación
+     * y el nombre de usuario
+     * @return true si es autenticable
+     */
+    public boolean isAuthenticable(){
+        return username!=null && authenticationToken!=null;
+    }
 }

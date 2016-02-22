@@ -1,12 +1,14 @@
 package com.elfec.sgam.model.exceptions;
 
 /**
- * ExcepciÛn que se lanza cuando un dipositivo est· en estado de pendiente de autorizaciÛn
+ * Excepci√≥n que se lanza cuando un dipositivo est√° en estado de pendiente de autorizaci√≥n
  */
-public class AuthPendingDeviceException  extends Exception {
+public class AuthPendingDeviceException  extends RuntimeException {
     @Override
     public String getMessage() {
-        return "Este dipositivo est· pendiente de autorizaciÛn para ingresar al sistema. Si usted es administrador, proceda " +
-                "a autorizar el dispositivo desde el sistema administrador, caso contrario comunÌquese con uno para ello";
+        return "Este dipositivo est√° pendiente de autorizaci√≥n para ingresar al sistema. Si usted" +
+                " es administrador, proceda " +
+                "a autorizar el dispositivo desde el sistema administrador, caso contrario " +
+                "comun√≠quese con uno para ello";
     }
 }

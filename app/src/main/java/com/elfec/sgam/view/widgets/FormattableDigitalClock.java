@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import java.text.ParseException;
 
 /**
- * Clase {@link DigitalClock} pero que es formateable y no est· deprecado
+ * Clase {@link DigitalClock} pero que es formateable y no est√° deprecado
  */
 @SuppressWarnings("deprecation")
 public class FormattableDigitalClock extends DigitalClock {

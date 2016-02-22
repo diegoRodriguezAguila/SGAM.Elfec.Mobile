@@ -3,8 +3,6 @@ package com.elfec.sgam.helpers.text;
 import android.text.Html;
 import android.text.Spanned;
 
-import java.util.List;
-
 /**
  * Formatea las listas de objetos en una lista html
  * 
@@ -19,17 +17,8 @@ public class MessageListFormatter {
 	 * @param errors errores
 	 * @return Mensaje de lista de errores
 	 */
-	public static Spanned formatHTMLFromErrors(List<Exception> errors) {
-		StringBuilder str = new StringBuilder();
-		int size = errors.size();
-		if (size == 1)
-			return Html.fromHtml(str.append(errors.get(0).getMessage())
-					.toString());
-		for (int i = 0; i < size; i++) {
-			str.append("\u25CF ").append(errors.get(i).getMessage());
-			str.append((i < size - 1 ? "<br/>" : ""));
-		}
-		return Html.fromHtml(str.toString());
+	public static Spanned formatHTMLFromErrors(Exception... errors) {
+		return formatHTMLFromObjectList(Throwable::getMessage, errors);
 	}
 
 	/**
@@ -38,16 +27,17 @@ public class MessageListFormatter {
 	 * @param objects lista de objetos
 	 * @return Mensaje de lista de objetos
 	 */
-	public static <T> Spanned formatHTMLStringFromObjectList(List<T> objects,
-															 AttributePicker<String, T> attributePicker) {
+    @SafeVarargs
+	public static <T> Spanned formatHTMLFromObjectList(AttributePicker<String, T>
+															   attributePicker, T... objects) {
 		StringBuilder str = new StringBuilder();
-		int size = objects.size();
+		int size = objects.length;
 		if (size == 1)
 			return Html.fromHtml(str.append(
-					attributePicker.pickAttribute(objects.get(0))).toString());
+                    attributePicker.pickAttribute(objects[0])).toString());
 		for (int i = 0; i < size; i++) {
 			str.append("\u25CF ").append(
-					attributePicker.pickAttribute(objects.get(i)));
+					attributePicker.pickAttribute(objects[i]));
 			str.append((i < size - 1 ? "<br/>" : ""));
 		}
 		return Html.fromHtml(str.toString());
@@ -59,15 +49,7 @@ public class MessageListFormatter {
 	 * @param messages lista de mensajes
 	 * @return Mensaje de lista de mensajes
 	 */
-	public static Spanned formatHTMLFromStringList(List<String> messages) {
-		StringBuilder str = new StringBuilder();
-		int size = messages.size();
-		if (size == 1)
-			return Html.fromHtml(str.append(messages.get(0)).toString());
-		for (int i = 0; i < size; i++) {
-			str.append("\u25CF ").append(messages.get(i));
-			str.append((i < size - 1 ? "<br/>" : ""));
-		}
-		return Html.fromHtml(str.toString());
+	public static Spanned formatHTMLFromStringList(String... messages) {
+		return formatHTMLFromObjectList(str -> str, messages);
 	}
 }

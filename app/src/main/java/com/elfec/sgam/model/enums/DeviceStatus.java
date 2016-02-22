@@ -13,15 +13,15 @@ public enum DeviceStatus {
      */
     AUTHORIZED,
     /**
-     * Estado de dispositvo pendiente de autorización
+     * Estado de dispositvo pendiente de autorizaciÃ³n
      */
     AUTH_PENDING
     ;
     /**
      * Obtiene el estado del dispositivo, equivalente al short provisto
      *
-     * @param status
-     * @return
+     * @param status estado
+     * @return estado del dispositivo
      */
     public static DeviceStatus get(short status) {
         return DeviceStatus.values()[status];

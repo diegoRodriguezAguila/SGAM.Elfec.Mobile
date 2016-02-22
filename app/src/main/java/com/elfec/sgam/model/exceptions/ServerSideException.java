@@ -1,7 +1,7 @@
 package com.elfec.sgam.model.exceptions;
 
 /**
- * Esta excepción es lanzada cuando ha ocurrido una excepción no controlada en el lado del servidor
+ * Esta excepciÃ³n es lanzada cuando ha ocurrido una excepciÃ³n no controlada en el lado del servidor
  * @author Diego
  *
  */
@@ -17,7 +17,7 @@ public class ServerSideException extends Exception {
 		this.message = message;
 	}
 	public ServerSideException() {
-		this.message  = "Ocurrió un error en el servidor, porfavor intentelo nuevamente mas tarde";
+		this.message  = "OcurriÃ³ un error en el servidor, porfavor intentelo nuevamente mas tarde";
 	}
 	@Override
 	public String getMessage()

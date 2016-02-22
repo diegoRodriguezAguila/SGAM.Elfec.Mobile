@@ -1,7 +1,7 @@
 package com.elfec.sgam.model.exceptions;
 
 /**
- * Se lanza cuando una clase que requeria inicialización se utiliza en su estado
+ * Se lanza cuando una clase que requeria inicializaciÃ³n se utiliza en su estado
  * actual
  * 
  * @author drodriguez
@@ -16,7 +16,7 @@ public class InitializationException extends RuntimeException {
 	private String className;
 
     /**
-     * Inicializa la excepción con el nombre de la clase que no fue inicializada
+     * Inicializa la excepciÃ³n con el nombre de la clase que no fue inicializada
      * @param mClass clase que no fue inicializada correctamente
      */
     public InitializationException(Class<?> mClass) {
@@ -25,7 +25,7 @@ public class InitializationException extends RuntimeException {
 
     @Override
 	public String getMessage() {
-		return "La clase "+className+"no se inicializó correctamente antes de utilizarse";
+		return "La clase "+className+"no se inicializÃ³ correctamente antes de utilizarse";
 	}
 
 }

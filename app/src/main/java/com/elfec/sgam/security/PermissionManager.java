@@ -11,12 +11,13 @@ import java.lang.ref.SoftReference;
  */
 public class PermissionManager {
     /**
-     * Referencia débil utilizada para singletone
+     * Referencia dÃ©bil utilizada para singletone
      */
     private static SoftReference<PermissionManager> permissionsManagerInstanceRef;
 
     /**
-     * No se puede instanciar esta clase directamente, debe utilizar el método {@link PermissionManager#instance()}
+     * No se puede instanciar esta clase directamente, debe utilizar el mÃ©todo {@link
+     * PermissionManager#instance()}
      */
     private PermissionManager() {
     }

@@ -1,13 +1,13 @@
 package com.elfec.sgam.model.exceptions;
 
 /**
- * ExcepciÛn que se lanza cuando un usuario que intenta logearse proporcionÛ un
+ * Excepci√≥n que se lanza cuando un usuario que intenta logearse proporcion√≥ un
  * password incorrecto
  * 
  * @author drodriguez
  *
  */
-public class InvalidPasswordException extends Exception {
+public class InvalidPasswordException extends RuntimeException {
 
 	/**
 	 * Serial
@@ -16,7 +16,7 @@ public class InvalidPasswordException extends Exception {
 
 	@Override
 	public String getMessage() {
-		return "El Usuario o password proporcionados no son v·lidos, " +
-				"por favor revise los datos e intÈntelo nuevamente";
+		return "El Usuario o password proporcionados no son v√°lidos, " +
+				"por favor revise los datos e int√©ntelo nuevamente";
 	}
 }

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 /**
- * Servicio para la autenticación del usuario
+ * Servicio para la autenticaciÃ³n del usuario
  */
 public class AuthenticationService extends Service {
 
