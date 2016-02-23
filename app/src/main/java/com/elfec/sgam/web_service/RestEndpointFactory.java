@@ -1,13 +1,16 @@
 package com.elfec.sgam.web_service;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.elfec.sgam.model.User;
+import com.elfec.sgam.model.web_services.deserializer.UriJsonDeserializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -73,7 +76,9 @@ public class RestEndpointFactory {
                         new ObjectMapper().setPropertyNamingStrategy(
                                 PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
                                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)))
+                                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .registerModule(new SimpleModule().addDeserializer(Uri.class, new
+                        UriJsonDeserializer()))))
                 .client(buildClient(authUser))
                 .build().create(endpoint);
     }

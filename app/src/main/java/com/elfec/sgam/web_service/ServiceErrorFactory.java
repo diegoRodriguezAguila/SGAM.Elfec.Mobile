@@ -2,9 +2,11 @@ package com.elfec.sgam.web_service;
 
 import com.elfec.sgam.model.exceptions.ServerConnectException;
 import com.elfec.sgam.model.exceptions.ServerSideException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.zip.DataFormatException;
 
 import retrofit2.adapter.rxjava.HttpException;
 
@@ -21,6 +23,9 @@ public class ServiceErrorFactory {
      * @return excepción correspondiente al error recibido
      */
     public static Exception fromThrowable(Throwable throwable){
+        if (throwable instanceof JsonMappingException)
+            return new DataFormatException("La información recibida del servidor no es válida, " +
+                    "deetalles: "+throwable.getMessage());
         if (throwable instanceof IOException)
             return new ServerConnectException();
         if (throwable instanceof HttpException) {

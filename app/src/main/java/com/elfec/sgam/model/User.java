@@ -1,5 +1,7 @@
 package com.elfec.sgam.model;
 
+import android.net.Uri;
+
 import java.util.List;
 
 /**
@@ -13,6 +15,12 @@ public class User {
 
     private String username;
     private String authenticationToken;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String position;
+    private Uri photoUrl;
+    private String companyArea;
     private List<Role> roles;
 
     public User(){}
@@ -38,6 +46,54 @@ public class User {
 
     public void setAuthenticationToken(String authenticationToken) {
         this.authenticationToken = authenticationToken;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public Uri getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(Uri photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public String getCompanyArea() {
+        return companyArea;
+    }
+
+    public void setCompanyArea(String companyArea) {
+        this.companyArea = companyArea;
     }
 
     public List<Role> getRoles() {
