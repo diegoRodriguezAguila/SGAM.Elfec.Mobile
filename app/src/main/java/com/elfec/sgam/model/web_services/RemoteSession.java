@@ -1,15 +1,11 @@
 package com.elfec.sgam.model.web_services;
 
-import com.google.gson.annotations.Expose;
-
 /**
  * Representa una solicitud de sesion del server
  */
 public class RemoteSession {
 
-    @Expose
     private String username;
-    @Expose
     private String password;
 
     public RemoteSession(){}

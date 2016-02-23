@@ -21,9 +21,9 @@ public interface DeviceService {
             "Content-Type: application/json"
     })
 
-    @GET("/devices/{imei}")
+    @GET("devices/{imei}")
     Observable<Device> getDevice(@Path("imei") String imei);
 
-    @POST("/devices")
+    @POST("devices")
     Observable<Device> registerDevice(@Body Device device);
 }

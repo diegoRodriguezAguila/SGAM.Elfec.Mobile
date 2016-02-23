@@ -1,5 +1,7 @@
 package com.elfec.sgam.model.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Enum que representa los posibles estados de un dispositivo
  */
@@ -32,6 +34,7 @@ public enum DeviceStatus {
      *
      * @return Short equivalente al estado
      */
+    @JsonValue
     public short toShort() {
         return (short) this.ordinal();
     }

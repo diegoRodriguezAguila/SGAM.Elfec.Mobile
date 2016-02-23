@@ -1,11 +1,8 @@
 package com.elfec.sgam.web_service;
 
 import com.elfec.sgam.model.exceptions.ApiException;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -34,14 +31,13 @@ public class ApiExceptionFactory {
      * @return {@link ApiException} apiError
      */
     public static ApiException build(ResponseBody errorBody){
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
+        ObjectMapper mapper = new ObjectMapper().setPropertyNamingStrategy(
+                PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
         ApiException error = null;
         try {
-            error = gson.fromJson(errorBody.string(),
+            error = mapper.readValue(errorBody.string(),
                     ApiException.class);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return error==null?DEFAULT_ERROR: error;

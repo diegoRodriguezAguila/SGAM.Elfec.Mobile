@@ -62,8 +62,8 @@ public class Login extends AppCompatActivity implements ILoginView {
         slideLeftAnim = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
         mTxtPassword.setTransformationMethod(MetroPasswordTransformationMethod.getInstance());
         presenter = new LoginPresenter(this);
-        mTxtUsername.setText("drodriguezd");
-        mTxtPassword.setText("elfec2015");
+        mTxtUsername.setText("drodriguez");
+        mTxtPassword.setText("Diroag2015");
     }
 
     @Override

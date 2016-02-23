@@ -21,7 +21,7 @@ public class FileHelper {
         File firstSdCard = context.getExternalFilesDir(null);
         File[] files = ContextCompat.getExternalFilesDirs(context, null);
         for (File file : files) {
-            if (file.compareTo(firstSdCard) != 0) {
+            if (file != null && file.compareTo(firstSdCard) != 0) {
                 return file;
             }
         }

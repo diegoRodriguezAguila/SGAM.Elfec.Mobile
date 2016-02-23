@@ -12,6 +12,8 @@ import android.text.TextUtils;
 
 import com.elfec.sgam.view.Login;
 
+import rx.schedulers.Schedulers;
+
 /**
  * Autenticador de las cuentas de elfec
  */
@@ -60,10 +62,11 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         if (TextUtils.isEmpty(authToken)) {
             final String password = am.getPassword(account);
             if (password != null) {
-                    SessionManager.instance().remoteLogIn(account.name, password).
-                            subscribe(user->{
+                    SessionManager.instance().remoteLogIn(account.name, password)
+                            .subscribeOn(Schedulers.newThread())
+                            .subscribe(user->{
                                 response.onResult(getTokenBundle(account, user.getAuthenticationToken()));
-                            }, e->{response.onError(401, e.getMessage());});
+                            }, e->{response.onError(400, e.getMessage());});
             }
         }
         //Token válido

@@ -1,13 +1,13 @@
-package com.elfec.sgam.web_service.api_endpoint;
+package com.elfec.sgam.web_service;
 
 import com.elfec.sgam.model.exceptions.ServerConnectException;
 import com.elfec.sgam.model.exceptions.ServerSideException;
-import com.elfec.sgam.web_service.ApiExceptionFactory;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-import retrofit2.HttpException;
+import retrofit2.adapter.rxjava.HttpException;
+
 
 /**
  * Interpreta los errores que pudieron haber ocurrido al
