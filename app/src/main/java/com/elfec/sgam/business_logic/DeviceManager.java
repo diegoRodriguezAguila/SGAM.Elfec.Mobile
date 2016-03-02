@@ -57,8 +57,8 @@ public class DeviceManager {
      * Verifica el estado del dispositivo, si es que no está autorizado lanza la debida excepción
      *
      * @param device {@link Device} dispositivo
-     * @throws UnauthorizedDeviceException
-     * @throws AuthPendingDeviceException
+     * @throws UnauthorizedDeviceException si el estado del dispositivo es no autorizado
+     * @throws AuthPendingDeviceException si el dispositivo está pendiente de autorización
      */
     private void checkDeviceStatus(Device device) throws UnauthorizedDeviceException, AuthPendingDeviceException {
         switch (device.getStatus()) {

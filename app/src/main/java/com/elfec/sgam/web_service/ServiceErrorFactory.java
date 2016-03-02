@@ -32,6 +32,8 @@ public class ServiceErrorFactory {
             HttpException e = (HttpException) throwable;
             if (e.code()== HttpURLConnection.HTTP_INTERNAL_ERROR)
                 return new ServerSideException();
+            if (e.code()== HttpURLConnection.HTTP_FORBIDDEN)
+                return new ServerSideException();
             return ApiExceptionFactory.build(e.response());
         }
         if(throwable instanceof Exception)

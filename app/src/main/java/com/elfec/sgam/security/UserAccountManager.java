@@ -77,11 +77,12 @@ public class UserAccountManager {
      */
     public User accountToUser(Account account) {
         if (account != null) {
-            final AccountManagerFuture<Bundle> future = mAccountManager.getAuthToken(account, User.TOKEN_TYPE, null, false, null, null);
+            final AccountManagerFuture<Bundle> future = mAccountManager.getAuthToken(account,
+                    User.TOKEN_TYPE, null, true, null, null);
             try {
                 Bundle bnd = future.getResult();
-                final String authtoken = bnd.getString(AccountManager.KEY_AUTHTOKEN);
-                return new User(account.name, authtoken);
+                final String authToken = bnd.getString(AccountManager.KEY_AUTHTOKEN);
+                return new User(account.name, authToken);
             } catch (Exception e) {
                 e.printStackTrace();
             }

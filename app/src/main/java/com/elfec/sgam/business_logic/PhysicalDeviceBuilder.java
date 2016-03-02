@@ -68,7 +68,7 @@ public class PhysicalDeviceBuilder {
 
         DisplayMetrics dm = new DisplayMetrics();
         display.getMetrics(dm);
-        if (Build.VERSION.SDK_INT >= 17) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             display.getRealSize(size);
             width = size.x;
             height = size.y;

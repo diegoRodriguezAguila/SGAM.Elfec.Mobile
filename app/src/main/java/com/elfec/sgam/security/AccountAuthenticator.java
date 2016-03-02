@@ -12,6 +12,8 @@ import android.text.TextUtils;
 
 import com.elfec.sgam.view.Login;
 
+import java.net.HttpURLConnection;
+
 import rx.schedulers.Schedulers;
 
 /**
@@ -64,9 +66,11 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
             if (password != null) {
                     SessionManager.instance().remoteLogIn(account.name, password)
                             .subscribeOn(Schedulers.newThread())
-                            .subscribe(user->{
+                            .subscribe(user -> {
                                 response.onResult(getTokenBundle(account, user.getAuthenticationToken()));
-                            }, e->{response.onError(400, e.getMessage());});
+                            }, e -> {
+                                response.onError(HttpURLConnection.HTTP_UNAUTHORIZED, e.getMessage());
+                            });
             }
         }
         //Token válido

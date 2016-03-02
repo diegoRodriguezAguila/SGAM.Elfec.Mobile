@@ -14,8 +14,7 @@ import java.io.IOException;
  */
 public class UriJsonDeserializer extends JsonDeserializer<Uri> {
     @Override
-    public Uri deserialize(JsonParser jp, DeserializationContext context) throws IOException
-             {
+    public Uri deserialize(JsonParser jp, DeserializationContext context) throws IOException {
         return Uri.parse(jp.getValueAsString());
     }
 }

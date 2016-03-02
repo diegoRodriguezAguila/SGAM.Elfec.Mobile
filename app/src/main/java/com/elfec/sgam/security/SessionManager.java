@@ -12,6 +12,7 @@ import com.elfec.sgam.web_service.api_endpoint.SessionService;
 import java.lang.ref.SoftReference;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -108,12 +109,13 @@ public class SessionManager {
      * @return observable de user
      */
     private Observable<User> localLogIn(@NonNull User user, String password) {
-        return Observable.just(user)
+        return Observable.defer(()-> Observable.just(user)
+                .subscribeOn(Schedulers.newThread())
                 .doOnNext(u -> {
                     if (new UserAccountManager().userPasswordIsValid(user, password)) {
                         setCurrentSession(user);
                     } else throw new InvalidPasswordException();
-                });
+                }));
     }
 
     /**
