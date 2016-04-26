@@ -63,7 +63,7 @@ public class Login extends AppCompatActivity implements ILoginView {
         mTxtPassword.setTransformationMethod(MetroPasswordTransformationMethod.getInstance());
         presenter = new LoginPresenter(this);
         mTxtUsername.setText("drodriguez");
-        mTxtPassword.setText("Diroag2015");
+        mTxtPassword.setText("Rasta1234");
     }
 
     @Override
@@ -73,13 +73,16 @@ public class Login extends AppCompatActivity implements ILoginView {
         return true;
     }
 
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     * @param item menuitem
+     * @return true if option was selected
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;

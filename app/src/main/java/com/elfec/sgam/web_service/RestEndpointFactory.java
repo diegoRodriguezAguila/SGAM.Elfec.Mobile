@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import java.util.HashMap;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -29,6 +31,14 @@ public class RestEndpointFactory {
      * se puede pasar otra URL
      */
     public static final String BASE_URL = "http://192.168.50.56:3000/api/";
+    /**
+     * Caché para el builder, para evitar redundancia de creación
+     */
+    private static Retrofit.Builder sBuilder;
+    /**
+     * Caché para clientes http, para evitar redundancia de creación
+     */
+    private static HashMap<String, OkHttpClient> sClients = new HashMap<>();
 
     /**
      * Crea un endpoint Rest  con la url especificada
@@ -68,9 +78,22 @@ public class RestEndpointFactory {
      * @return Instancia de endpoint
      */
     public static <T> T create(@NonNull String url, @NonNull Class<T> endpoint, @Nullable
-    User authUser) {
-        return new Retrofit.Builder()
+        User authUser) {
+
+        return getBuilder()
                 .baseUrl(url)
+                .client(getClient(authUser))
+                .build().create(endpoint);
+    }
+
+    /**
+     * Obtiene el builder para retrofit
+     * @return {@link retrofit2.Retrofit.Builder}
+     */
+    @NonNull
+    private static Retrofit.Builder getBuilder() {
+        if(sBuilder==null)
+            sBuilder = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create(
                         new ObjectMapper().setPropertyNamingStrategy(
@@ -78,9 +101,26 @@ public class RestEndpointFactory {
                                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
                                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .registerModule(new SimpleModule().addDeserializer(Uri.class, new
-                        UriJsonDeserializer()))))
-                .client(buildClient(authUser))
-                .build().create(endpoint);
+                        UriJsonDeserializer()))));
+        return sBuilder;
+    }
+
+    /**
+     * Obtiene el cliente de http para retrofit, si ya estaba creado devuelve la caché
+     * y si no existe lo crea
+     *
+     * @param authUser credentials of API
+     * @return {@link OkHttpClient} http client, not null
+     */
+    @NonNull
+    private static OkHttpClient getClient(@Nullable final User authUser) {
+        String username = authUser!=null? authUser.getUsername() : null;
+        OkHttpClient client = sClients.get(username);
+        if(client==null){
+            client = buildClient(authUser);
+            sClients.put(username, client);
+        }
+        return client;
     }
 
     /**
@@ -94,14 +134,16 @@ public class RestEndpointFactory {
         return new OkHttpClient().newBuilder()
                 .addInterceptor(chain -> {
                     Request request = chain.request();
+                    Request.Builder builder = request.newBuilder();
+                    builder.header("Accept", "application/json")
+                            .header("Content-Type", "application/json");
                     if (authUser != null && authUser.isAuthenticable()) {
-                        request = request.newBuilder()
-                                .header("X-Api-Username", authUser.getUsername())
-                                .header("X-Api-Token", authUser.getAuthenticationToken())
-                                .method(request.method(), request.body())
-                                .build();
+                        builder.header("X-Api-Username", authUser.getUsername())
+                                .header("X-Api-Token", authUser.getAuthenticationToken());
                     }
-                    return chain.proceed(request);
+                    return chain.proceed(builder
+                            .method(request.method(), request.body())
+                            .build());
                 }).build();
     }
 }
