@@ -63,8 +63,10 @@ public class RestEndpointFactory {
     /**
      * Crea un endpoint Rest  con la url por defecto {@link RestEndpointFactory#BASE_URL}
      * y con los headers de autenticación con token necesarios
-     *
-     * @return Endpoint
+     * @param service endpoint
+     * @param authUser credenciales de autenticación
+     * @param <T> endpoint type
+     * @return endpoint instance
      */
     public static <T> T create(@NonNull Class<T> service, User authUser) {
         return create(BASE_URL, service, authUser);

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by drodriguez on 31/08/2015.
  * Modelo del usuario
  */
-public class User {
+public class User implements Entity {
 
     public static final String TOKEN_TYPE = "login-token";
     public static final String ACCOUNT_TYPE = "com.elfec.sgam";
@@ -64,6 +64,10 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -106,6 +110,9 @@ public class User {
 
     //endregion
 
+
+
+
     /***
      * Verifica si el usuario actual se puede autenticar
      * para ello tiene que tener asignados los valores del token de autenticación
@@ -115,4 +122,23 @@ public class User {
     public boolean isAuthenticable(){
         return username!=null && authenticationToken!=null;
     }
+
+
+    //region Entity
+    @Override
+    public String getId() {
+        return username;
+    }
+
+    @Override
+    public String getName() {
+        return username;
+    }
+
+    @Override
+    public String getDetails() {
+        return getFullName();
+    }
+
+    //endregion
 }
