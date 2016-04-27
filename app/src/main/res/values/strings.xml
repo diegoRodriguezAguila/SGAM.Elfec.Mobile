@@ -12,6 +12,8 @@
     <string name="msg_fields_no_empty">Los campos no pueden estar vacios, reviselos para poder continuar</string>
     <string name="msg_login_user">Validando información de usuario&#8230;</string>
     <string name="msg_validating_device">Validando dispositivo&#8230;</string>
+    <string name="msg_getting_policy_rules">Obteniendo reglas de directivas de
+        usuario&#8230;</string>
 
 
     <!-- Dialogos -->

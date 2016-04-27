@@ -5,11 +5,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.elfec.sgam.model.User;
+import com.elfec.sgam.model.web_services.deserializer.EnumJsonDeserializer;
 import com.elfec.sgam.model.web_services.deserializer.UriJsonDeserializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.util.HashMap;
@@ -103,7 +109,16 @@ public class RestEndpointFactory {
                                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
                                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .registerModule(new SimpleModule().addDeserializer(Uri.class, new
-                        UriJsonDeserializer()))));
+                        UriJsonDeserializer())
+                .setDeserializerModifier(new BeanDeserializerModifier() {
+                            @Override
+                            public JsonDeserializer<Enum<?>> modifyEnumDeserializer
+                                    (DeserializationConfig config, final JavaType type,
+                                     BeanDescription beanDesc, final JsonDeserializer<?>
+                                             deserializer) {
+                                return new EnumJsonDeserializer(type);
+                            }
+                        }))));
         return sBuilder;
     }
 
@@ -135,17 +150,14 @@ public class RestEndpointFactory {
     private static OkHttpClient buildClient(@Nullable final User authUser) {
         return new OkHttpClient().newBuilder()
                 .addInterceptor(chain -> {
-                    Request request = chain.request();
-                    Request.Builder builder = request.newBuilder();
-                    builder.header("Accept", "application/json")
+                    Request.Builder builder = chain.request().newBuilder()
+                            .header("Accept", "application/json")
                             .header("Content-Type", "application/json");
                     if (authUser != null && authUser.isAuthenticable()) {
                         builder.header("X-Api-Username", authUser.getUsername())
                                 .header("X-Api-Token", authUser.getAuthenticationToken());
                     }
-                    return chain.proceed(builder
-                            .method(request.method(), request.body())
-                            .build());
+                    return chain.proceed(builder.build());
                 }).build();
     }
 }

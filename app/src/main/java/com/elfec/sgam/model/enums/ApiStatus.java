@@ -8,9 +8,9 @@ public enum ApiStatus
     /**
      * Estado de modelo deshabilitado
      */
-    Disabled,
+    DISABLED,
     /**
      * Estado de modelo habiliado
      */
-    Enabled
+    ENABLED
 }

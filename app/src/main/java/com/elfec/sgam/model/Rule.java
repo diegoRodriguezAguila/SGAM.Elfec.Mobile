@@ -1,6 +1,7 @@
 package com.elfec.sgam.model;
 
 import com.elfec.sgam.model.enums.ApiStatus;
+import com.elfec.sgam.model.enums.PolicyType;
 import com.elfec.sgam.model.enums.RuleAction;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class Rule {
     private String id;
-    private String policyId;
+    private PolicyType policyId;
     private RuleAction action;
     private String name;
     private String description;
@@ -28,11 +29,11 @@ public class Rule {
         this.id = id;
     }
 
-    public String getPolicyId() {
+    public PolicyType getPolicyId() {
         return policyId;
     }
 
-    public void setPolicyId(String policyId) {
+    public void setPolicyId(PolicyType policyId) {
         this.policyId = policyId;
     }
 

@@ -2,6 +2,7 @@ package com.elfec.sgam.presenter;
 
 import com.elfec.sgam.R;
 import com.elfec.sgam.business_logic.DeviceManager;
+import com.elfec.sgam.business_logic.UserManager;
 import com.elfec.sgam.presenter.views.ILoginView;
 import com.elfec.sgam.security.SessionManager;
 import com.elfec.sgam.web_service.ServiceErrorFactory;
@@ -35,8 +36,12 @@ public class LoginPresenter {
                              view.updateWaiting(R.string.msg_validating_device);
                              return new DeviceManager().validateDevice();
                          })
+                         .flatMap(device -> {
+                             view.updateWaiting(R.string.msg_getting_policy_rules);
+                             return new UserManager().requestPolicyRules();
+                         })
                          .subscribeOn(Schedulers.newThread())
-                         .subscribe(device -> {
+                         .subscribe(rules -> {
                              view.hideWaiting();
                          }, t -> {
                              view.hideWaiting();

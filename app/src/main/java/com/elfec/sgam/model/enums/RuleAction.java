@@ -7,9 +7,9 @@ public enum RuleAction {
     /**
      * Acción de permision de una regla aplicada a su valor
      */
-    Permit,
+    PERMIT,
     /**
      * Acción de denegación de una regla aplicada a su valor
      */
-    Deny,
+    DENY,
 }

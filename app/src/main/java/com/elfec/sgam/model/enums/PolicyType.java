@@ -8,9 +8,9 @@ public enum PolicyType {
     /**
      * Directivas de control de aplicaciones
      */
-    ApplicationControl,
+    APPLICATION_CONTROL,
     /**
      * Directivas de restricción de dipositivos
      */
-    DeviceRestriction
+    DEVICE_RESTRICTION
 }
