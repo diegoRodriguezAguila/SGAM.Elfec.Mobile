@@ -45,7 +45,7 @@ public class UserSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        new UserManager().remoteGetUser(mUserAccountManager.accountToUser(account), true)
+        new UserManager().requestUser(mUserAccountManager.accountToUser(account), true)
                 .subscribeOn(Schedulers.immediate())
                 .flatMap(new UserDataStorage()::saveUser)
                 .subscribe(user -> {

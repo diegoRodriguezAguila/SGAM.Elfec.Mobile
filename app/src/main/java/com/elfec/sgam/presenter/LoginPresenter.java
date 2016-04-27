@@ -38,7 +38,7 @@ public class LoginPresenter {
                          })
                          .flatMap(device -> {
                              view.updateWaiting(R.string.msg_getting_policy_rules);
-                             return new UserManager().requestPolicyRules();
+                             return new UserManager().syncPolicyRules();
                          })
                          .subscribeOn(Schedulers.newThread())
                          .subscribe(rules -> {

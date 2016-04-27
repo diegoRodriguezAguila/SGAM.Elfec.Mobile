@@ -1,5 +1,6 @@
 package com.elfec.sgam.business_logic;
 
+import com.elfec.sgam.local_storage.PolicyDataStorage;
 import com.elfec.sgam.model.Rule;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.security.SessionManager;
@@ -24,8 +25,8 @@ public class UserManager {
      * los credenciales del usuario
      * @return observable de usuario
      */
-    public Observable<User> remoteGetUser(User user){
-        return remoteGetUser(user, false);
+    public Observable<User> requestUser(User user){
+        return requestUser(user, false);
     }
 
     /**
@@ -35,7 +36,7 @@ public class UserManager {
      * @param withRoles si es true se obtiene el usuario con sus roles y permisos
      * @return observable de usuario
      */
-    public Observable<User> remoteGetUser(User user, boolean withRoles){
+    public Observable<User> requestUser(User user, boolean withRoles){
         if(!user.isAuthenticable())
             throw new IllegalArgumentException("user must be authenticable");
         return RestEndpointFactory.create(UserService.class, user)
@@ -53,5 +54,18 @@ public class UserManager {
 
         return RestEndpointFactory.create(UserService.class, current)
                 .getPolicyRules(current.getUsername(), QUERY_POLICY_ID);
+    }
+
+    /**
+     * Syncroniza las reglas de directivas que aplican al usuario
+     * logeado actual, se conecta a la API y los guarda localmente
+     * @return observable de lista de reglas
+     */
+    public Observable<List<Rule>> syncPolicyRules(){
+        final User current = SessionManager.instance()
+                .getLoggedInUser();
+        return requestPolicyRules()
+                .flatMap(rules -> new PolicyDataStorage()
+                            .saveUserPolicyRules(current.getUsername(), rules));
     }
 }
