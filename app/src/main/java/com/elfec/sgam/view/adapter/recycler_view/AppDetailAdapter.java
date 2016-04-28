@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.helpers.utils.PaletteHelper;
 import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.view.adapter.recycler_view.viewholders.AppDetailViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
@@ -22,9 +23,11 @@ public class AppDetailAdapter extends RecyclerView.Adapter<AppDetailViewHolder>
     private static final String TAG = "MyDraggableItemAdapter";
 
     private List<AppDetail> mApplications;
+    private int[] mBgColors;
 
     public AppDetailAdapter(List<AppDetail> applications) {
         mApplications = applications;
+        mBgColors = new int[applications.size()];
         setHasStableIds(true);
     }
 
@@ -42,8 +45,18 @@ public class AppDetailAdapter extends RecyclerView.Adapter<AppDetailViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(AppDetailViewHolder holder, int position) {
-        holder.bindApplication(mApplications.get(position));
+    public void onBindViewHolder(AppDetailViewHolder holder, int pos) {
+        final AppDetail app = mApplications.get(pos);
+        if(mBgColors[pos]==0)
+            PaletteHelper.getPaletteBackgroundColor(app.getIcon(),
+                    color->{
+                        if(mBgColors[pos]==0) {
+                            mBgColors[pos] = color;
+                            holder.mBackground.setBackgroundColor(color);
+                        }
+                    });
+        else holder.mBackground.setBackgroundColor(mBgColors[pos]);
+        holder.bindApplication(app);
     }
 
     @Override

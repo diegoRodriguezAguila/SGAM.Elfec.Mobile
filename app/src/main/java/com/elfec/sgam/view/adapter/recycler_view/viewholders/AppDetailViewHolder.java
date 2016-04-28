@@ -18,13 +18,11 @@ import butterknife.ButterKnife;
  */
 public class AppDetailViewHolder extends AbstractDraggableItemViewHolder {
     @Bind(R.id.layout_background)
-    protected LinearLayout mBackground;
+    public LinearLayout mBackground;
     @Bind(R.id.img_app_icon)
     protected ImageView mImgAppIcon;
     @Bind(R.id.txt_app_name)
     protected TextView mTxtAppName;
-
-    private static final int DEFAULT_COLOR = 0x02296A;
 
     public AppDetailViewHolder(View v) {
         super(v);
@@ -32,7 +30,6 @@ public class AppDetailViewHolder extends AbstractDraggableItemViewHolder {
     }
 
     public void bindApplication(final AppDetail application){
-        PaletteHelper.setPaletteBackground(mBackground, application.getIcon());
         mImgAppIcon.setImageDrawable(application.getIcon());
         mTxtAppName.setText(application.getLabel());
     }
