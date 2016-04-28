@@ -28,4 +28,9 @@ public interface ILoginView extends IWaitingView {
      * @param validationErrors errores de validación de login
      */
     void showLoginErrors(Exception... validationErrors);
+
+    /**
+     * Va a la app principal
+     */
+    void goToDesktop();
 }

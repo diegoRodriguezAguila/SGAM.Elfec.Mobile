@@ -5,4 +5,5 @@
     <dimen name="activity_horizontal_margin">64dp</dimen>
     <dimen name="txt_size_clock">86sp</dimen>
     <dimen name="top_margin_clock">30dp</dimen>
+    <dimen name="app_icon_size">72dp</dimen>
 </resources>

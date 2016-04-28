@@ -43,6 +43,7 @@ public class LoginPresenter {
                          .subscribeOn(Schedulers.newThread())
                          .subscribe(rules -> {
                              view.hideWaiting();
+                             view.goToDesktop();
                          }, t -> {
                              view.hideWaiting();
                              view.showLoginErrors(ServiceErrorFactory.fromThrowable(t));

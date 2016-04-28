@@ -1,6 +1,7 @@
 package com.elfec.sgam.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
@@ -149,6 +150,15 @@ public class Login extends AppCompatActivity implements ILoginView {
              mLayoutErrors.setVisibility(View.VISIBLE);
              mLayoutErrors.startAnimation(slideLeftAnim);
          });
+    }
+
+    @Override
+    public void goToDesktop() {
+        runOnUiThread(() -> {
+            Intent i = new Intent(Login.this, Applications.class);
+            startActivity(i);
+            overridePendingTransition(R.anim.slide_left_in,0);
+        });
     }
 
     @Override
