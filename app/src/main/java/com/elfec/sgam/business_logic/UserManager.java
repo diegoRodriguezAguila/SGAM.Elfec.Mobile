@@ -68,4 +68,11 @@ public class UserManager {
                 .flatMap(rules -> new PolicyDataStorage()
                             .saveUserPolicyRules(current.getUsername(), rules));
     }
+
+    public List<String> getPemitedPackages(){
+        final User current = SessionManager.instance()
+                .getLoggedInUser();
+        return null;
+
+    }
 }

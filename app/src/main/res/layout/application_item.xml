@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/layout_background"
+              android:orientation="vertical"
+              android:background="@color/color_accent"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:baselineAligned="false"
+              android:gravity="center"
+              android:layout_margin="10dp"
+              android:padding="10dp" >
+    <ImageView
+        android:id="@+id/img_app_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/app_name"
+        tools:src="@drawable/window"/>
+    <TextView
+        android:id="@+id/txt_app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:scrollHorizontally="false"
+        android:gravity="center"
+        android:maxEms="3"
+        android:ellipsize="end"
+        android:maxLines="3"
+        tools:text="Default application"
+        />
+</LinearLayout>

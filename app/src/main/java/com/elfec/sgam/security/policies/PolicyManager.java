@@ -6,5 +6,4 @@ package com.elfec.sgam.security.policies;
  */
 public class PolicyManager {
 
-
 }

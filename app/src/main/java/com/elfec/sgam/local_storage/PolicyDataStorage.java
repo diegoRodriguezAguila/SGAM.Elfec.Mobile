@@ -57,6 +57,19 @@ public class PolicyDataStorage {
                 .concat(policyType.toString()), rules);
     }
 
+    /**
+     * Retrieves the policy rules of the specific type that applies to the user
+     * @param username user's username
+     * @param policyType policy type
+     * @return observable with a list of rules
+     */
+    public Observable<List<Rule>> getUserPolicyRules(String username, PolicyType policyType) {
+        return book.read(username
+                .concat(policyType.toString()));
+    }
+
+
+
     private Observable<List<Rule>> saveUserPolicyRules(String username, Map.Entry<PolicyType,
             List<Rule>> entry) {
         return saveUserPolicyRules(username, entry.getKey() , entry.getValue());

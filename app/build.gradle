@@ -53,4 +53,7 @@ dependencies {
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex:rxjava:1.1.0'
+    //UI
+    compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.8.7@aar'
+    compile 'com.android.support:palette-v7:23.1.1'
 }
