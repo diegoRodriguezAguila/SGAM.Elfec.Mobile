@@ -84,6 +84,7 @@ public class Applications extends AppCompatActivity {
             mRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable)
                     ContextCompat.getDrawable(this, R.drawable.material_shadow_z1)));
         }
+        
         mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
     }
 

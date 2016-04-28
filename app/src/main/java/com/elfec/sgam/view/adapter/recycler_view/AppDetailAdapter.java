@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.helpers.ui.VibrationHelper;
 import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.view.adapter.recycler_view.viewholders.AppDetailViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
@@ -60,6 +61,7 @@ public class AppDetailAdapter extends RecyclerView.Adapter<AppDetailViewHolder>
 
     @Override
     public boolean onCheckCanStartDrag(AppDetailViewHolder holder, int position, int x, int y) {
+        VibrationHelper.shortVibrate();
         return true;
     }
 
