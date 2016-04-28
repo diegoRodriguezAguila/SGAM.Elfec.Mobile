@@ -8,11 +8,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.helpers.utils.DrawableHelper;
 import com.elfec.sgam.helpers.utils.IconFinder;
+import com.elfec.sgam.helpers.utils.PaletteHelper;
 import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.view.adapter.recycler_view.AppDetailAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -61,6 +64,9 @@ public class Applications extends AppCompatActivity {
             app.setLabel(ri.loadLabel(manager));
             app.setPackageName(ri.activityInfo.packageName);
             app.setIcon(finder.getFullResIcon(ri));
+            app.setBgColor(PaletteHelper
+                    .getBackgroundColor(Palette.from(DrawableHelper
+                    .drawableToBitmap(app.getIcon())).generate()));
             apps.add(app);
         }
         mAdapter = new AppDetailAdapter(apps);

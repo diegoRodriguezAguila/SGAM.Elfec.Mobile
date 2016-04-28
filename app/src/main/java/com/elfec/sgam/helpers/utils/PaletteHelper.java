@@ -34,18 +34,28 @@ public class PaletteHelper {
     public static void getPaletteBackgroundColor(Drawable drawable, OnGetColorCallback callback){
         Palette.from(DrawableHelper.drawableToBitmap(drawable))
                 .generate(palette -> {
-                    int bgColor = palette.getDarkVibrantColor(DEFAULT_COLOR);
-                    if(bgColor==DEFAULT_COLOR)
-                        bgColor = palette.getDarkMutedColor(DEFAULT_COLOR);
-                    if(bgColor==DEFAULT_COLOR)
-                        bgColor = palette.getVibrantColor(DEFAULT_COLOR);
-                    if(bgColor==DEFAULT_COLOR)
-                        bgColor = palette.getMutedColor(DEFAULT_COLOR);
-                    if(ColorTools.colorsAreClose(bgColor, PRIMARY_COLOR))
-                        bgColor = ColorTools.lighter(bgColor);
+                    int bgColor = getBackgroundColor(palette);
                     if(callback!=null)
                         callback.gotColor(bgColor);
                 });
+    }
+
+    /**
+     * Gets an appropiate background color given the palette
+     * @param palette palette
+     * @return bg color
+     */
+    public static int getBackgroundColor(Palette palette) {
+        int bgColor = palette.getDarkVibrantColor(DEFAULT_COLOR);
+        if(bgColor==DEFAULT_COLOR)
+            bgColor = palette.getDarkMutedColor(DEFAULT_COLOR);
+        if(bgColor==DEFAULT_COLOR)
+            bgColor = palette.getVibrantColor(DEFAULT_COLOR);
+        if(bgColor==DEFAULT_COLOR)
+            bgColor = palette.getMutedColor(DEFAULT_COLOR);
+        if(ColorTools.colorsAreClose(bgColor, PRIMARY_COLOR))
+            bgColor = ColorTools.lighter(bgColor);
+        return bgColor;
     }
 
     /**

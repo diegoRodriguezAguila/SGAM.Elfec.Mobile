@@ -6,7 +6,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.elfec.sgam.R;
-import com.elfec.sgam.helpers.utils.PaletteHelper;
 import com.elfec.sgam.model.AppDetail;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
@@ -18,7 +17,7 @@ import butterknife.ButterKnife;
  */
 public class AppDetailViewHolder extends AbstractDraggableItemViewHolder {
     @Bind(R.id.layout_background)
-    public LinearLayout mBackground;
+    protected LinearLayout mBackground;
     @Bind(R.id.img_app_icon)
     protected ImageView mImgAppIcon;
     @Bind(R.id.txt_app_name)
@@ -30,6 +29,7 @@ public class AppDetailViewHolder extends AbstractDraggableItemViewHolder {
     }
 
     public void bindApplication(final AppDetail application){
+        mBackground.setBackgroundColor(application.getBgColor());
         mImgAppIcon.setImageDrawable(application.getIcon());
         mTxtAppName.setText(application.getLabel());
     }
