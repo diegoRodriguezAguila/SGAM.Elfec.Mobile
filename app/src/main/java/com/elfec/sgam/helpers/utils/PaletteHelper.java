@@ -22,7 +22,7 @@ public class PaletteHelper {
      * @param drawable image
      */
     public static void setPaletteBackground(final View view, Drawable drawable){
-        getPaletteBackgroundColor(drawable, view::setBackgroundColor);
+        getDrawableBackgroundColor(drawable, view::setBackgroundColor);
     }
 
     /**
@@ -31,7 +31,7 @@ public class PaletteHelper {
      * @param drawable drawable
      * @param callback callback
      */
-    public static void getPaletteBackgroundColor(Drawable drawable, OnGetColorCallback callback){
+    public static void getDrawableBackgroundColor(Drawable drawable, OnGetColorCallback callback){
         Palette.from(DrawableHelper.drawableToBitmap(drawable))
                 .generate(palette -> {
                     int bgColor = getBackgroundColor(palette);
@@ -41,11 +41,22 @@ public class PaletteHelper {
     }
 
     /**
+     * Gets synchronously the adequate background color for a
+     * drawable
+     * @param drawable drawable
+     * @return proper background color
+     */
+    public static int getDrawableBackgroundColor(Drawable drawable){
+        return getBackgroundColor(Palette.from(DrawableHelper.drawableToBitmap(drawable))
+                .generate());
+    }
+
+    /**
      * Gets an appropiate background color given the palette
      * @param palette palette
      * @return bg color
      */
-    public static int getBackgroundColor(Palette palette) {
+    private static int getBackgroundColor(Palette palette) {
         int bgColor = palette.getDarkVibrantColor(DEFAULT_COLOR);
         if(bgColor==DEFAULT_COLOR)
             bgColor = palette.getDarkMutedColor(DEFAULT_COLOR);

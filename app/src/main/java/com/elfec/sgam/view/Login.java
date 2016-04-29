@@ -21,8 +21,12 @@ import com.elfec.sgam.helpers.text.MessageListFormatter;
 import com.elfec.sgam.helpers.text.method.MetroPasswordTransformationMethod;
 import com.elfec.sgam.helpers.ui.ButtonClicksHelper;
 import com.elfec.sgam.helpers.ui.KeyboardHelper;
+import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.presenter.LoginPresenter;
 import com.elfec.sgam.presenter.views.ILoginView;
+import com.elfec.sgam.view.launcher.LauncherApps;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -153,8 +157,9 @@ public class Login extends AppCompatActivity implements ILoginView {
     }
 
     @Override
-    public void goToDesktop() {
+    public void goToDesktop(List<AppDetail> apps) {
         runOnUiThread(() -> {
+            LauncherApps.instance().setAppsCache(apps);
             Intent i = new Intent(Login.this, Applications.class);
             startActivity(i);
             overridePendingTransition(R.anim.slide_left_in,0);

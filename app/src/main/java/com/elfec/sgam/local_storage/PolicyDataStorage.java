@@ -8,17 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.paperdb.Book;
 import rx.Observable;
 
 /**
  * Local storage data layer
  */
 public class PolicyDataStorage {
-    public static final String POLICY_BOOK = "policy.book";
-    private RxPaper book;
+    public static final String POLICY_BOOK = "policy.mBook";
+    private RxPaper mBook;
 
     public PolicyDataStorage(){
-        book = RxPaper.book(POLICY_BOOK);
+        mBook = RxPaper.book(POLICY_BOOK);
     }
 
     /**
@@ -28,19 +29,27 @@ public class PolicyDataStorage {
      * @return observable with a list of rules
      */
     public Observable<List<Rule>> saveUserPolicyRules(String username, List<Rule> rules) {
-        Map<PolicyType, List<Rule>> mapRules = new HashMap<>();
-        for (Rule rule : rules) {
-            if (!mapRules.containsKey(rule.getPolicyId()))
-                mapRules.put(rule.getPolicyId(), new ArrayList<>());
-            mapRules.get(rule.getPolicyId()).add(rule);
-        }
-        Observable<List<Rule>> obs = null;
-        for (Map.Entry<PolicyType, List<Rule>> entry: mapRules.entrySet()) {
-            obs = (obs==null)?
-                    saveUserPolicyRules(username, entry) :
-                    obs.mergeWith(saveUserPolicyRules(username, entry));
-        }
-        return obs;
+        return Observable.create(subscriber -> {
+            if (!subscriber.isUnsubscribed()) {
+                try {
+                    Map<PolicyType, List<Rule>> mapRules = new HashMap<>();
+                    for (Rule rule : rules) {
+                        if (!mapRules.containsKey(rule.getPolicyId()))
+                            mapRules.put(rule.getPolicyId(), new ArrayList<>());
+                        mapRules.get(rule.getPolicyId()).add(rule);
+                    }
+                    Book book = mBook.getBook();
+                    for (Map.Entry<PolicyType, List<Rule>> entry: mapRules.entrySet()) {
+                        book.write(username
+                                .concat(entry.getKey().toString()), entry.getValue());
+                    }
+                    subscriber.onNext(rules);
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+                subscriber.onCompleted();
+            }
+        });
     }
 
     /**
@@ -53,7 +62,7 @@ public class PolicyDataStorage {
      */
     public Observable<List<Rule>> saveUserPolicyRules(String username, PolicyType policyType,
                                                       List<Rule> rules) {
-        return book.write(username
+        return mBook.write(username
                 .concat(policyType.toString()), rules);
     }
 
@@ -64,7 +73,7 @@ public class PolicyDataStorage {
      * @return observable with a list of rules
      */
     public Observable<List<Rule>> getUserPolicyRules(String username, PolicyType policyType) {
-        return book.read(username
+        return mBook.read(username
                 .concat(policyType.toString()));
     }
 

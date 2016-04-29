@@ -41,6 +41,14 @@ public class RxPaper {
         mBook = (customBook != null) ? Paper.book(customBook) : Paper.book();
     }
 
+    /**
+     * Gets the paper book used for the rx operations
+     * @return paper book {@link Book}
+     */
+    public Book getBook(){
+        return mBook;
+    }
+
 
     /**
      * Saves any types of POJOs or collections in Book storage.

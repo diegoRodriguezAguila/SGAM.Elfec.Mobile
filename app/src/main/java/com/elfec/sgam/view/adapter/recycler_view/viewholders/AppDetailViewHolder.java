@@ -6,7 +6,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.helpers.ui.animation.Animator;
 import com.elfec.sgam.model.AppDetail;
+import com.elfec.sgam.view.launcher.ApplicationTools;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
 import butterknife.Bind;
@@ -23,6 +25,8 @@ public class AppDetailViewHolder extends AbstractDraggableItemViewHolder {
     @Bind(R.id.txt_app_name)
     protected TextView mTxtAppName;
 
+
+
     public AppDetailViewHolder(View v) {
         super(v);
         ButterKnife.bind(this, v);
@@ -31,6 +35,10 @@ public class AppDetailViewHolder extends AbstractDraggableItemViewHolder {
     public void bindApplication(final AppDetail application){
         mBackground.setBackgroundColor(application.getBgColor());
         mImgAppIcon.setImageDrawable(application.getIcon());
-        mTxtAppName.setText(application.getLabel());
+        mTxtAppName.setText(application.getAppName());
+        mBackground.setOnClickListener(v -> {
+            Animator.click(mBackground);
+            ApplicationTools.launchApplication(application.getPackageName());
+        });
     }
 }

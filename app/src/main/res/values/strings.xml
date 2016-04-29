@@ -14,6 +14,8 @@
     <string name="msg_validating_device">Validando dispositivo&#8230;</string>
     <string name="msg_getting_policy_rules">Obteniendo reglas de directivas de
         usuario&#8230;</string>
+    <string name="msg_getting_apps">Cargando applicaciones&#8230;</string>
+    <string name="msg_welcome">Bienvenido! cargando apps&#8230;</string>
 
 
     <!-- Dialogos -->

@@ -1,5 +1,9 @@
 package com.elfec.sgam.presenter.views;
 
+import com.elfec.sgam.model.AppDetail;
+
+import java.util.List;
+
 /**
  * Abstracción de la vista de logIn
  */
@@ -30,7 +34,7 @@ public interface ILoginView extends IWaitingView {
     void showLoginErrors(Exception... validationErrors);
 
     /**
-     * Va a la app principal
+     * Va a la app principal, mostrando la lista de apps obtenida
      */
-    void goToDesktop();
+    void goToDesktop(List<AppDetail> apps);
 }

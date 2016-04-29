@@ -1,12 +1,14 @@
 package com.elfec.sgam.presenter;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.business_logic.ApplicationManager;
 import com.elfec.sgam.business_logic.DeviceManager;
 import com.elfec.sgam.business_logic.UserManager;
 import com.elfec.sgam.presenter.views.ILoginView;
 import com.elfec.sgam.security.SessionManager;
 import com.elfec.sgam.web_service.ServiceErrorFactory;
 
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -28,27 +30,30 @@ public class LoginPresenter {
      */
     public void logIn() {
          if (!view.getUsername().isEmpty() && !view.getPassword().isEmpty()) {
-             new Thread(()-> {
                  view.showWaiting();
                  SessionManager.instance()
-                         .logIn(view.getUsername(), view.getPassword())
-                         .flatMap(user -> {
-                             view.updateWaiting(R.string.msg_validating_device);
-                             return new DeviceManager().validateDevice();
-                         })
-                         .flatMap(device -> {
-                             view.updateWaiting(R.string.msg_getting_policy_rules);
-                             return new UserManager().syncPolicyRules();
-                         })
-                         .subscribeOn(Schedulers.newThread())
-                         .subscribe(rules -> {
-                             view.hideWaiting();
-                             view.goToDesktop();
-                         }, t -> {
-                             view.hideWaiting();
-                             view.showLoginErrors(ServiceErrorFactory.fromThrowable(t));
-                         });
-             }).start();
+                     .logIn(view.getUsername(), view.getPassword())
+                     .flatMap(user -> {
+                         view.updateWaiting(R.string.msg_validating_device);
+                         return new DeviceManager().validateDevice();
+                     })
+                     .flatMap(device -> {
+                         view.updateWaiting(R.string.msg_getting_policy_rules);
+                         return new UserManager().syncPolicyRules();
+                     })
+                     .flatMap(rules -> {
+                         view.updateWaiting(R.string.msg_getting_apps);
+                         return new ApplicationManager().getAllInstalledApps();
+                     })
+                     .subscribeOn(Schedulers.newThread())
+                         .observeOn(AndroidSchedulers.mainThread())
+                     .subscribe(apps -> {
+                         view.hideWaiting();
+                         view.goToDesktop(apps);
+                     }, t -> {
+                         view.hideWaiting();
+                         view.showLoginErrors(ServiceErrorFactory.fromThrowable(t));
+                     });
 
         } else view.notifyErrorsInFields();
     }

@@ -6,25 +6,25 @@ import android.graphics.drawable.Drawable;
  * App details to show in panel
  */
 public class AppDetail {
-    private CharSequence label;
-    private CharSequence packageName;
+    private CharSequence appName;
+    private String packageName;
     private Drawable icon;
     private int bgColor;
 
     //region Getters Setters
-    public CharSequence getLabel() {
-        return label;
+    public CharSequence getAppName() {
+        return appName;
     }
 
-    public void setLabel(CharSequence label) {
-        this.label = label;
+    public void setAppName(CharSequence appName) {
+        this.appName = appName;
     }
 
-    public CharSequence getPackageName() {
+    public String getPackageName() {
         return packageName;
     }
 
-    public void setPackageName(CharSequence packageName) {
+    public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 
