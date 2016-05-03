@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 
 import com.elfec.sgam.helpers.utils.IconFinder;
+import com.elfec.sgam.helpers.utils.ObservableUtils;
 import com.elfec.sgam.helpers.utils.PaletteHelper;
 import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.settings.AppPreferences;
@@ -37,28 +38,21 @@ public class ApplicationManager {
      * @return observable de lista de aplicaciones
      */
     public Observable<List<AppDetail>> getAllInstalledApps(){
-        return Observable.create(subscriber -> {
-                if (!subscriber.isUnsubscribed()) {
-                    try {
-                        Intent i = new Intent(Intent.ACTION_MAIN, null);
-                        i.addCategory(Intent.CATEGORY_LAUNCHER);
-                        Context context = AppPreferences.getApplicationContext();
-                        PackageManager manager = context.getPackageManager();
-                        List<ResolveInfo> availableActivities = manager.queryIntentActivities(i, 0);
-                        List<AppDetail> apps = new ArrayList<>();
-                        IconFinder finder = new IconFinder(context);
-                        for (ResolveInfo ri : availableActivities) {
-                            AppDetail app = getAppDetail(ri, manager, finder);
-                            apps.add(app);
-                        }
-                        Collections.sort(apps, APP_DETAIL_COMPARATOR);
-                        subscriber.onNext(apps);
-                    } catch (Exception e) {
-                        subscriber.onError(e);
-                    }
-                    subscriber.onCompleted();
-                }
-            });
+        return ObservableUtils.from(()->{
+            Intent i = new Intent(Intent.ACTION_MAIN, null);
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            Context context = AppPreferences.getApplicationContext();
+            PackageManager manager = context.getPackageManager();
+            List<ResolveInfo> availableActivities = manager.queryIntentActivities(i, 0);
+            List<AppDetail> apps = new ArrayList<>();
+            IconFinder finder = new IconFinder(context);
+            for (ResolveInfo ri : availableActivities) {
+                AppDetail app = getAppDetail(ri, manager, finder);
+                apps.add(app);
+            }
+            Collections.sort(apps, APP_DETAIL_COMPARATOR);
+            return apps;
+        });
     }
 
     /**

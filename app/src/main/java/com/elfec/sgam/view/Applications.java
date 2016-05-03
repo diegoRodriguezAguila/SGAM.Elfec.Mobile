@@ -1,5 +1,8 @@
 package com.elfec.sgam.view;
 
+import android.app.WallpaperManager;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Applications extends AppCompatActivity {
 
@@ -44,6 +48,14 @@ public class Applications extends AppCompatActivity {
             mRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable)
                     ContextCompat.getDrawable(this, R.drawable.material_shadow_z1)));
         }
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        findViewById(R.id.apps_background).setBackground(wallpaperDrawable);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     /**

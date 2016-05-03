@@ -160,7 +160,7 @@ public class Login extends AppCompatActivity implements ILoginView {
     public void goToDesktop(List<AppDetail> apps) {
         runOnUiThread(() -> {
             LauncherApps.instance().setAppsCache(apps);
-            Intent i = new Intent(Login.this, Applications.class);
+            Intent i = new Intent(Login.this, Desktop.class);
             startActivity(i);
             overridePendingTransition(R.anim.slide_left_in,0);
         });

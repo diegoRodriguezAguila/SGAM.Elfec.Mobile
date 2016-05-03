@@ -2,6 +2,7 @@ package com.elfec.sgam.security;
 
 import android.support.annotation.NonNull;
 
+import com.elfec.sgam.helpers.utils.ObservableUtils;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.exceptions.InvalidPasswordException;
 import com.elfec.sgam.model.web_services.RemoteSession;
@@ -12,7 +13,6 @@ import com.elfec.sgam.web_service.api_endpoint.SessionService;
 import java.lang.ref.SoftReference;
 
 import rx.Observable;
-import rx.schedulers.Schedulers;
 
 
 /**
@@ -76,10 +76,13 @@ public class SessionManager {
      * @return observable de user
      */
     public Observable<User> logIn(String username, String password) {
-        final User user = new UserAccountManager().findUser(username);
-        if (user == null)
-            return remoteLogIn(username, password);
-        return localLogIn(user, password);
+        return ObservableUtils.from(()->
+                new UserAccountManager().findUser(username))
+        .flatMap(user->{
+            if (user == null)
+                return remoteLogIn(username, password);
+            return localLogIn(user, password);
+        });
     }
 
     /**
@@ -109,13 +112,12 @@ public class SessionManager {
      * @return observable de user
      */
     private Observable<User> localLogIn(@NonNull User user, String password) {
-        return Observable.defer(()-> Observable.just(user)
-                .subscribeOn(Schedulers.newThread())
-                .doOnNext(u -> {
-                    if (new UserAccountManager().userPasswordIsValid(user, password)) {
-                        setCurrentSession(user);
-                    } else throw new InvalidPasswordException();
-                }));
+        return ObservableUtils.from(()->{
+            if (!new UserAccountManager().userPasswordIsValid(user, password))
+                throw new InvalidPasswordException();
+            setCurrentSession(user);
+            return user;
+        });
     }
 
     /**

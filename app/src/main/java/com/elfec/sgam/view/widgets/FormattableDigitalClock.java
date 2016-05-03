@@ -29,7 +29,7 @@ public class FormattableDigitalClock extends DigitalClock {
     }
 
     @Override
-    public void onTextChanged(@Nullable CharSequence text, int start, int lenghtBefore, int lenghtAfter){
+    public void onTextChanged(@Nullable CharSequence text, int start, int lengthBefore, int lengthAfter){
         if(!mIsFormatting && text!=null && !text.equals("")){
             mIsFormatting = true;
             try {
