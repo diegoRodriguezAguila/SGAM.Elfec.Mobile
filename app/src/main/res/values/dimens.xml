@@ -12,4 +12,6 @@
     <dimen name="login_progress_size">40dp</dimen>
     <dimen name="txt_error_size">19sp</dimen>
     <dimen name="app_icon_size">48dp</dimen>
+    <dimen name="desktop_toolbar_height">48dp</dimen>
+    <dimen name="show_apps_width">62dp</dimen>
 </resources>

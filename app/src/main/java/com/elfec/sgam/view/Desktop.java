@@ -2,6 +2,7 @@ package com.elfec.sgam.view;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.graphics.ColorUtils;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.helpers.ui.ButtonClicksHelper;
 import com.elfec.sgam.helpers.ui.ColorTools;
 import com.elfec.sgam.helpers.utils.PaletteHelper;
 
@@ -60,6 +62,18 @@ public class Desktop extends AppCompatActivity {
                 int bgBorder = ColorUtils.setAlphaComponent(ColorTools.darker(color, 0.2), 0xEA);
                 mToolBarBorder.setBackgroundColor(bgBorder);
             });
+        }
+    }
+
+    /**
+     * Show apps button click event
+     * @param v view
+     */
+    public void btnShowApps(View v){
+        if (ButtonClicksHelper.canClickButton()) {
+            Intent i = new Intent(Desktop.this, Applications.class);
+            startActivity(i);
+            overridePendingTransition(R.anim.slide_left_in,0);
         }
     }
 

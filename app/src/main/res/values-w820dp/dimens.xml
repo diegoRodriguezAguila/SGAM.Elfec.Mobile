@@ -8,4 +8,6 @@
     <dimen name="txt_size_desktop_date">32sp</dimen>
     <dimen name="top_margin_clock">30dp</dimen>
     <dimen name="app_icon_size">72dp</dimen>
+    <dimen name="desktop_toolbar_height">56dp</dimen>
+    <dimen name="show_apps_width">76dp</dimen>
 </resources>

@@ -37,7 +37,7 @@
     <RelativeLayout
         android:id="@+id/desktop_bar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/desktop_toolbar_height"
         android:background="#CA18468D">
         <View android:layout_width="match_parent"
               android:id="@+id/desktop_bar_border"
@@ -49,8 +49,10 @@
               android:background="#EA18468D"
               android:layout_height="1.5dp"/>
         <ImageButton
-            android:layout_width="74dp"
-            android:layout_height="56dp"
+            android:id="@+id/btn_show_apps"
+            android:layout_width="@dimen/show_apps_width"
+            android:layout_height="@dimen/desktop_toolbar_height"
+            android:onClick="btnShowApps"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
