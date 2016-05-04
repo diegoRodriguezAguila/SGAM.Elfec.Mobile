@@ -73,7 +73,8 @@ public class ApplicationsFragment extends Fragment {
         initializeDragDropManager();
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
         mRecyclerView.setItemAnimator(animator);
-        mLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
+        mLayoutManager = new GridLayoutManager(getContext(), getContext().getResources()
+                .getInteger(R.integer.app_cols_number), GridLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         loadLauncherApps();
         // additional decorations
