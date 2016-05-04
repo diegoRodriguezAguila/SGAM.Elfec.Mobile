@@ -14,6 +14,7 @@ import com.elfec.sgam.R;
 import com.elfec.sgam.helpers.ui.ButtonClicksHelper;
 import com.elfec.sgam.helpers.ui.ColorTools;
 import com.elfec.sgam.helpers.utils.PaletteHelper;
+import com.elfec.sgam.settings.AppPreferences;
 
 import org.joda.time.DateTime;
 
@@ -48,8 +49,17 @@ public class Desktop extends AppCompatActivity {
         super.onResume();
         mTxtDate.setText(DateTime.now().toString("EEEE, d 'de' MMMM"));
         initializeWallpaperAndToolbar();
+        if(AppPreferences.instance().getLoggedUsername()==null){
+            Intent i = new Intent(Desktop.this, Login.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(i);
+            overridePendingTransition(R.anim.nothing, R.anim.nothing);
+        }
     }
 
+    /**
+     * Initializes the wallpaper and the toolbar colors depending on it
+     */
     private void initializeWallpaperAndToolbar() {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
         Drawable wallpaperDrawable = wallpaperManager.getDrawable();
@@ -59,7 +69,7 @@ public class Desktop extends AppCompatActivity {
             PaletteHelper.getDrawableBackgroundColor(mWallpaperDrawable, color -> {
                 int bg = ColorUtils.setAlphaComponent(color, 0xCA);
                 mToolBar.setBackgroundColor(bg);
-                int bgBorder = ColorUtils.setAlphaComponent(ColorTools.darker(color, 0.2), 0xEA);
+                int bgBorder = ColorUtils.setAlphaComponent(ColorTools.darker(color, 0.25), 0xEA);
                 mToolBarBorder.setBackgroundColor(bgBorder);
             });
         }
@@ -73,7 +83,7 @@ public class Desktop extends AppCompatActivity {
         if (ButtonClicksHelper.canClickButton()) {
             Intent i = new Intent(Desktop.this, Applications.class);
             startActivity(i);
-            overridePendingTransition(R.anim.slide_left_in,0);
+            overridePendingTransition(R.anim.fade_in,0);
         }
     }
 

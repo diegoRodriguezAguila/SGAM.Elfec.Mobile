@@ -10,4 +10,5 @@
     <dimen name="app_icon_size">72dp</dimen>
     <dimen name="desktop_toolbar_height">56dp</dimen>
     <dimen name="show_apps_width">76dp</dimen>
+    <dimen name="title_size">38sp</dimen>
 </resources>

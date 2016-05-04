@@ -1,15 +1,16 @@
 package com.elfec.sgam.view;
 
-import android.app.WallpaperManager;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.elfec.sgam.R;
 import com.elfec.sgam.view.adapter.recycler_view.AppDetailAdapter;
@@ -48,9 +49,7 @@ public class Applications extends AppCompatActivity {
             mRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable)
                     ContextCompat.getDrawable(this, R.drawable.material_shadow_z1)));
         }
-        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        findViewById(R.id.apps_background).setBackground(wallpaperDrawable);
+        overridePendingTransition(0, R.anim.fade_out);
     }
 
     @Override
@@ -83,5 +82,19 @@ public class Applications extends AppCompatActivity {
         mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mAdapter);
         mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
         mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+        anim.setDuration(200);
+        mRecyclerView.startAnimation(anim);
+    }
+
+    @Override
+    public void onBackPressed(){
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.partial_shrink);
+        anim.setFillAfter(true);
+        mRecyclerView.startAnimation(anim);
+        new Handler().postDelayed(()->{
+            super.onBackPressed();
+            overridePendingTransition(0, R.anim.fade_out);
+        }, 80);
     }
 }

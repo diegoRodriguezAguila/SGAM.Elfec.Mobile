@@ -11,7 +11,9 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="AppCustomTheme.NoActionBar" parent="AppCustomTheme.Base">
+    <style name="AppCustomTheme.NoActionBar" parent="AppCustomTheme.NoActionBar.Base" />
+
+    <style name="AppCustomTheme.NoActionBar.Base" parent="AppCustomTheme.Base">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowNoTitle">true</item>
@@ -44,7 +46,7 @@
         <item name="android:textSelectHandle">@drawable/text_select_handle_middle_material</item>
         
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@color/background_gray</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="icon">@mipmap/ic_launcher</item>
         

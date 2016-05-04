@@ -17,6 +17,9 @@
     <string name="msg_getting_apps">Cargando aplicaciones&#8230;</string>
     <string name="msg_welcome">Bienvenido! cargando apps&#8230;</string>
 
+    <!--Applications-->
+    <string name="title_apps">Aplicaciones</string>
+
 
     <!-- Dialogos -->
     <string name="btn_ok">Aceptar</string>

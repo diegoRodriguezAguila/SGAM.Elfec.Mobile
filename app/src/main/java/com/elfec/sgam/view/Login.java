@@ -1,7 +1,6 @@
 package com.elfec.sgam.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
@@ -101,6 +100,11 @@ public class Login extends AppCompatActivity implements ILoginView {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    @Override
+    public void onBackPressed(){
+        //do nothing, prevent exit of login
+    }
+
     /**
      * Click for logIn button
      *
@@ -160,9 +164,8 @@ public class Login extends AppCompatActivity implements ILoginView {
     public void goToDesktop(List<AppDetail> apps) {
         runOnUiThread(() -> {
             LauncherApps.instance().setAppsCache(apps);
-            Intent i = new Intent(Login.this, Desktop.class);
-            startActivity(i);
-            overridePendingTransition(R.anim.slide_left_in,0);
+            super.onBackPressed();
+            overridePendingTransition(0, R.anim.slide_right_out);
         });
     }
 

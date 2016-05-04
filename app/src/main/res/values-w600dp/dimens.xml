@@ -2,7 +2,7 @@
     <!-- Example customization of dimensions originally defined in res/values/dimens.xml
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
-    <dimen name="activity_vertical_margin">64dp</dimen>
+    <dimen name="activity_vertical_margin">32dp</dimen>
     <dimen name="activity_horizontal_margin">64dp</dimen>
     <dimen name="txt_size_app_name">38sp</dimen>
     <dimen name="txt_size_clock">76sp</dimen>
@@ -14,4 +14,5 @@
     <dimen name="app_icon_size">64dp</dimen>
     <dimen name="desktop_toolbar_height">56dp</dimen>
     <dimen name="show_apps_width">76dp</dimen>
+    <dimen name="title_size">36sp</dimen>
 </resources>
