@@ -84,6 +84,14 @@ public class ApplicationsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstance){
+        super.onViewCreated(view, savedInstance);
+        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.slide_left_in);
+        anim.setDuration(200);
+        mRecyclerView.startAnimation(anim);
+    }
+
 
     /**
      * Initializes the drag drop manager
@@ -121,21 +129,20 @@ public class ApplicationsFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnApplicationsInteractionListener");
         }
+    }
 
-        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.slide_left_in);
-        anim.setDuration(200);
+    @Override
+    public void onDestroyView() {
+        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.partial_shrink);
+        anim.setFillAfter(true);
         mRecyclerView.startAnimation(anim);
+        super.onDestroyView();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-
-        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.partial_shrink);
-        anim.setFillAfter(true);
-        anim.setDuration(200);
-        mRecyclerView.startAnimation(anim);
     }
 
     /**

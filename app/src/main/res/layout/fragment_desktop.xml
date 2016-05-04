@@ -51,7 +51,6 @@
             android:id="@+id/btn_show_apps"
             android:layout_width="@dimen/show_apps_width"
             android:layout_height="@dimen/desktop_toolbar_height"
-            android:onClick="btnShowApps"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"

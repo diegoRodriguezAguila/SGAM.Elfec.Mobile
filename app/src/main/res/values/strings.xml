@@ -15,7 +15,7 @@
     <string name="msg_getting_policy_rules">Obteniendo reglas de directivas de
         usuario&#8230;</string>
     <string name="msg_getting_apps">Cargando aplicaciones&#8230;</string>
-    <string name="msg_welcome">Bienvenido! cargando apps&#8230;</string>
+    <string name="msg_account_registered">Cuenta agregada exitosamente!</string>
 
     <!-- Desktop -->
     <string name="date_format">EEEE, d \'de\' MMMM</string>

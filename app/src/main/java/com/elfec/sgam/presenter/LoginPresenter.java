@@ -49,7 +49,7 @@ public class LoginPresenter {
                          .observeOn(AndroidSchedulers.mainThread())
                      .subscribe(apps -> {
                          view.hideWaiting();
-                         view.goToDesktop(apps);
+                         view.userLoggedInSuccessfully(apps);
                      }, t -> {
                          view.hideWaiting();
                          view.showLoginErrors(ServiceErrorFactory.fromThrowable(t));

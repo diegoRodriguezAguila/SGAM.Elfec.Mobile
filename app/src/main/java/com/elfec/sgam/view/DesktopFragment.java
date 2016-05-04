@@ -9,7 +9,6 @@ import android.support.v4.graphics.ColorUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.elfec.sgam.R;
@@ -21,6 +20,7 @@ import org.joda.time.DateTime;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,8 +42,6 @@ public class DesktopFragment extends Fragment {
     protected View mToolBar;
     @Bind(R.id.desktop_bar_border)
     protected View mToolBarBorder;
-    @Bind(R.id.btn_show_apps)
-    protected ImageButton mBtnShowApps;
 
     private Drawable mWallpaperDrawable;
 
@@ -74,7 +72,6 @@ public class DesktopFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_desktop, container, false);
         ButterKnife.bind(this, view);
-        mBtnShowApps.setOnClickListener(this::btnShowAppsClick);
         return view;
     }
 
@@ -124,6 +121,7 @@ public class DesktopFragment extends Fragment {
      * Show apps button click event
      * @param v view
      */
+    @OnClick(R.id.btn_show_apps)
     public void btnShowAppsClick(View v){
         if (mListener != null && ButtonClicksHelper.canClickButton()) {
             mListener.onShowApps();

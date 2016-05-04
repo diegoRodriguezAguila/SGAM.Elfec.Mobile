@@ -1,16 +1,20 @@
 package com.elfec.sgam.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.security.SessionManager;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Main extends AppCompatActivity implements DesktopFragment
-        .OnDesktopInteractionListener, ApplicationsFragment.OnApplicationsInteractionListener {
+        .OnDesktopInteractionListener, ApplicationsFragment.OnApplicationsInteractionListener,
+        LoginFragment.OnLoginInteractionListener {
 
     private Fragment mCurrentFragment;
     private DesktopFragment mDesktopFragment;
@@ -23,9 +27,28 @@ public class Main extends AppCompatActivity implements DesktopFragment
 
         mDesktopFragment = DesktopFragment.newInstance();
         mApplicationsFragment = ApplicationsFragment.newInstance();
+        setCurrentFragment();
+    }
+    
+    @Override
+    protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        goToDesktop();
+    }
+
+    /**
+     * Analizes the conditions to put the current fragment
+     */
+    private void setCurrentFragment() {
         mCurrentFragment = mDesktopFragment;
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.main_content, mDesktopFragment).commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.main_content, mDesktopFragment);
+
+        if(!SessionManager.isSessionOpened()) {
+            mCurrentFragment = LoginFragment.newInstance();
+            transaction.add(R.id.main_content, mCurrentFragment);
+        }
+        transaction.commit();
     }
 
     @Override
@@ -33,6 +56,10 @@ public class Main extends AppCompatActivity implements DesktopFragment
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    @Override
+    public void onBackPressed() {
+        goToDesktop();
+    }
     @Override
     public void onShowApps() {
         mCurrentFragment = mApplicationsFragment;
@@ -43,13 +70,24 @@ public class Main extends AppCompatActivity implements DesktopFragment
     }
 
     @Override
-    public void onBackPressed() {
-        if (mCurrentFragment != mDesktopFragment) {
+    public void onUserAuthenticated() {
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.nothing, R.anim.slide_right_out)
+                .remove(mCurrentFragment).commit();
+        mCurrentFragment = mDesktopFragment;
+    }
+
+
+    /**
+     * Goes to the desktop
+     */
+    private void goToDesktop() {
+        if (!(mCurrentFragment instanceof LoginFragment)
+                && mCurrentFragment != mDesktopFragment) {
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.nothing, R.anim.fade_out)
                     .remove(mCurrentFragment).commit();
             mCurrentFragment = mDesktopFragment;
         }
     }
-
 }

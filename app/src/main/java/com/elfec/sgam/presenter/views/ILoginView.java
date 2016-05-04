@@ -36,5 +36,5 @@ public interface ILoginView extends IWaitingView {
     /**
      * Va a la app principal, mostrando la lista de apps obtenida
      */
-    void goToDesktop(List<AppDetail> apps);
+    void userLoggedInSuccessfully(List<AppDetail> apps);
 }
