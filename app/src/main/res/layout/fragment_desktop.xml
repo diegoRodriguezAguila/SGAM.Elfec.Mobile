@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:background="@color/color_control_normal"
-    tools:context="com.elfec.sgam.view.Desktop">
+    tools:background="@color/color_control_normal">
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
         android:layout_height="0dp"

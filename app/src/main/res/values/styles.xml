@@ -6,7 +6,7 @@
     </style>
 
     <style name="TextAppearance.CustomFont.Light" parent="TextAppearance.AppCompat">
-      <item name="fontPath">fonts/segoe_ui_light.ttf</item>
+        <item name="fontPath">fonts/segoe_ui_light.ttf</item>
     </style>
 
     <style name="TextAppearance.CustomFont.Headline" parent="TextAppearance.AppCompat.Headline">
@@ -60,6 +60,10 @@
         <item name="android:background">@drawable/material_edit_text_borderless</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="AppCustomTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppCustomTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <!-- Alert Dialog Pro -->
     <!--<style name="AppStyle.Dialog.FlavoredMaterialLight" parent="Theme.AlertDialogPro.Material.Light">

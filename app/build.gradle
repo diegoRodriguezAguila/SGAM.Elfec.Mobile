@@ -32,28 +32,28 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     // Support libraries
+    // UI libs
+    //Joda datetime
+    //UI Injector
+    //REST Client libs
+    //Storage Layer
+    // RxAndroid
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    //UI
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    // UI libs
     compile 'com.pnikosis:materialish-progress:1.5'
-    compile 'uk.co.chrisjenx:calligraphy:2.0.0'
-    //Joda datetime
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'net.danlew:android.joda:2.8.2'
-    //UI Injector
     compile 'com.jakewharton:butterknife:7.0.1'
-    //REST Client libs
     compile 'com.squareup.okhttp3:okhttp:3.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-jackson:2.0.0-beta4'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
-    //Storage Layer
     compile 'io.paperdb:paperdb:1.1'
-    // RxAndroid
     compile 'io.reactivex:rxandroid:1.1.0'
-    // Because RxAndroid releases are few and far between, it is recommended you also
-    // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex:rxjava:1.1.0'
-    //UI
     compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.8.7@aar'
     compile 'com.android.support:palette-v7:23.1.1'
 }

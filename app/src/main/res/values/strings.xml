@@ -27,5 +27,10 @@
 
     <!-- Content desc -->
     <string name="desc_show_apps">Mostrar aplicaciones</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
