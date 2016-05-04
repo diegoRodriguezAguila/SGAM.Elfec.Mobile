@@ -98,7 +98,7 @@ public class DesktopFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        mTxtDate.setText(DateTime.now().toString("EEEE, d 'de' MMMM"));
+        mTxtDate.setText(DateTime.now().toString(getString(R.string.date_format)));
         initializeWallpaperAndToolbar();
     }
 

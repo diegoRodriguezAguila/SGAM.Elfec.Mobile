@@ -57,10 +57,6 @@
             android:label="@string/app_name"
             android:theme="@style/AppCustomTheme.NoActionBar">
         </activity>
-        <activity
-            android:name=".view.Applications"
-            android:label="@string/app_name"
-            android:theme="@style/AppCustomTheme.NoActionBar"/>
 
         <service android:name=".security.AuthenticationService">
             <intent-filter>
