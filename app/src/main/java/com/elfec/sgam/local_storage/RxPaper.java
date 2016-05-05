@@ -14,8 +14,10 @@ import rx.Subscriber;
 public class RxPaper {
 
     private static RxPaper mRxPaper;
+    private static String sCustomBook;
 
     private Book mBook;
+
 
     /**
      * Uses Paper's default book to create the observable operations
@@ -32,8 +34,10 @@ public class RxPaper {
      * @return instance of {@link RxPaper}
      */
     public static RxPaper book(String customBook) {
-        if (mRxPaper == null || !TextUtils.equals(customBook, customBook))
+        if (mRxPaper == null || !TextUtils.equals(customBook, sCustomBook)) {
+            sCustomBook = customBook;
             mRxPaper = new RxPaper(customBook);
+        }
         return mRxPaper;
     }
 
