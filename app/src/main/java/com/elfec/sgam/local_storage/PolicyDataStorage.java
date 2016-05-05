@@ -33,9 +33,10 @@ public class PolicyDataStorage {
             if (!subscriber.isUnsubscribed()) {
                 try {
                     Map<PolicyType, List<Rule>> mapRules = new HashMap<>();
+                    for (PolicyType type : PolicyType.values()) {
+                        mapRules.put(type, new ArrayList<>());
+                    }
                     for (Rule rule : rules) {
-                        if (!mapRules.containsKey(rule.getPolicyId()))
-                            mapRules.put(rule.getPolicyId(), new ArrayList<>());
                         mapRules.get(rule.getPolicyId()).add(rule);
                     }
                     Book book = mBook.getBook();
