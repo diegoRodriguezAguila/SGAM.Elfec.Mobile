@@ -11,26 +11,26 @@ import java.util.List;
  */
 public class ObservableCollection<T> extends ArrayList<T> {
 
-    List<CollectionChangesListener<T>> _listeners;
+    private List<CollectionChangesListener<T>> mListeners;
 
     public void addListener(CollectionChangesListener<T> listener) {
-        if (_listeners == null)
-            _listeners = new ArrayList<>();
+        if (mListeners == null)
+            mListeners = new ArrayList<>();
 
-        _listeners.add(listener);
+        mListeners.add(listener);
     }
 
     public void removeListener(CollectionChangesListener<T> listener) {
-        if (_listeners != null)
-            _listeners.remove(listener);
+        if (mListeners != null)
+            mListeners.remove(listener);
     }
 
     @Override
     public boolean add(T item) {
         boolean success = super.add(item);
-        if (success && _listeners != null) {
+        if (success && mListeners != null) {
             // Notify any listeners
-            for (CollectionChangesListener<T> listener: _listeners) {
+            for (CollectionChangesListener<T> listener: mListeners) {
                 listener.added(item);
             }
         }
@@ -40,9 +40,9 @@ public class ObservableCollection<T> extends ArrayList<T> {
     @Override
     public void add(int index, T object) {
         super.add(index, object);
-        if (_listeners != null) {
+        if (mListeners != null) {
             // Notify any listeners
-            for (CollectionChangesListener<T> listener: _listeners) {
+            for (CollectionChangesListener<T> listener: mListeners) {
                 listener.added(index, object);
             }
         }
@@ -51,9 +51,9 @@ public class ObservableCollection<T> extends ArrayList<T> {
     @Override
     public boolean addAll(Collection<? extends T> collection) {
         boolean success = super.addAll(collection);
-        if (success && _listeners != null) {
+        if (success && mListeners != null) {
             // Notify any listeners
-            for (CollectionChangesListener<T> listener: _listeners) {
+            for (CollectionChangesListener<T> listener: mListeners) {
                 listener.addedAll(collection);
             }
         }
@@ -63,9 +63,9 @@ public class ObservableCollection<T> extends ArrayList<T> {
     @Override
     public boolean addAll(int index, Collection<? extends T> collection) {
         boolean success = super.addAll(index, collection);
-        if (success && _listeners != null) {
+        if (success && mListeners != null) {
             // Notify any listeners
-            for (CollectionChangesListener<T> listener: _listeners) {
+            for (CollectionChangesListener<T> listener: mListeners) {
                 listener.addedAll(index, collection);
             }
         }
@@ -75,9 +75,9 @@ public class ObservableCollection<T> extends ArrayList<T> {
     @Override
     public T set(int index, T object) {
         T item = super.set(index, object);
-        if (_listeners != null) {
+        if (mListeners != null) {
             // Notify any listeners
-            for (CollectionChangesListener<T> listener: _listeners) {
+            for (CollectionChangesListener<T> listener: mListeners) {
                 listener.set(index, object);
             }
         }
@@ -88,9 +88,9 @@ public class ObservableCollection<T> extends ArrayList<T> {
     @Override
     public boolean remove(Object item) {
         boolean success = super.remove(item);
-        if (_listeners != null) {
+        if (mListeners != null) {
             // Notify any listeners
-            for (CollectionChangesListener<T> listener: _listeners) {
+            for (CollectionChangesListener<T> listener: mListeners) {
                 listener.removed((T)item);
             }
         }
@@ -100,9 +100,9 @@ public class ObservableCollection<T> extends ArrayList<T> {
     @Override
     public T remove(int index) {
         T item = super.remove(index);
-        if (_listeners != null) {
+        if (mListeners != null) {
             // Notify any listeners
-            for (CollectionChangesListener<T> listener: _listeners) {
+            for (CollectionChangesListener<T> listener: mListeners) {
                 listener.removed(index);
             }
         }
@@ -113,9 +113,9 @@ public class ObservableCollection<T> extends ArrayList<T> {
     @Override
     public boolean removeAll(@NonNull Collection<?> collection){
         boolean success = super.removeAll(collection);
-        if (_listeners != null) {
+        if (mListeners != null) {
             // Notify any listeners
-            for (CollectionChangesListener<T> listener: _listeners) {
+            for (CollectionChangesListener<T> listener: mListeners) {
                 listener.removedAll((Collection<? extends T>) collection);
             }
         }
@@ -125,10 +125,25 @@ public class ObservableCollection<T> extends ArrayList<T> {
     @Override
     public void clear() {
         super.clear();
-        if (_listeners != null) {
+        if (mListeners != null) {
             // Notify any listeners
-            for (CollectionChangesListener<T> listener: _listeners) {
+            for (CollectionChangesListener<T> listener: mListeners) {
                 listener.cleared();
+            }
+        }
+    }
+
+    /**
+     * Notifies all the colection listeners
+     * that the item at the specified index has
+     * been modified
+     * @param index index
+     */
+    public void notifyItemUpdated(int index){
+        if (mListeners != null) {
+            // Notify any listeners
+            for (CollectionChangesListener<T> listener: mListeners) {
+                listener.itemUpdated(index);
             }
         }
     }
@@ -143,6 +158,7 @@ public class ObservableCollection<T> extends ArrayList<T> {
         void addedAll(Collection<? extends T> collection);
         void addedAll(int index, Collection<? extends T> collection);
         void set(int index, T object);
+        void itemUpdated(int index);
         void removed(T item);
         void removed(int index);
         void removedAll(Collection<? extends T> collection);

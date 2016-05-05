@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 
 import com.elfec.sgam.R;
 import com.elfec.sgam.helpers.ui.VibrationHelper;
+import com.elfec.sgam.helpers.utils.collections.ObservableCollection;
 import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.view.adapter.recycler_view.viewholders.AppDetailViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,6 +26,9 @@ public class AppDetailAdapter extends RecyclerView.Adapter<AppDetailViewHolder>
 
     public AppDetailAdapter(List<AppDetail> applications) {
         mApplications = applications;
+        if (applications instanceof ObservableCollection) {
+            ((ObservableCollection<AppDetail>)applications).addListener(new AppDetailListener());
+        }
         setHasStableIds(true);
     }
 
@@ -69,5 +74,61 @@ public class AppDetailAdapter extends RecyclerView.Adapter<AppDetailViewHolder>
     public ItemDraggableRange onGetItemDraggableRange(AppDetailViewHolder holder, int position) {
         // no drag-sortable range specified
         return null;
+    }
+
+    private class AppDetailListener implements ObservableCollection.CollectionChangesListener<AppDetail> {
+
+        @Override
+        public void itemUpdated(int index) {
+            notifyItemChanged(index);
+        }
+
+        //region unused methods
+        @Override
+        public void added(AppDetail item) {
+
+        }
+
+        @Override
+        public void added(int index, AppDetail item) {
+
+        }
+
+        @Override
+        public void addedAll(Collection<? extends AppDetail> collection) {
+
+        }
+
+        @Override
+        public void addedAll(int index, Collection<? extends AppDetail> collection) {
+
+        }
+
+        @Override
+        public void set(int index, AppDetail object) {
+
+        }
+
+        @Override
+        public void removed(AppDetail item) {
+
+        }
+
+        @Override
+        public void removed(int index) {
+
+        }
+
+        @Override
+        public void removedAll(Collection<? extends AppDetail> collection) {
+
+        }
+
+        @Override
+        public void cleared() {
+
+        }
+
+        //endregion
     }
 }
