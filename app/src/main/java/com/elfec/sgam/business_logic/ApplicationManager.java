@@ -13,6 +13,7 @@ import com.elfec.sgam.helpers.utils.ObservableUtils;
 import com.elfec.sgam.helpers.utils.PaletteHelper;
 import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.model.enums.PolicyType;
+import com.elfec.sgam.security.policies.PolicyManager;
 import com.elfec.sgam.settings.AppPreferences;
 
 import java.util.ArrayList;

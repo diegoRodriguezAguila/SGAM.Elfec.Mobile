@@ -1,8 +1,10 @@
-package com.elfec.sgam.security;
+package com.elfec.sgam.security.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+
+import com.elfec.sgam.security.AccountAuthenticator;
 
 /**
  * Servicio para la autenticación del usuario
