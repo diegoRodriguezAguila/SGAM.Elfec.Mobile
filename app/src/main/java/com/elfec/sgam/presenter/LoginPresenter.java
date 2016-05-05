@@ -43,7 +43,7 @@ public class LoginPresenter {
                      })
                      .flatMap(rules -> {
                          view.updateWaiting(R.string.msg_getting_apps);
-                         return new ApplicationManager().getAllInstalledApps();
+                         return new ApplicationManager().getUserPermittedApps();
                      })
                      .subscribeOn(Schedulers.newThread())
                          .observeOn(AndroidSchedulers.mainThread())
@@ -52,6 +52,7 @@ public class LoginPresenter {
                          view.userLoggedInSuccessfully(apps);
                      }, t -> {
                          view.hideWaiting();
+                         t.printStackTrace();
                          view.showLoginErrors(ServiceErrorFactory.fromThrowable(t));
                      });
 

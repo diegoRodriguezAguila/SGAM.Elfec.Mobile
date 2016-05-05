@@ -12,6 +12,7 @@ import com.elfec.sgam.helpers.utils.IconFinder;
 import com.elfec.sgam.helpers.utils.ObservableUtils;
 import com.elfec.sgam.helpers.utils.PaletteHelper;
 import com.elfec.sgam.model.AppDetail;
+import com.elfec.sgam.model.enums.PolicyType;
 import com.elfec.sgam.settings.AppPreferences;
 
 import java.util.ArrayList;
@@ -53,6 +54,18 @@ public class ApplicationManager {
             Collections.sort(apps, APP_DETAIL_COMPARATOR);
             return apps;
         });
+    }
+
+    /**
+     * Obtiene la lista de aplicaciones permitidas al usuario actual
+     * @return lista de aplicaiciones permitidas
+     */
+    public Observable<List<AppDetail>> getUserPermittedApps(){
+        return getAllInstalledApps()
+                .zipWith(PolicyManager
+                        .getCurrentUserPolicyRules(PolicyType.APPLICATION_CONTROL),
+                        RuleInterpreter::filterApps);
+
     }
 
     /**

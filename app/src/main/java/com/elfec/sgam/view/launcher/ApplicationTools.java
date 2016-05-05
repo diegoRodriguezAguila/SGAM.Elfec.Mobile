@@ -15,7 +15,8 @@ import com.elfec.sgam.settings.AppPreferences;
  * Tools for apps handling
  */
 public class ApplicationTools {
-
+    private static final Drawable sDefaultIcon = ContextCompat.getDrawable(AppPreferences
+            .getApplicationContext(), R.drawable.window);
     /**
      * Launchs an application using the provided context
      * @param packageName the package name of the app to launch
@@ -50,7 +51,7 @@ public class ApplicationTools {
      * @return {@link Drawable} default app icon
      */
     public static Drawable getAppDefaultIcon(){
-        return ContextCompat.getDrawable(AppPreferences.getApplicationContext(), R.drawable.window);
+        return sDefaultIcon;
     }
 
     /**
