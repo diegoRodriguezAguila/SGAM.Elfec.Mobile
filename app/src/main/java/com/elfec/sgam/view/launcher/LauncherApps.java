@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import com.elfec.sgam.business_logic.AppDetailsCache;
 import com.elfec.sgam.helpers.utils.IconFinder;
+import com.elfec.sgam.helpers.utils.PaletteHelper;
 import com.elfec.sgam.helpers.utils.collections.ObservableCollection;
 import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.settings.AppPreferences;
@@ -73,7 +74,7 @@ public class LauncherApps {
     }
 
     /**
-     * Schedules the icon get
+     * Schedules the icon get and bg color
      */
     private void populateAppIcons() {
         new Thread(() -> {
@@ -83,6 +84,7 @@ public class LauncherApps {
             for (int i = 0; i < mApplications.size(); i++) {
                 AppDetail app = mApplications.get(i);
                 app.setIcon(ApplicationTools.getAppIcon(app.getPackageName(), finder, context));
+                app.setBgColor(PaletteHelper.getDrawableBackgroundColor(app.getIcon()));
                 notifyChanges(handler, i);
             }
         }).start();

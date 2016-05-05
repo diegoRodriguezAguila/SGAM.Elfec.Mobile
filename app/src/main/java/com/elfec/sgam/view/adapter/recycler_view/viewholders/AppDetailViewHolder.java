@@ -34,7 +34,8 @@ public class AppDetailViewHolder extends AbstractDraggableItemViewHolder {
 
     public void bindApplication(final AppDetail application){
         mBackground.setBackgroundColor(application.getBgColor());
-        mImgAppIcon.setImageDrawable(application.getIcon());
+        mImgAppIcon.setImageDrawable(application.getIcon()!=null?application.getIcon():
+        ApplicationTools.getAppDefaultIcon());
         mTxtAppName.setText(application.getAppName());
         mBackground.setOnClickListener(v -> {
             Animator.click(mBackground);

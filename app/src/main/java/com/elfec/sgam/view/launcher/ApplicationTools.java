@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 
+import com.elfec.sgam.R;
 import com.elfec.sgam.helpers.utils.IconFinder;
 import com.elfec.sgam.settings.AppPreferences;
 
@@ -35,20 +37,28 @@ public class ApplicationTools {
 
     /**
      * Retrieves an app icon
-     * @param packageName
-     * @param finder
-     * @return
+     * @param packageName package name
+     * @param finder {@link IconFinder}
+     * @return {@link Drawable} app's icon
      */
     public static Drawable getAppIcon(String packageName, IconFinder finder) {
         return getAppIcon(packageName, finder, AppPreferences.getApplicationContext());
     }
 
     /**
+     * Gets the default apps icon
+     * @return {@link Drawable} default app icon
+     */
+    public static Drawable getAppDefaultIcon(){
+        return ContextCompat.getDrawable(AppPreferences.getApplicationContext(), R.drawable.window);
+    }
+
+    /**
      * Retrieves the icon
-     * @param packageName
-     * @param finder
-     * @param context
-     * @return
+     * @param packageName package name
+     * @param finder {@link IconFinder}
+     * @param context context
+     * @return {@link Drawable}
      */
     public static Drawable getAppIcon(String packageName, IconFinder finder, Context context){
         PackageManager packageManager = context.getPackageManager();
