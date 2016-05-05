@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 public class AppDetail {
     private CharSequence appName;
     private String packageName;
-    private Drawable icon;
+    private transient Drawable icon;
     private int bgColor;
 
     //region Getters Setters

@@ -15,7 +15,7 @@ import rx.Observable;
  * Local storage data layer
  */
 public class PolicyDataStorage {
-    public static final String POLICY_BOOK = "policy.mBook";
+    public static final String POLICY_BOOK = "policy.book";
     private RxPaper mBook;
 
     public PolicyDataStorage(){

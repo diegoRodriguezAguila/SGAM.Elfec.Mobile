@@ -129,11 +129,11 @@ public class RxPaper {
                     try {
                         T value = mBook.read(key);
                         //Eval this, maybe not error
-                        if (value == null) {
-                            subscriber.onError(new AndroidException(key + " is empty"));
-                        } else {
+                        //if (value == null) {
+                        //    subscriber.onError(new AndroidException(key + " is empty"));
+                        //} else {
                             subscriber.onNext(value);
-                        }
+                        //}
                     } catch (Exception e) {
                         subscriber.onError(e);
                     }

@@ -24,6 +24,7 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,10 +116,14 @@ public class ApplicationsFragment extends Fragment {
      * Loads the apps
      */
     private void loadLauncherApps(){
-        mAdapter = new AppDetailAdapter(LauncherApps.instance().getAppsCache());
-        mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mAdapter);
-        mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
-        mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
+        LauncherApps.instance().getAppsCache()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(appDetails -> {
+                    mAdapter = new AppDetailAdapter(appDetails);
+                    mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mAdapter);
+                    mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
+                    mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
+                });
     }
 
     @Override
