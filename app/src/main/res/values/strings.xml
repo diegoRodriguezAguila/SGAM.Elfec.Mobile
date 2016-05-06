@@ -32,8 +32,16 @@
     <string name="desc_show_apps">Mostrar aplicaciones</string>
     <string name="title_activity_main">MainActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
+    <!--AppLock Service-->
+    <string name="app_lock_service_name">SGAM Elfec AppLock</string>
+    <string name="app_lock_service_description">Habilite este servicio para tener la
+        funcionalidad de AppLock. En conjunto con SGAM
+        Elfec Launcher, permite controlar a los usuarios y su uso de aplicaciones.</string>
+    <string name="app_locked_title">Aplicación bloqueada</string>
+    <string
+        name="app_locked_msg"><![CDATA[Usted no tiene permiso para utilizar la aplicación:<br/><b>%s</b>.<br/>
+        Si requiere utilizar ésta aplicación contáctese con la unidad de T.I. para solicitar
+        los permisos requeridos]]>
+    </string>
 
 </resources>

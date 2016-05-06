@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <accessibility-service
+    android:description="@string/app_lock_service_description"
     android:accessibilityEventTypes="typeWindowContentChanged"
     android:accessibilityFeedbackType="feedbackVisual"
-    android:notificationTimeout="200"
+    android:notificationTimeout="180"
     android:canRetrieveWindowContent="true"
     xmlns:android="http://schemas.android.com/apk/res/android"/>

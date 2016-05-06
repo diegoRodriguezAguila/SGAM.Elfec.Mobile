@@ -2,6 +2,7 @@ package com.elfec.sgam.view.launcher;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -40,6 +41,33 @@ public class ApplicationTools {
         launchApplication(packageName, AppPreferences.getApplicationContext());
     }
 
+    /**
+     * Gets the label of the app, if couldn't find an app mathing the provided
+     * package name it returns the packageName;
+     * @param packageName package name
+     * @return App's label (name)
+     */
+    public static String getAppLabel(String packageName) {
+        return getAppLabel(packageName, AppPreferences.getApplicationContext());
+    }
+
+    /**
+     * Gets the label of the app, if couldn't find an app mathing the provided
+     * package name it returns the packageName;
+     * @param packageName package name
+     * @param context context
+     * @return App's label (name)
+     */
+    public static String getAppLabel(String packageName, Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        ApplicationInfo applicationInfo = null;
+        try {
+            applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+            return applicationInfo.loadLabel(packageManager).toString();
+        } catch (PackageManager.NameNotFoundException e){
+            return packageName;
+        }
+    }
     /**
      * Gets the default apps icon
      * @return {@link Drawable} default app icon

@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:name=".ElfecApp"
@@ -75,6 +76,7 @@
         </service>
 
         <service android:name=".security.services.PackagePermissionService"
+                 android:label="@string/app_lock_service_name"
                  android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
                  android:enabled="true"
                  android:exported="false" >

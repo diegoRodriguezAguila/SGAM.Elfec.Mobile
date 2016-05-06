@@ -165,6 +165,7 @@ public class LoginFragment extends Fragment implements ILoginView{
             mLayoutLoginForm.setVisibility(View.GONE);
             mLayoutLoading.setVisibility(View.VISIBLE);
             mLayoutLoading.startAnimation(slideLeftAnim);
+            mTxtWaitingMessage.setText(R.string.msg_login_user);
         });
     }
 

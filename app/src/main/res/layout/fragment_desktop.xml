@@ -37,7 +37,7 @@
         android:id="@+id/desktop_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/desktop_toolbar_height"
-        android:background="#CA18468D">
+        android:background="#CA15386F">
         <View android:layout_width="match_parent"
               android:id="@+id/desktop_bar_border"
               android:layout_alignParentTop="true"

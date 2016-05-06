@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppCustomTheme.NoActionBar" parent="AppCustomTheme.NoActionBar.Base" >
+
+    <style name="AppCustomTheme.AlertDialog"
+           parent="Base.AppCustomTheme.AlertDialog"/>
+
+    <style name="AppCustomTheme.NoActionBar" parent="AppCustomTheme.NoActionBar.Base">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
-<style name="AppCustomTheme" parent="AppCustomTheme.Base">
-    <item name="android:windowContentTransitions">true</item>
-    <item name="android:windowAllowEnterTransitionOverlap">true</item>
-    <item name="android:windowAllowReturnTransitionOverlap">true</item>
-    <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
-    <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
-    <item name="android:buttonStyle">@style/AppStyle.Button</item>
-    <item name="actionBarItemBackground">?attr/selectableItemBackgroundBorderless</item>
-</style>
+
+    <style name="AppCustomTheme" parent="AppCustomTheme.Base">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:buttonStyle">@style/AppStyle.Button</item>
+        <item name="actionBarItemBackground">?attr/selectableItemBackgroundBorderless</item>
+    </style>
 </resources>

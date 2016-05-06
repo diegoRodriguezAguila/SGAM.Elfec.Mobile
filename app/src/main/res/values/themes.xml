@@ -1,5 +1,18 @@
 <resources>
 
+
+    <!-- Alert Dialog AppCompat -->
+    <style name="AppCustomTheme.AlertDialog"
+           parent="Base.AppCustomTheme.AlertDialog"/>
+
+    <style name="Base.AppCustomTheme.AlertDialog"
+           parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorControlActivated">@color/color_primary</item>
+    </style>
+
     <style name="AppCustomTheme.Wallpaper.NoActionBar.Fullscreen" parent="AppCustomTheme.NoActionBar.Fullscreen">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
@@ -11,7 +24,7 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="AppCustomTheme.NoActionBar" parent="AppCustomTheme.NoActionBar.Base" />
+    <style name="AppCustomTheme.NoActionBar" parent="AppCustomTheme.NoActionBar.Base"/>
 
     <style name="AppCustomTheme.NoActionBar.Base" parent="AppCustomTheme.Base">
         <item name="windowActionBar">false</item>
@@ -19,7 +32,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="AppCustomTheme" parent="AppCustomTheme.Base" />
+    <style name="AppCustomTheme" parent="AppCustomTheme.Base"/>
 
     <style name="AppCustomTheme.ColoredBackground" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/color_primary</item>
@@ -42,18 +55,22 @@
         <item name="editTextStyle">@style/AppStyle.EditText</item>
         <item name="android:editTextStyle">@style/AppStyle.EditText</item>
         <item name="android:textSelectHandleLeft">@drawable/text_select_handle_left_material</item>
-        <item name="android:textSelectHandleRight">@drawable/text_select_handle_right_material</item>
+        <item name="android:textSelectHandleRight">@drawable/text_select_handle_right_material
+        </item>
         <item name="android:textSelectHandle">@drawable/text_select_handle_middle_material</item>
-        
+
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="icon">@mipmap/ic_launcher</item>
-        
+
         <item name="android:actionBarStyle">@style/AppStyle.ActionBar</item>
         <item name="actionBarStyle">@style/AppStyle.ActionBar</item>
         <item name="homeAsUpIndicator">@null</item>
         <item name="actionModeStyle">@style/AppStyle.ActionMode</item>
+
+        <item name="android:alertDialogTheme">@style/AppCustomTheme.AlertDialog</item>
+        <item name="alertDialogTheme">@style/AppCustomTheme.AlertDialog</item>
     </style>
 
 </resources>
