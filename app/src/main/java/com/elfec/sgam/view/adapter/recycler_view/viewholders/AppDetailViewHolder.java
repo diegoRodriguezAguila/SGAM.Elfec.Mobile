@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.helpers.ui.ButtonClicksHelper;
 import com.elfec.sgam.helpers.ui.animation.Animator;
 import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.view.launcher.ApplicationTools;
@@ -38,8 +39,10 @@ public class AppDetailViewHolder extends AbstractDraggableItemViewHolder {
         ApplicationTools.getAppDefaultIcon());
         mTxtAppName.setText(application.getAppName());
         mBackground.setOnClickListener(v -> {
-            Animator.click(mBackground);
-            ApplicationTools.launchApplication(application.getPackageName());
+            if(ButtonClicksHelper.canClickButton()) {
+                Animator.click(mBackground);
+                ApplicationTools.launchApplication(application.getPackageName());
+            }
         });
     }
 }

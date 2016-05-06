@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.elfec.sgam.business_logic.AppDetailsCache;
-import com.elfec.sgam.helpers.utils.IconFinder;
 import com.elfec.sgam.helpers.utils.PaletteHelper;
 import com.elfec.sgam.helpers.utils.collections.ObservableCollection;
 import com.elfec.sgam.model.AppDetail;
@@ -80,13 +79,14 @@ public class LauncherApps {
         new Thread(() -> {
             Context context = AppPreferences.getApplicationContext();
             Handler handler = new Handler(context.getMainLooper());
-            IconFinder finder = new IconFinder(context);
+            ApplicationTools.IconRetriever retriever = ApplicationTools.getIconRetriever();
             for (int i = 0; i < mApplications.size(); i++) {
                 AppDetail app = mApplications.get(i);
-                app.setIcon(ApplicationTools.getAppIcon(app.getPackageName(), finder, context));
+                app.setIcon(retriever.getAppIcon(app.getPackageName(), app.getAppName().toString()));
                 app.setBgColor(PaletteHelper.getDrawableBackgroundColor(app.getIcon()));
                 notifyChanges(handler, i);
             }
+            retriever.close();
         }).start();
     }
 

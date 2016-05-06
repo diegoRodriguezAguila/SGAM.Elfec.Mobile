@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 
 /**
  * Helper class for icon finding
@@ -25,7 +26,7 @@ public class IconFinder {
         try {
             ActivityManager activityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
             int iconDpi = activityManager.getLauncherLargeIconDensity();
-            d = resources.getDrawableForDensity(iconId, iconDpi);
+            d = ResourcesCompat.getDrawableForDensity(resources, iconId, iconDpi, null);
         } catch (Resources.NotFoundException e) {
             d = null;
         }

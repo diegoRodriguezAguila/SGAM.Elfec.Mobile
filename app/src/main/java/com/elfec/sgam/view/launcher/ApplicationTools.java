@@ -6,10 +6,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 
 import com.elfec.sgam.R;
 import com.elfec.sgam.helpers.utils.IconFinder;
 import com.elfec.sgam.settings.AppPreferences;
+
+import java.io.Closeable;
+import java.util.List;
 
 /**
  * Tools for apps handling
@@ -37,16 +41,6 @@ public class ApplicationTools {
     }
 
     /**
-     * Retrieves an app icon
-     * @param packageName package name
-     * @param finder {@link IconFinder}
-     * @return {@link Drawable} app's icon
-     */
-    public static Drawable getAppIcon(String packageName, IconFinder finder) {
-        return getAppIcon(packageName, finder, AppPreferences.getApplicationContext());
-    }
-
-    /**
      * Gets the default apps icon
      * @return {@link Drawable} default app icon
      */
@@ -55,18 +49,77 @@ public class ApplicationTools {
     }
 
     /**
-     * Retrieves the icon
-     * @param packageName package name
-     * @param finder {@link IconFinder}
-     * @param context context
-     * @return {@link Drawable}
+     * Gets the icon retriever with the application's context
+     * @return {@link IconRetriever}
      */
-    public static Drawable getAppIcon(String packageName, IconFinder finder, Context context){
-        PackageManager packageManager = context.getPackageManager();
-        Intent intent = new Intent();
-        intent.setPackage(packageName);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        ResolveInfo result = packageManager.resolveActivity(intent, 0);
-        return finder.getFullResIcon(result);
+    public static IconRetriever getIconRetriever(){
+        return new IconRetriever(AppPreferences.getApplicationContext());
+    }
+
+    /**
+     * Gets the icon retriever with the specified context
+     * @return {@link IconRetriever}
+     */
+    public static IconRetriever getIconRetriever(Context context){
+        return new IconRetriever(context);
+    }
+
+
+    /**
+     * App tools for icon retrieving
+     */
+    public static class IconRetriever implements Closeable{
+        private boolean mIsClosed;
+        private List<ResolveInfo> mAvailableActivities;
+        private PackageManager mPackageManager;
+        private IconFinder iconFinder;
+
+        public IconRetriever(Context context){
+            Intent i = new Intent(Intent.ACTION_MAIN, null);
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            mPackageManager = context.getPackageManager();
+            mAvailableActivities = mPackageManager.queryIntentActivities(i, 0);
+            iconFinder = new IconFinder(context);
+            mIsClosed = false;
+        }
+
+        /**
+         * Retrieves the icon
+         * @param packageName package name
+         * @param appLabel label of the app
+         * @return {@link Drawable}
+         */
+        public Drawable getAppIcon(String packageName, String appLabel){
+            if(mIsClosed)
+                throw new IllegalStateException("The IconRetriever was already closed!");
+            ResolveInfo result = getResolveInfoForPackage(packageName, appLabel);
+            if(result== null)
+                return getAppDefaultIcon();
+            return iconFinder.getFullResIcon(result);
+        }
+
+        /**
+         * Retrieves the packages resolveInfo
+         * @param packageName package name
+         * @param appLabel label of the app to match the correct icon
+         * @return {@link ResolveInfo} (can be null if not found)
+         */
+        private ResolveInfo getResolveInfoForPackage(String packageName, String appLabel){
+            for (ResolveInfo ri: mAvailableActivities) {
+                if (TextUtils.equals(ri.activityInfo.packageName, packageName) &&
+                        TextUtils.equals(ri.loadLabel(mPackageManager), appLabel))
+                    return ri;
+            }
+            return null;
+        }
+
+        @Override
+        public void close(){
+            mIsClosed = true;
+            mAvailableActivities.clear();
+            mAvailableActivities = null;
+            mPackageManager = null;
+            iconFinder = null;
+        }
     }
 }
