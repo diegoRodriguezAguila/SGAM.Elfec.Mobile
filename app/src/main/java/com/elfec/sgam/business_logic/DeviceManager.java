@@ -3,6 +3,8 @@ package com.elfec.sgam.business_logic;
 import com.elfec.sgam.model.Device;
 import com.elfec.sgam.model.exceptions.AuthPendingDeviceException;
 import com.elfec.sgam.model.exceptions.UnauthorizedDeviceException;
+import com.elfec.sgam.model.web_services.GcmToken;
+import com.elfec.sgam.model.web_services.HttpCodes;
 import com.elfec.sgam.security.SessionManager;
 import com.elfec.sgam.settings.AppPreferences;
 import com.elfec.sgam.web_service.RestEndpointFactory;
@@ -50,6 +52,41 @@ public class DeviceManager {
                 .registerDevice(new PhysicalDeviceBuilder(
                         AppPreferences.getApplicationContext())
                         .buildDevice());
+    }
+
+    /**
+     * Registers the specified gcm token for this device in the server, if the
+     * registration fails because the token was already registered for this device,
+     * it sends an update token request.
+     * @param token token
+     * @return observable
+     */
+    public Observable<Void> registerGcmToken(String token) {
+        return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
+                .getLoggedInUser())
+                .registerGcmToken(new PhysicalDeviceBuilder(
+                        AppPreferences.getApplicationContext()).getDeviceIdentifier(),
+                        GcmToken.from(token))
+                .onErrorResumeNext(t -> {
+                    if (t instanceof HttpException) {
+                        if (((HttpException) t).code() == HttpCodes.UNPROCESSABLE_ENTITY)
+                            return updateGcmToken(token);
+                    }
+                    return Observable.error(t);
+                });
+    }
+
+    /**
+     * Updates the specified gcm token for this device in the server
+     * @param token token
+     * @return observable
+     */
+    public Observable<Void> updateGcmToken(String token) {
+        return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
+                .getLoggedInUser())
+                .updateGcmToken(new PhysicalDeviceBuilder(
+                                AppPreferences.getApplicationContext()).getDeviceIdentifier(),
+                        GcmToken.from(token));
     }
 
 

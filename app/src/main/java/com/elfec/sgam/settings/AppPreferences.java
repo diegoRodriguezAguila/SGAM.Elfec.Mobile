@@ -77,7 +77,7 @@ public class AppPreferences {
      * @return la instancia actual de PreferencesManager
      */
     public AppPreferences setLoggedUsername(String loggedUsername) {
-        preferences.edit().putString(LOGGED_USERNAME, loggedUsername).commit();
+        preferences.edit().putString(LOGGED_USERNAME, loggedUsername).apply();
         return this;
     }
 
@@ -97,7 +97,7 @@ public class AppPreferences {
      * @return la instancia actual de PreferencesManager
      */
     public AppPreferences setLoggedToken(String loggedUsername) {
-        preferences.edit().putString(LOGGED_USER_TOKEN, loggedUsername).commit();
+        preferences.edit().putString(LOGGED_USER_TOKEN, loggedUsername).apply();
         return this;
     }
 
