@@ -41,7 +41,7 @@
     <string
         name="app_locked_msg"><![CDATA[Usted no tiene permiso para utilizar la aplicación:<br/><b>%s</b>.<br/>
         Si requiere utilizar ésta aplicación contáctese con la unidad de T.I. para solicitar
-        los permisos requeridos]]>
+        los permisos necesarios]]>
     </string>
 
 </resources>

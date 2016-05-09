@@ -14,6 +14,12 @@ import rx.Observable;
  * Manages the policies of the application,
  */
 public class PolicyManager {
+    /**
+     * Obtiene las reglas del tipo de politica especificado
+     * que aplican al usuario logeado actual. Obtiene las reglas guardadas en la BD.
+     * @param policyType tipo de política
+     * @return observable de lista de reglas
+     */
     public static Observable<List<Rule>> getCurrentUserPolicyRules(PolicyType policyType) {
         return new PolicyDataStorage()
                 .getUserPolicyRules(SessionManager.instance()

@@ -6,11 +6,14 @@
            parent="Base.AppCustomTheme.AlertDialog"/>
 
     <style name="Base.AppCustomTheme.AlertDialog"
-           parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+           parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
         <item name="colorControlActivated">@color/color_primary</item>
+        <item name="android:windowTitleStyle">@style/TextAppearance.AlertDialog.CustomFont.Title</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.9</item>
     </style>
 
     <style name="AppCustomTheme.Wallpaper.NoActionBar.Fullscreen" parent="AppCustomTheme.NoActionBar.Fullscreen">
@@ -69,7 +72,6 @@
         <item name="homeAsUpIndicator">@null</item>
         <item name="actionModeStyle">@style/AppStyle.ActionMode</item>
 
-        <item name="android:alertDialogTheme">@style/AppCustomTheme.AlertDialog</item>
         <item name="alertDialogTheme">@style/AppCustomTheme.AlertDialog</item>
     </style>
 

@@ -1,6 +1,7 @@
 package com.elfec.sgam.security.services;
 
 import android.accessibilityservice.AccessibilityService;
+import android.content.Context;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
@@ -27,28 +28,32 @@ public class PackagePermissionService extends AccessibilityService {
      */
     private String lastEventPackage;
 
-    private List<String> permitted = new ArrayList<>();
+    private List<String> essentialApps = new ArrayList<>();
 
     @Override
     public void onCreate(){
         super.onCreate();
-        permitted.add("com.elfec.sgam");
-        permitted.add("com.android.systemui");
-        permitted.add("com.android.settings");
-        permitted.add("com.android.keyguard");
+        essentialApps.add("com.elfec.sgam");
+        essentialApps.add("com.android.systemui");
+        essentialApps.add("com.android.settings");
+        essentialApps.add("com.android.keyguard");
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
         String packageName = event.getPackageName().toString();
         if(!packageName.equals(lastEventPackage)) {
             lastEventPackage = packageName;
-            if(!permitted.contains(packageName)){
+            if(!essentialApps.contains(packageName)){
                 showAppLockDialog(packageName);
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     /**
@@ -64,7 +69,7 @@ public class PackagePermissionService extends AccessibilityService {
                 .setPositiveButton(R.string.btn_ok,(dg, which) -> {
                             new Handler(getMainLooper())
                                     .postDelayed(()->finishActivity(packageName), 80);
-                }).setCancelable(false).create();
+                }).setCancelable(false).setIcon(R.drawable.error_dialog).create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
@@ -92,7 +97,7 @@ public class PackagePermissionService extends AccessibilityService {
                 return true;
             }
             try {
-                Thread.sleep(200);
+                Thread.sleep(180);
             } catch (InterruptedException e) {
                 return false;
             }
