@@ -1,5 +1,10 @@
 package com.elfec.sgam.business_logic;
 
+import android.app.Application;
+
+import com.elfec.sgam.messaging.GcmNotificationHandler;
+import com.elfec.sgam.messaging.GcmNotificationReceiver;
+import com.elfec.sgam.messaging.RefreshTokenReceiver;
 import com.elfec.sgam.model.Device;
 import com.elfec.sgam.model.exceptions.AuthPendingDeviceException;
 import com.elfec.sgam.model.exceptions.UnauthorizedDeviceException;
@@ -14,6 +19,8 @@ import java.net.HttpURLConnection;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
+import rx.schedulers.Schedulers;
+import rx_gcm.internal.RxGcm;
 
 /**
  * Lógica de negocio de dispositivo
@@ -31,7 +38,7 @@ public class DeviceManager {
                 .getDevice(new PhysicalDeviceBuilder(
                         AppPreferences.getApplicationContext())
                         .getDeviceIdentifier())
-                .doOnNext(this::checkDeviceStatus)
+                .map(this::checkDeviceStatus)
                 .onErrorResumeNext(t -> {
                     if (t instanceof HttpException) {
                         if (((HttpException) t).code() == HttpURLConnection.HTTP_NOT_FOUND)
@@ -47,11 +54,28 @@ public class DeviceManager {
      * @return observable de dispositivo
      */
     public Observable<Device> registerDevice() {
+        final Device physicalDevice = new PhysicalDeviceBuilder(
+                AppPreferences.getApplicationContext())
+                .buildDevice();
         return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
                 .getLoggedInUser())
-                .registerDevice(new PhysicalDeviceBuilder(
-                        AppPreferences.getApplicationContext())
-                        .buildDevice());
+                .registerDevice(physicalDevice)
+                .flatMap(device -> syncGcmToken())
+                .flatMap(voids -> Observable.just(physicalDevice));
+    }
+
+    /**
+     * Gets the gcm token and synchronizes it with the api server
+     * @return void Observable
+     */
+    public Observable<Void> syncGcmToken(){
+        return RxGcm.Notifications
+                .register((Application) AppPreferences.getApplicationContext(),
+                        GcmNotificationHandler.class,
+                        GcmNotificationReceiver.class)
+        .flatMap(this::registerGcmToken)
+                .doOnCompleted(() -> RxGcm.Notifications
+                        .onRefreshToken(RefreshTokenReceiver.class));
     }
 
     /**
@@ -73,7 +97,8 @@ public class DeviceManager {
                             return updateGcmToken(token);
                     }
                     return Observable.error(t);
-                });
+                })
+                .subscribeOn(Schedulers.io());
     }
 
     /**
@@ -86,7 +111,8 @@ public class DeviceManager {
                 .getLoggedInUser())
                 .updateGcmToken(new PhysicalDeviceBuilder(
                                 AppPreferences.getApplicationContext()).getDeviceIdentifier(),
-                        GcmToken.from(token));
+                        GcmToken.from(token))
+                .subscribeOn(Schedulers.io());
     }
 
 
@@ -97,13 +123,14 @@ public class DeviceManager {
      * @throws UnauthorizedDeviceException si el estado del dispositivo es no autorizado
      * @throws AuthPendingDeviceException si el dispositivo está pendiente de autorización
      */
-    private void checkDeviceStatus(Device device) throws UnauthorizedDeviceException, AuthPendingDeviceException {
+    private Device checkDeviceStatus(Device device) throws UnauthorizedDeviceException, AuthPendingDeviceException {
         switch (device.getStatus()) {
             case UNAUTHORIZED:
                 throw new UnauthorizedDeviceException();
             case AUTH_PENDING:
                 throw new AuthPendingDeviceException();
         }
+        return device;
     }
 
 }

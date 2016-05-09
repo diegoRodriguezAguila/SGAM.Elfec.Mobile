@@ -5,7 +5,7 @@ package com.elfec.sgam.model.web_services;
  */
 public class HttpCodes {
     /**
-     * Numeric status code, 404: unprocessable entity
+     * Numeric status code, 422: unprocessable entity
      */
     public static final int UNPROCESSABLE_ENTITY = 422;
 }
