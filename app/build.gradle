@@ -4,7 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.elfec.sgam"
         minSdkVersion 16
@@ -41,8 +41,8 @@ dependencies {
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     //UI
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
     compile 'com.pnikosis:materialish-progress:1.5'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'net.danlew:android.joda:2.8.2'
@@ -55,6 +55,9 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.8.7@aar'
-    compile 'com.android.support:palette-v7:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:palette-v7:23.3.0'
+    compile "com.google.android.gms:play-services-gcm:8.4.0"
+    compile 'com.github.VictorAlbertos:RxGcm:0.2.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "335665454948",
+    "project_id": "sgam-elfec"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335665454948:android:7ade32d2636d8992",
+        "android_client_info": {
+          "package_name": "com.elfec.sgam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTFotJs7gTBZ4NmZUU3xOirT5DLRpwCYE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
