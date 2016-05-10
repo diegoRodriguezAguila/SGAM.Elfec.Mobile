@@ -4,10 +4,15 @@ import com.elfec.sgam.R;
 import com.elfec.sgam.business_logic.ApplicationManager;
 import com.elfec.sgam.business_logic.DeviceManager;
 import com.elfec.sgam.business_logic.UserManager;
+import com.elfec.sgam.helpers.utils.ExceptionChecker;
+import com.elfec.sgam.model.exceptions.AuthPendingDeviceException;
 import com.elfec.sgam.presenter.views.ILoginView;
 import com.elfec.sgam.security.SessionManager;
 import com.elfec.sgam.web_service.ServiceErrorFactory;
 
+import java.net.HttpURLConnection;
+
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -31,11 +36,21 @@ public class LoginPresenter {
     public void logIn() {
          if (!view.getUsername().isEmpty() && !view.getPassword().isEmpty()) {
                  view.showWaiting();
+             final DeviceManager deviceManager = new DeviceManager();
                  SessionManager.instance()
                      .logIn(view.getUsername(), view.getPassword())
                      .flatMap(user -> {
                          view.updateWaiting(R.string.msg_validating_device);
-                         return new DeviceManager().validateDevice();
+                         return deviceManager.validateDevice();
+                     })
+                     .onErrorResumeNext(t -> {
+                         if (ExceptionChecker
+                                 .isHttpCodeException(t, HttpURLConnection.HTTP_NOT_FOUND)) {
+                             view.updateWaiting(R.string.msg_registering_device);
+                             return deviceManager.registerDevice()
+                                     .map(device -> {throw new AuthPendingDeviceException();});
+                         }
+                         return Observable.error(t);
                      })
                      .flatMap(device -> {
                          view.updateWaiting(R.string.msg_getting_policy_rules);

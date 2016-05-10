@@ -2,6 +2,7 @@ package com.elfec.sgam.business_logic;
 
 import android.app.Application;
 
+import com.elfec.sgam.helpers.utils.ExceptionChecker;
 import com.elfec.sgam.messaging.GcmNotificationHandler;
 import com.elfec.sgam.messaging.GcmNotificationReceiver;
 import com.elfec.sgam.messaging.RefreshTokenReceiver;
@@ -15,9 +16,6 @@ import com.elfec.sgam.settings.AppPreferences;
 import com.elfec.sgam.web_service.RestEndpointFactory;
 import com.elfec.sgam.web_service.api_endpoint.DeviceService;
 
-import java.net.HttpURLConnection;
-
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 import rx_gcm.internal.RxGcm;
@@ -38,14 +36,7 @@ public class DeviceManager {
                 .getDevice(new PhysicalDeviceBuilder(
                         AppPreferences.getApplicationContext())
                         .getDeviceIdentifier())
-                .map(this::checkDeviceStatus)
-                .onErrorResumeNext(t -> {
-                    if (t instanceof HttpException) {
-                        if (((HttpException) t).code() == HttpURLConnection.HTTP_NOT_FOUND)
-                            return registerDevice();
-                    }
-                    return Observable.error(t);
-                });
+                .map(this::checkDeviceStatus);
     }
 
     /**
@@ -92,10 +83,8 @@ public class DeviceManager {
                         AppPreferences.getApplicationContext()).getDeviceIdentifier(),
                         GcmToken.from(token))
                 .onErrorResumeNext(t -> {
-                    if (t instanceof HttpException) {
-                        if (((HttpException) t).code() == HttpCodes.UNPROCESSABLE_ENTITY)
+                    if(ExceptionChecker.isHttpCodeException(t, HttpCodes.UNPROCESSABLE_ENTITY))
                             return updateGcmToken(token);
-                    }
                     return Observable.error(t);
                 })
                 .subscribeOn(Schedulers.io());

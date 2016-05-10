@@ -43,7 +43,10 @@ public class DesktopFragment extends Fragment {
     @Bind(R.id.desktop_bar_border)
     protected View mToolBarBorder;
 
+    private WallpaperManager mWallpaperManager;
     private Drawable mWallpaperDrawable;
+
+
 
     public DesktopFragment() {
         // Required empty public constructor
@@ -84,12 +87,15 @@ public class DesktopFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnDesktopInteractionListener");
         }
+        mWallpaperManager = WallpaperManager.getInstance(getContext());
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mWallpaperManager = null;
+        mWallpaperDrawable = null;
     }
 
     @Override
@@ -103,8 +109,7 @@ public class DesktopFragment extends Fragment {
      * Initializes the wallpaper and the toolbar colors depending on it
      */
     private void initializeWallpaperAndToolbar() {
-        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
-        Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        Drawable wallpaperDrawable = mWallpaperManager.getDrawable();
         if(wallpaperDrawable!=mWallpaperDrawable) {
             mWallpaperDrawable = wallpaperDrawable;
             mBackground.setBackground(mWallpaperDrawable);
