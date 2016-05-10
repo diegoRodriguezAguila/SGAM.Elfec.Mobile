@@ -2,11 +2,14 @@ package com.elfec.sgam;
 
 import android.app.Application;
 
+import com.elfec.sgam.messaging.GcmNotificationHandler;
+import com.elfec.sgam.messaging.GcmNotificationReceiver;
 import com.elfec.sgam.settings.AppPreferences;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import io.paperdb.Paper;
+import rx_gcm.internal.RxGcm;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -21,6 +24,8 @@ public class ElfecApp extends Application {
         JodaTimeAndroid.init(this);
         AppPreferences.init(this);
         Paper.init(this);
+        RxGcm.Notifications.register(this, GcmNotificationHandler.class,
+                GcmNotificationReceiver.class).subscribe();
     }
 
 }

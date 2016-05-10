@@ -3,6 +3,7 @@ package com.elfec.sgam.business_logic;
 import android.app.Application;
 
 import com.elfec.sgam.helpers.utils.ExceptionChecker;
+import com.elfec.sgam.helpers.utils.RxGcmHelper;
 import com.elfec.sgam.messaging.GcmNotificationHandler;
 import com.elfec.sgam.messaging.GcmNotificationReceiver;
 import com.elfec.sgam.messaging.RefreshTokenReceiver;
@@ -60,8 +61,7 @@ public class DeviceManager {
      * @return void Observable
      */
     public Observable<Void> syncGcmToken(){
-        return RxGcm.Notifications
-                .register((Application) AppPreferences.getApplicationContext(),
+        return RxGcmHelper.register((Application) AppPreferences.getApplicationContext(),
                         GcmNotificationHandler.class,
                         GcmNotificationReceiver.class)
         .flatMap(this::registerGcmToken)

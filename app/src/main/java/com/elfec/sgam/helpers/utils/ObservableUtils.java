@@ -1,7 +1,9 @@
 package com.elfec.sgam.helpers.utils;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func0;
+import rx.schedulers.Schedulers;
 
 /**
  * Utils for rx observables
@@ -39,5 +41,16 @@ public class ObservableUtils {
                 subs.onCompleted();
             }
         });
+    }
+
+    /**
+     * Applies the schedulers to the observable.
+     * By default it uses subscribe on io and observe on mainThread
+     * @param <T> type
+     * @return observable with applied schedulers
+     */
+    public static <T> Observable.Transformer<T, T> applySchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }
