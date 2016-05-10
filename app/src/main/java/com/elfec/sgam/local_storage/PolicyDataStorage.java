@@ -4,6 +4,8 @@ import com.elfec.sgam.model.Rule;
 import com.elfec.sgam.model.enums.PolicyType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +43,7 @@ public class PolicyDataStorage {
                     }
                     Book book = mBook.getBook();
                     for (Map.Entry<PolicyType, List<Rule>> entry: mapRules.entrySet()) {
-                        book.write(username
-                                .concat(entry.getKey().toString()), entry.getValue());
+                        book.write(getPolicyKey(username, entry.getKey()), entry.getValue());
                     }
                     subscriber.onNext(rules);
                 } catch (Exception e) {
@@ -63,8 +64,7 @@ public class PolicyDataStorage {
      */
     public Observable<List<Rule>> saveUserPolicyRules(String username, PolicyType policyType,
                                                       List<Rule> rules) {
-        return mBook.write(username
-                .concat(policyType.toString()), rules);
+        return mBook.write(getPolicyKey(username, policyType), rules);
     }
 
     /**
@@ -74,15 +74,59 @@ public class PolicyDataStorage {
      * @return observable with a list of rules
      */
     public Observable<List<Rule>> getUserPolicyRules(String username, PolicyType policyType) {
-        return mBook.read(username
-                .concat(policyType.toString()));
+        return mBook.read(getPolicyKey(username, policyType));
     }
 
-
-
-    private Observable<List<Rule>> saveUserPolicyRules(String username, Map.Entry<PolicyType,
-            List<Rule>> entry) {
-        return saveUserPolicyRules(username, entry.getKey() , entry.getValue());
+    /**
+     * Adds the policy rules of the specific type that applies to the user.
+     * @param username user's username
+     * @param policyType policy type
+     * @param newRules rules to add
+     * @return observable with a list of rules
+     */
+    public Observable<List<Rule>> addUserPolicyRules(String username, PolicyType policyType,
+                                                      Rule... newRules) {
+        final String policyKey = getPolicyKey(username, policyType);
+        Observable<List<Rule>> currentRules = mBook.read(policyKey);
+        if(newRules.length==0)
+            return currentRules;
+        return currentRules.map(rules -> {
+            if(rules==null)
+                rules = new ArrayList<>();
+            Collections.addAll(rules, newRules);
+            return rules;
+        }).flatMap(rules -> mBook.write(policyKey, rules));
     }
 
+    /**
+     * Deletes the policy rules of the specific type that applies to the user.
+     * @param username user's username
+     * @param policyType policy type
+     * @param deleteRules rules to delete
+     * @return observable with a list of rules
+     */
+    public Observable<List<Rule>> deleteUserPolicyRules(String username, PolicyType policyType,
+                                                     Rule... deleteRules) {
+        final String policyKey = getPolicyKey(username, policyType);
+        Observable<List<Rule>> currentRules = mBook.read(policyKey);
+        if(deleteRules.length==0)
+            return currentRules;
+        return currentRules.map(rules -> {
+            if(rules==null)
+                rules = new ArrayList<>();
+            else rules.removeAll(Arrays.asList(deleteRules));
+            return rules;
+        }).flatMap(rules -> mBook.write(policyKey, rules));
+    }
+
+    /**
+     * Generates the policy key for the book
+     * @param username username
+     * @param policyType policy type
+     * @return string key for the policy
+     */
+    private String getPolicyKey(String username, PolicyType policyType) {
+        return username
+                .concat(policyType.toString());
+    }
 }

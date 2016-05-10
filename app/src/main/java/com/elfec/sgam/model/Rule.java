@@ -23,9 +23,9 @@ public class Rule {
     private List<Entity> entities;
     private ApiStatus status;
 
-
     /**
      * Gets the value pattern
+     *
      * @return pattern of the value of the rule
      */
     public Pattern getValuePattern() {
@@ -36,6 +36,7 @@ public class Rule {
 
     /**
      * Gets the exception pattern
+     *
      * @return pattern of the exception of the rule
      */
     public Pattern getExceptionPattern() {
@@ -44,9 +45,9 @@ public class Rule {
         return stringToPattern(exception);
     }
 
-    private Pattern stringToPattern(@NonNull String value){
-        String pattern = value.replace(",","|").replace(";","|")
-                .replace(".","\\.").replace("*",".*").replace("%",".*")
+    private Pattern stringToPattern(@NonNull String value) {
+        String pattern = value.replace(",", "|").replace(";", "|")
+                .replace(".", "\\.").replace("*", ".*").replace("%", ".*")
                 .replace("/[-[\\]{}()+?\\^$|#\\s]/g", "\\$&");
         return Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
     }
@@ -56,16 +57,40 @@ public class Rule {
      * las condiciones de la regla,
      * depende de las variables {@link #action},
      * {@link #value} y {@link #exception}
+     *
      * @param value valor a verificar
      * @return true si el valor esta permitido por la regla
      */
     public boolean isPermitted(String value) {
-        if(value == null)
+        if (value == null)
             value = "";
         boolean negate = action == RuleAction.DENY;
         boolean valMatch = getValuePattern().matcher(value).matches();
         boolean excMatch = !getExceptionPattern().matcher(value).matches();
         return negate ^ (valMatch && excMatch);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        if (other instanceof Rule) {
+            Rule otherRule = (Rule) other;
+            if (id != null && otherRule.id != null)
+                return id.equals(otherRule.id);
+            if (name != null && otherRule.name != null)
+                return name.equals(otherRule.name);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        if (id != null)
+            return id.hashCode();
+        if (name != null)
+            return name.hashCode();
+        return super.hashCode();
     }
 
     //region Getter Setters
