@@ -46,9 +46,7 @@ public class DeviceManager {
      * @return observable de dispositivo
      */
     public Observable<Device> registerDevice() {
-        final Device physicalDevice = new PhysicalDeviceBuilder(
-                AppPreferences.getApplicationContext())
-                .buildDevice();
+        final Device physicalDevice = PhysicalDeviceBuilder.standard().buildDevice();
         return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
                 .getLoggedInUser())
                 .registerDevice(physicalDevice)
@@ -79,8 +77,8 @@ public class DeviceManager {
     public Observable<Void> registerGcmToken(String token) {
         return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
                 .getLoggedInUser())
-                .registerGcmToken(new PhysicalDeviceBuilder(
-                        AppPreferences.getApplicationContext()).getDeviceIdentifier(),
+                .registerGcmToken(PhysicalDeviceBuilder.standard()
+                        .getDeviceIdentifier(),
                         GcmToken.from(token))
                 .onErrorResumeNext(t -> {
                     if(ExceptionChecker.isHttpCodeException(t, HttpCodes.UNPROCESSABLE_ENTITY))
@@ -98,8 +96,8 @@ public class DeviceManager {
     public Observable<Void> updateGcmToken(String token) {
         return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
                 .getLoggedInUser())
-                .updateGcmToken(new PhysicalDeviceBuilder(
-                                AppPreferences.getApplicationContext()).getDeviceIdentifier(),
+                .updateGcmToken(PhysicalDeviceBuilder.standard()
+                                .getDeviceIdentifier(),
                         GcmToken.from(token))
                 .subscribeOn(Schedulers.io());
     }

@@ -36,7 +36,6 @@ public class GcmNotificationReceiver implements GcmReceiverUIBackground {
             NotificationManager mNotificationManager = (NotificationManager) AppPreferences
                     .getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(23, notif);
-            Log.d("MENSAJE","NO EXCEPTIONS, DEBERIA MOSTRARSE");
         });
     }
 }

@@ -18,6 +18,7 @@ import android.view.WindowManager;
 
 import com.elfec.sgam.helpers.file.FileHelper;
 import com.elfec.sgam.model.Device;
+import com.elfec.sgam.settings.AppPreferences;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -30,6 +31,28 @@ public class PhysicalDeviceBuilder {
 
     private Context mContext;
 
+    /**
+     * Construye un nuevo {@link PhysicalDeviceBuilder}
+     * utilizando el contexto de la applicacion:
+     * {@link AppPreferences#getApplicationContext()}
+     */
+    public static PhysicalDeviceBuilder standard(){
+        return new PhysicalDeviceBuilder();
+    }
+    /**
+     * Construye un nuevo {@link PhysicalDeviceBuilder}
+     * utilizando el contexto de la applicacion.
+     * Para utilizarlo usar el metodo {@link #standard()}
+     */
+    private PhysicalDeviceBuilder(){
+        this.mContext = AppPreferences.getApplicationContext();
+    }
+
+    /**
+     * Construye un nuevo {@link PhysicalDeviceBuilder}
+     * con el context proporcionado
+     * @param context contexto
+     */
     public PhysicalDeviceBuilder(Context context){
         this.mContext = context;
     }

@@ -25,14 +25,12 @@ public class ServiceErrorFactory {
     public static Exception fromThrowable(Throwable throwable){
         if (throwable instanceof JsonMappingException)
             return new DataFormatException("La información recibida del servidor no es válida, " +
-                    "deetalles: "+throwable.getMessage());
+                    "detalles: "+throwable.getMessage());
         if (throwable instanceof IOException)
             return new ServerConnectException();
         if (throwable instanceof HttpException) {
             HttpException e = (HttpException) throwable;
             if (e.code()== HttpURLConnection.HTTP_INTERNAL_ERROR)
-                return new ServerSideException();
-            if (e.code()== HttpURLConnection.HTTP_FORBIDDEN)
                 return new ServerSideException();
             return ApiExceptionFactory.build(e.response());
         }

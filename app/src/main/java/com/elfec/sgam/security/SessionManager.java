@@ -75,7 +75,9 @@ public class SessionManager {
      * @param password contraseña
      * @return observable de user
      */
-    public Observable<User> logIn(String username, String password) {
+    private Observable<User> logIn(String username, String password) {
+        //Por ahora se deshabilitara logeo online/offline,
+        //solo se permitirá loge online
         return ObservableUtils.from(()->
                 new UserAccountManager().findUser(username))
         .flatMap(user->{
@@ -94,7 +96,7 @@ public class SessionManager {
      * @param password pasword
      * @return observable de user
      */
-    Observable<User> remoteLogIn(final String username, final String password) {
+    public Observable<User> remoteLogIn(final String username, final String password) {
         return RestEndpointFactory
                 .create(SessionService.class)
                 .logIn(new RemoteSession(username, password))
@@ -126,8 +128,9 @@ public class SessionManager {
      * @param user usuario de la sesión actual
      */
     private void setCurrentSession(User user) {
-        AppPreferences.instance().setLoggedUsername(user.getUsername());
-        AppPreferences.instance().setLoggedToken(user.getAuthenticationToken());
+        AppPreferences.instance()
+                .setLoggedUsername(user.getUsername())
+                .setLoggedToken(user.getAuthenticationToken());
     }
 
 
@@ -135,7 +138,9 @@ public class SessionManager {
      * Cierra la sesión, eliminando todas las variables de sesión actuales
      */
     public void logOut() {
-        AppPreferences.instance().setLoggedUsername(null);
+        AppPreferences.instance()
+                .setLoggedUsername(null)
+                .setLoggedToken(null);
     }
 
     /**

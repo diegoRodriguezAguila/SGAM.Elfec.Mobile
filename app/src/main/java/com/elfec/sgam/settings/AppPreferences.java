@@ -17,6 +17,7 @@ public class AppPreferences {
 
     private final String LOGGED_USERNAME = "logged-username";
     private final String LOGGED_USER_TOKEN = "logged-user-token";
+    private final String DEVICE_SESSION_ID = "device-session-id";
 
     /**
      * Contexto
@@ -98,6 +99,24 @@ public class AppPreferences {
      */
     public AppPreferences setLoggedToken(String loggedUsername) {
         preferences.edit().putString(LOGGED_USER_TOKEN, loggedUsername).apply();
+        return this;
+    }
+
+    /**
+     * Obtiene la id de la sesion del dispositivo creada
+     * @return id de la sesión del dispositivo, null si no se creo ninguna
+     */
+    public String getDeviceSessionId(){
+        return preferences.getString(DEVICE_SESSION_ID, null);
+    }
+
+    /**
+     * Asigna el id de la sesión del dispositivo actual
+     * @param deviceSessionId id de la sesión del dispositivo
+     * @return la instancia actual de PreferencesManager
+     */
+    public AppPreferences setDeviceSessionId(String deviceSessionId){
+        preferences.edit().putString(DEVICE_SESSION_ID, deviceSessionId).apply();
         return this;
     }
 
