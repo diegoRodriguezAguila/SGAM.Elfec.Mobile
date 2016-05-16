@@ -128,6 +128,8 @@ public class DesktopFragment extends Fragment {
      */
     @OnClick(R.id.btn_show_apps)
     public void btnShowAppsClick(View v){
+        String a = null;
+        a.split("");
         if (mListener != null && ButtonClicksHelper.canClickButton() &&
                 getActivity()!=null) {
             mListener.onShowApps();
