@@ -29,9 +29,9 @@ public class Main extends AppCompatActivity implements DesktopFragment
         mApplicationsFragment = ApplicationsFragment.newInstance();
         setCurrentFragment();
     }
-    
+
     @Override
-    protected void onNewIntent(Intent intent){
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         goToDesktop();
     }
@@ -44,7 +44,7 @@ public class Main extends AppCompatActivity implements DesktopFragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.main_content, mDesktopFragment);
 
-        if(!SessionManager.isSessionOpened()) {
+        if (!SessionManager.isSessionOpened()) {
             mCurrentFragment = LoginFragment.newInstance();
             transaction.add(R.id.main_content, mCurrentFragment);
         }
@@ -60,13 +60,16 @@ public class Main extends AppCompatActivity implements DesktopFragment
     public void onBackPressed() {
         goToDesktop();
     }
+
     @Override
     public void onShowApps() {
-        mCurrentFragment = mApplicationsFragment;
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.fade_in, R.anim.nothing)
-                .add(R.id.main_content, mApplicationsFragment)
-                .commit();
+        if (mCurrentFragment != mApplicationsFragment) {
+            mCurrentFragment = mApplicationsFragment;
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.fade_in, R.anim.nothing)
+                    .add(R.id.main_content, mApplicationsFragment)
+                    .commit();
+        }
     }
 
     @Override

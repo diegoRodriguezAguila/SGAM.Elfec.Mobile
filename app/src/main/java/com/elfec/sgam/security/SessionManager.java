@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.elfec.sgam.helpers.utils.ObservableUtils;
 import com.elfec.sgam.model.User;
+import com.elfec.sgam.model.exceptions.BadSessionException;
 import com.elfec.sgam.model.exceptions.InvalidPasswordException;
 import com.elfec.sgam.model.web_services.RemoteSession;
 import com.elfec.sgam.settings.AppPreferences;
@@ -100,9 +101,10 @@ public class SessionManager {
         return RestEndpointFactory
                 .create(SessionService.class)
                 .logIn(new RemoteSession(username, password))
-                .doOnNext(u -> {
+                .map(u -> {
                     new UserAccountManager().registerUserAccount(u, password);
                     setCurrentSession(u);
+                    return u;
                 });
     }
 
@@ -123,6 +125,25 @@ public class SessionManager {
     }
 
     /**
+     * Se conecta remotamente a los webservices para realizar un cierre de sesión.<br/>
+     * En caso de ser exitoso el cierre de sesión se replica de forma local,
+     * eliminando las variables de sesión.
+     * @return observable
+     */
+    public Observable<Void> remoteLogOut() {
+        return ObservableUtils.from(this::getLoggedInToken)
+                .map(token->{
+                    if(token == null)
+                        throw new BadSessionException();
+                    return token;
+                })
+                .flatMap(RestEndpointFactory
+                        .create(SessionService.class)
+                        ::logOut)
+                .doOnNext(v -> closeSession());
+    }
+
+    /**
      * Asigna las variables de la sesión actual
      *
      * @param user usuario de la sesión actual
@@ -137,7 +158,7 @@ public class SessionManager {
     /**
      * Cierra la sesión, eliminando todas las variables de sesión actuales
      */
-    public void logOut() {
+    public void closeSession() {
         AppPreferences.instance()
                 .setLoggedUsername(null)
                 .setLoggedToken(null);

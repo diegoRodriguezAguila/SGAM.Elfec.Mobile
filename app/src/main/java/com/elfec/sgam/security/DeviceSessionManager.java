@@ -56,7 +56,7 @@ public class DeviceSessionManager {
     /**
      * Closes the local sessión
      */
-    private void closeSession() {
+    public void closeSession() {
         AppPreferences.instance().setDeviceSessionId(null);
     }
 }

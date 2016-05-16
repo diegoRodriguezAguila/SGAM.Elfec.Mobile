@@ -18,6 +18,6 @@ public interface SessionService {
     Observable<User> logIn(@Body RemoteSession session);
 
     @DELETE("sessions/{id}")
-    Observable logOut(@Path("id") String token);
+    Observable<Void> logOut(@Path("id") String token);
 
 }

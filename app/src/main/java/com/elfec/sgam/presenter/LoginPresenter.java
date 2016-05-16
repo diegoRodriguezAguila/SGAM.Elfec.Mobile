@@ -38,6 +38,7 @@ public class LoginPresenter {
         if (!view.getUsername().isEmpty() && !view.getPassword().isEmpty()) {
             view.showWaiting();
             final DeviceManager deviceManager = new DeviceManager();
+            final DeviceSessionManager devSession = new DeviceSessionManager();
             SessionManager.instance()
                     .remoteLogIn(view.getUsername(), view.getPassword())
                     .flatMap(user -> {
@@ -55,7 +56,7 @@ public class LoginPresenter {
                     })
                     .flatMap(rules->{
                         view.updateWaiting(R.string.msg_device_login);
-                        return new DeviceSessionManager().logInDevice();
+                        return devSession.logInDevice();
                     })
                     .flatMap(v -> {
                         view.updateWaiting(R.string.msg_getting_apps);
@@ -66,8 +67,10 @@ public class LoginPresenter {
                         view.hideWaiting();
                         view.userLoggedInSuccessfully(apps);
                     }, t -> {
-                        //close session in any error
-                        SessionManager.instance().logOut();
+                        //close session at any error
+                        SessionManager.instance().closeSession();
+                        devSession.closeSession();
+
                         view.hideWaiting();
                         t.printStackTrace();
                         view.showLoginErrors(ServiceErrorFactory.fromThrowable(t));
