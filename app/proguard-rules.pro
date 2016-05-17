@@ -40,3 +40,4 @@
 -dontwarn com.esotericsoftware.**
 -keep class de.javakaffee.kryoserializers.** { *; }
 -dontwarn de.javakaffee.kryoserializers.**
+-dontwarn com.squareup.okhttp.**

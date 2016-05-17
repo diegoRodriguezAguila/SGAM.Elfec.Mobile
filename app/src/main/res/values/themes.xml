@@ -1,6 +1,10 @@
 <resources>
 
-
+    <style name="AppCustomTheme.AlertDialog.Dark"
+           parent="Base.AppCustomTheme.AlertDialog">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.9</item>
+    </style>
     <!-- Alert Dialog AppCompat -->
     <style name="AppCustomTheme.AlertDialog"
            parent="Base.AppCustomTheme.AlertDialog"/>
@@ -12,8 +16,6 @@
         <item name="colorAccent">@color/color_accent</item>
         <item name="colorControlActivated">@color/color_primary</item>
         <item name="android:windowTitleStyle">@style/TextAppearance.AlertDialog.CustomFont.Title</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:backgroundDimAmount">0.9</item>
     </style>
 
     <style name="AppCustomTheme.Wallpaper.NoActionBar.Fullscreen" parent="AppCustomTheme.NoActionBar.Fullscreen">

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="6dp"
+              android:gravity="start|center_vertical"
+              android:background="@color/color_primary">
+    <ImageView
+        android:id="@+id/img_user_photo"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/user_default" />
+    <LinearLayout
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/lbl_user_fullname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/notif_title_size"
+            android:fontFamily="sans-serif-light"
+            tools:text="Diego Rodriguez Aguila"/>
+        <TextView
+            android:id="@+id/lbl_user_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/notif_txt_size"
+            tools:text="drodriguez (Sesión abierta)"/>
+    </LinearLayout>
+    <TextView android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/btn_user_options"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:background="@drawable/btn_notification"
+        android:text="@string/vertical_ellipsis"/>
+</LinearLayout>

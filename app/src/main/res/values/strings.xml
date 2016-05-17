@@ -6,6 +6,7 @@
     <string name="title_unexpected_error">Error inesperado</string>
     <string name="msg_unexpected_error">Ocurrió un error inesperado en el Launcher y se reiniciará
         para evitar la pérdida de información.</string>
+    <string name="vertical_ellipsis">&#8942;</string>
 
     <!-- Login -->
     <string name="title_login">Ingreso al sistema</string>

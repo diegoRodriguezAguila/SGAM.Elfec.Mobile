@@ -63,7 +63,7 @@ public class PackagePermissionService extends AccessibilityService {
     private void showAppLockDialog(final String packageName) {
         AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(
                 CalligraphyContextWrapper.wrap(this),
-                R.style.AppCustomTheme))
+                R.style.AppCustomTheme), R.style.AppCustomTheme_AlertDialog_Dark)
                 .setTitle(R.string.app_locked_title)
                 .setMessage(getAppLockMessage(packageName))
                 .setPositiveButton(R.string.btn_ok,(dg, which) -> {

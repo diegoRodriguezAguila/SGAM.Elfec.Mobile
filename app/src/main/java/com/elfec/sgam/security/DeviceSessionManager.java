@@ -2,7 +2,6 @@ package com.elfec.sgam.security;
 
 import com.elfec.sgam.business_logic.PhysicalDeviceBuilder;
 import com.elfec.sgam.helpers.utils.ObservableUtils;
-import com.elfec.sgam.model.exceptions.NoDeviceSessionException;
 import com.elfec.sgam.model.web_services.DeviceSession;
 import com.elfec.sgam.settings.AppPreferences;
 import com.elfec.sgam.web_service.RestEndpointFactory;
@@ -44,13 +43,16 @@ public class DeviceSessionManager {
         return ObservableUtils.from(AppPreferences.instance()::getDeviceSessionId)
                 .flatMap(sessionId -> {
                     if (sessionId == null)
-                        throw new NoDeviceSessionException();
+                        return ObservableUtils.from(()-> null);
                     return RestEndpointFactory
                             .create(DeviceSessionService.class,
                                     SessionManager.instance().getLoggedInUser())
                             .logOut(sessionId);
                 })
-                .doOnNext(v -> closeSession());
+                .map(v -> {
+                    closeSession();
+                    return null;
+                });
     }
 
     /**

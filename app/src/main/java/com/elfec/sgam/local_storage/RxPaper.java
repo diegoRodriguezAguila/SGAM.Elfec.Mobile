@@ -1,8 +1,11 @@
 package com.elfec.sgam.local_storage;
 
 
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AndroidException;
+
+import com.elfec.sgam.local_storage.serializers.KryoUriSerializer;
 
 import java.util.List;
 
@@ -17,6 +20,10 @@ public class RxPaper {
     private static String sCustomBook;
 
     private Book mBook;
+
+    static {
+        Paper.addSerializer(Uri.class, new KryoUriSerializer());
+    }
 
 
     /**

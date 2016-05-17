@@ -11,4 +11,6 @@
     <dimen name="desktop_toolbar_height">56dp</dimen>
     <dimen name="show_apps_width">76dp</dimen>
     <dimen name="title_size">38sp</dimen>
+    <dimen name="notif_title_size">22sp</dimen>
+    <dimen name="notif_txt_size">18sp</dimen>
 </resources>

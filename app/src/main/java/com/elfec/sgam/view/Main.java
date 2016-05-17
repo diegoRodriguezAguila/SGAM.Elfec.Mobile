@@ -9,8 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.elfec.sgam.R;
 import com.elfec.sgam.security.SessionManager;
+import com.elfec.sgam.view.launcher.session.SessionNotifier;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.elfec.sgam.helpers.utils.ObservableUtils.applySchedulers;
 
 public class Main extends AppCompatActivity implements DesktopFragment
         .OnDesktopInteractionListener, ApplicationsFragment.OnApplicationsInteractionListener,
@@ -47,6 +50,10 @@ public class Main extends AppCompatActivity implements DesktopFragment
         if (!SessionManager.isSessionOpened()) {
             mCurrentFragment = LoginFragment.newInstance();
             transaction.add(R.id.main_content, mCurrentFragment);
+        } else {
+            SessionManager.instance().getFullLoggedInUser()
+                    .compose(applySchedulers())
+                    .subscribe(SessionNotifier.create()::setCurrentUser);
         }
         transaction.commit();
     }
@@ -74,6 +81,9 @@ public class Main extends AppCompatActivity implements DesktopFragment
 
     @Override
     public void onUserAuthenticated() {
+        SessionManager.instance().getFullLoggedInUser()
+                .compose(applySchedulers())
+                .subscribe(SessionNotifier.create()::setCurrentUser);
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.nothing, R.anim.slide_right_out)
                 .remove(mCurrentFragment).commit();

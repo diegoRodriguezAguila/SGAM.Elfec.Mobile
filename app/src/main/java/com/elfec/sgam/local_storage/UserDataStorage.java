@@ -22,6 +22,15 @@ public class UserDataStorage {
     }
 
     /**
+     * Retrieves the user from the database
+     * @param username of the user to retrieve
+     * @return Observable of user
+     */
+    public Observable<User> getUser(String username) {
+        return RxPaper.book(USER_BOOK).read(username);
+    }
+
+    /**
      * Deletes a user from the database and all its subclasses, it doesn't execute inmediately,
      * it creates an observable to be execute in the future
      * @param username of the user to be deleted

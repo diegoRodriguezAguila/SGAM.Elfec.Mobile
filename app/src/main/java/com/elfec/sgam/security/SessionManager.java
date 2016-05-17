@@ -3,6 +3,7 @@ package com.elfec.sgam.security;
 import android.support.annotation.NonNull;
 
 import com.elfec.sgam.helpers.utils.ObservableUtils;
+import com.elfec.sgam.local_storage.UserDataStorage;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.exceptions.BadSessionException;
 import com.elfec.sgam.model.exceptions.InvalidPasswordException;
@@ -101,6 +102,7 @@ public class SessionManager {
         return RestEndpointFactory
                 .create(SessionService.class)
                 .logIn(new RemoteSession(username, password))
+                .flatMap(new UserDataStorage()::saveUser)
                 .map(u -> {
                     new UserAccountManager().registerUserAccount(u, password);
                     setCurrentSession(u);
@@ -140,7 +142,10 @@ public class SessionManager {
                 .flatMap(RestEndpointFactory
                         .create(SessionService.class)
                         ::logOut)
-                .doOnNext(v -> closeSession());
+                .map(v -> {
+                    closeSession();
+                    return null;
+                });
     }
 
     /**
@@ -183,7 +188,9 @@ public class SessionManager {
     }
 
     /**
-     * Obtiene el usuario logeado actual
+     * Obtiene el usuario logeado actual, solo obtiene
+     * username y token, para obtener el usuario entero utilize
+     * {@link #getFullLoggedInUser}
      *
      * @return Usuario logeado null si es que no hay ninguno
      */
@@ -192,6 +199,20 @@ public class SessionManager {
         if (username == null)
             return null;
         return new User(username, getLoggedInToken());
+    }
+    /**
+     * Obtiene el usuario logeado actual, solo obtiene
+     * username y token, para obtener el usuario entero utilize
+     *
+     * @return Observable del usuario logeado null si es que no hay ninguno
+     */
+    public Observable<User> getFullLoggedInUser() {
+        return ObservableUtils.from(this::getLoggedInUsername)
+                .flatMap(username ->{
+                    if (username == null)
+                        return Observable.just(null);
+                    return new UserDataStorage().getUser(username);
+                });
     }
 
 }
