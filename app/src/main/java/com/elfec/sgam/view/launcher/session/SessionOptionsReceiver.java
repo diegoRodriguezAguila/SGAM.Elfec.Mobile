@@ -28,4 +28,8 @@ public class SessionOptionsReceiver extends BroadcastReceiver {
         context.sendBroadcast(it);
         System.out.println("Received Cancelled Event");
     }
+
+    public void test(){
+
+    }
 }
