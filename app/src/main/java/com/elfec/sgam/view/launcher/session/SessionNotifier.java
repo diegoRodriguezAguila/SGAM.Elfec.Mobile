@@ -3,7 +3,6 @@ package com.elfec.sgam.view.launcher.session;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,11 +12,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.RemoteViews;
 
 import com.elfec.sgam.R;
@@ -73,24 +67,6 @@ public class SessionNotifier {
         manager.notify(SESSION_NOTIF, notif);
     }
 
-    public static class DownloadCancelReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final View dialogView = LayoutInflater.from(context).inflate(
-                    R.layout.session_status_layout, null, false);
-            AlertDialog mDialog = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style
-                    .AppCustomTheme))
-                    .setView(dialogView)
-                    .setCancelable(true).create();
-            mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-            mDialog.show();
-            Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-            context.sendBroadcast(it);
-            System.out.println("Received Cancelled Event");
-        }
-    }
-
     @NonNull
     private RemoteViews getRemoteViews(User user, Context context) {
         Bitmap placeholder = BitmapFactory.decodeResource(context.getResources(), R.drawable.user_default);
@@ -99,7 +75,7 @@ public class SessionNotifier {
         notifView.setImageViewBitmap(R.id.img_user_photo, placeholder);
         notifView.setTextViewText(R.id.lbl_user_fullname, user.getFullName());
         notifView.setTextViewText(R.id.lbl_user_username, user.getUsername());
-        Intent closeButton = new Intent("Download_Cancelled");
+        Intent closeButton = new Intent("options_pressed");
         closeButton.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(context, 0, closeButton, 0);

@@ -100,9 +100,9 @@
 
         <receiver
             android:name=".helpers.alarm.AlarmReceiver" />
-        <receiver android:name=".view.launcher.session.SessionNotifier$DownloadCancelReceiver" android:exported="false">
+        <receiver android:name=".view.launcher.session.SessionOptionsReceiver" android:exported="false">
             <intent-filter>
-                <action android:name="Download_Cancelled" />
+                <action android:name="options_pressed" />
             </intent-filter>
         </receiver>
     </application>
