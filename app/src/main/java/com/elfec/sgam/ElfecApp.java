@@ -3,10 +3,10 @@ package com.elfec.sgam;
 import android.app.Application;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.WindowManager;
 
 import com.elfec.sgam.helpers.alarm.AlarmHelper;
+import com.elfec.sgam.helpers.ui.ContextUtils;
 import com.elfec.sgam.messaging.GcmNotificationHandler;
 import com.elfec.sgam.messaging.GcmNotificationReceiver;
 import com.elfec.sgam.settings.AppPreferences;
@@ -16,7 +16,6 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import io.paperdb.Paper;
 import rx_gcm.internal.RxGcm;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Aplicación que extiende de la aplicación android
@@ -54,9 +53,9 @@ public class ElfecApp extends Application {
             @Override
             public void run() {
                 Looper.prepare();
-                AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(
-                        CalligraphyContextWrapper.wrap(getApplicationContext()),
-                        R.style.AppCustomTheme), R.style.AppCustomTheme_AlertDialog_Dark).setTitle(R.string.title_unexpected_error)
+                AlertDialog dialog = new AlertDialog.Builder(
+                        ContextUtils.wrapContext(getApplicationContext()),
+                        R.style.AppCustomTheme_AlertDialog_Dark).setTitle(R.string.title_unexpected_error)
                         .setMessage(R.string.msg_unexpected_error)
                         .setCancelable(false)
                         .setIcon(R.drawable.error_dialog)

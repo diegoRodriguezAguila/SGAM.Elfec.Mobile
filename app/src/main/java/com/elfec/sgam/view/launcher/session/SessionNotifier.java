@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.RemoteViews;
@@ -27,6 +28,8 @@ import java.io.Closeable;
  */
 public class SessionNotifier {
 
+    private static User sCurrentUser;
+
     private static final int SESSION_NOTIF = 42;
 
     private SessionNotifier() {
@@ -34,6 +37,15 @@ public class SessionNotifier {
 
     public static SessionNotifier create() {
         return new SessionNotifier();
+    }
+
+    /**
+     * Gets the last current user set by any instance of {@link SessionNotifier}
+     * via {@link SessionNotifier#setCurrentUser(User)}
+     * @return last current user set, null if cleared or not set
+     */
+    public static @Nullable User getCurrentUser(){
+        return sCurrentUser;
     }
 
     /**
@@ -46,6 +58,7 @@ public class SessionNotifier {
             clearCurrentUser();
             return;
         }
+        sCurrentUser = user;
         final Context context = AppPreferences.getApplicationContext();
         final NotificationManager manager = ((NotificationManager) (context.getSystemService
                 (Context.NOTIFICATION_SERVICE)));
@@ -87,6 +100,7 @@ public class SessionNotifier {
      * Clears the current user notification
      */
     public void clearCurrentUser() {
+        sCurrentUser = null;
         NotificationManager manager = ((NotificationManager) (AppPreferences
                 .getApplicationContext().getSystemService
                 (Context.NOTIFICATION_SERVICE)));

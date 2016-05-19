@@ -8,6 +8,10 @@
         para evitar la pérdida de información.</string>
     <string name="vertical_ellipsis">&#8942;</string>
 
+    <!-- Session Options -->
+    <string name="title_session_options">Opciones de sesión</string>
+    <string name="ses_opt_close_session">Cerrar sesión</string>
+
     <!-- Login -->
     <string name="title_login">Ingreso al sistema</string>
     <string name="btn_login">Ingresar</string>

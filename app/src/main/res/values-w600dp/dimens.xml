@@ -17,4 +17,6 @@
     <dimen name="title_size">36sp</dimen>
     <dimen name="notif_title_size">20sp</dimen>
     <dimen name="notif_txt_size">16sp</dimen>
+    <dimen name="margin_options_menu">16dp</dimen>
+    <dimen name="dialog_title_size">22sp</dimen>
 </resources>
