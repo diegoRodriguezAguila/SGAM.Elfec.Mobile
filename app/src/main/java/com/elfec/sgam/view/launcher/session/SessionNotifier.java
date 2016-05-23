@@ -64,7 +64,7 @@ public class SessionNotifier {
                 (Context.NOTIFICATION_SERVICE)));
         RemoteViews notifView = getRemoteViews(user, context);
         final Notification notif = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.user)
+                .setSmallIcon(R.drawable.user_session)
                 .setOngoing(true).setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_STATUS)
                 .setContent(notifView)
@@ -88,10 +88,9 @@ public class SessionNotifier {
         notifView.setImageViewBitmap(R.id.img_user_photo, placeholder);
         notifView.setTextViewText(R.id.lbl_user_fullname, user.getFullName());
         notifView.setTextViewText(R.id.lbl_user_username, user.getUsername());
-        Intent closeButton = new Intent("options_pressed");
-        closeButton.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent optionsButton = new Intent("options_pressed");
 
-        PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(context, 0, closeButton, 0);
+        PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(context, 0, optionsButton, 0);
         notifView.setOnClickPendingIntent(R.id.btn_user_options, pendingSwitchIntent);
         return notifView;
     }

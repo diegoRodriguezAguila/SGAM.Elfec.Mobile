@@ -1,7 +1,9 @@
 package com.elfec.sgam;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.WindowManager;
 
@@ -21,6 +23,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * Aplicación que extiende de la aplicación android
  */
 public class ElfecApp extends Application {
+
+    /**
+     * Reference to the first context/activity
+     * enabled to instance dialogs with UI
+     */
+    private static Context sUiContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -48,7 +57,7 @@ public class ElfecApp extends Application {
     /**
      * Shows the error dialog
      */
-    private void showErrorDialog(){
+    private void showErrorDialog() {
         new Thread() {
             @Override
             public void run() {
@@ -59,7 +68,7 @@ public class ElfecApp extends Application {
                         .setMessage(R.string.msg_unexpected_error)
                         .setCancelable(false)
                         .setIcon(R.drawable.error_dialog)
-                        .setPositiveButton(R.string.btn_ok, (d, w)->{
+                        .setPositiveButton(R.string.btn_ok, (d, w) -> {
                             AlarmHelper.scheduleAppRestart(50);
                             System.exit(2);
                         }).create();
@@ -70,6 +79,26 @@ public class ElfecApp extends Application {
 
             }
         }.start();
+    }
+
+    /**
+     * Sets the current Ui Context. This method is normally first called
+     * on activity {@link com.elfec.sgam.view.Main}
+     * @param context ui context
+     */
+    public static void setUiContext(Context context) {
+        sUiContext = context;
+    }
+
+    /**
+     * Gets the Ui Context. This context should be merely used
+     * to inflate views and show dialogs
+     * @return context
+     */
+    @NonNull
+    public static Context getUiContext() {
+        return sUiContext == null ? ContextUtils
+                .wrapContext(AppPreferences.getApplicationContext()) : sUiContext;
     }
 
 }

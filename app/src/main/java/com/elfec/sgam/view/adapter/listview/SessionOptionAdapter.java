@@ -1,15 +1,15 @@
 package com.elfec.sgam.view.adapter.listview;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.elfec.sgam.R;
 import com.elfec.sgam.view.adapter.listview.viewholders.SessionOptionViewHolder;
+import com.elfec.sgam.view.launcher.session.SessionOption;
+import com.elfec.sgam.view.launcher.session.options.CloseSessionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,7 @@ import java.util.List;
  * Created by drodriguez on 18/05/2016.
  * Adapter for the session Options
  */
-public class SessionOptionAdapter extends ListAdapterImpl<SessionOptionAdapter
-        .SessionOption, SessionOptionViewHolder> {
+public class SessionOptionAdapter extends ListAdapterImpl<SessionOption, SessionOptionViewHolder> {
 
     /**
      * Constructor: Construye el adapter con las opciones por defecto
@@ -34,7 +33,8 @@ public class SessionOptionAdapter extends ListAdapterImpl<SessionOptionAdapter
     private static List<SessionOption> generateSessionOptions(Context context) {
         List<SessionOption> sessionOptions = new ArrayList<>();
         sessionOptions.add(new SessionOption(R.string.ses_opt_close_session,
-                ContextCompat.getDrawable(context, R.drawable.close_session)));
+                ContextCompat.getDrawable(context, R.drawable.close_session), new
+                CloseSessionHandler()));
         return sessionOptions;
     }
 
@@ -49,38 +49,4 @@ public class SessionOptionAdapter extends ListAdapterImpl<SessionOptionAdapter
         holder.bindSessionOption(getItem(pos));
     }
 
-    /**
-     * Session Option
-     */
-    public static class SessionOption {
-        private
-        @StringRes
-        int lblId;
-        private Drawable icon;
-        //region better collapse
-        public SessionOption() {
-        }
-
-        public SessionOption(int lblId, Drawable icon) {
-            this.lblId = lblId;
-            this.icon = icon;
-        }
-
-        public int getLblId() {
-            return lblId;
-        }
-
-        public void setLblId(int lblId) {
-            this.lblId = lblId;
-        }
-
-        public Drawable getIcon() {
-            return icon;
-        }
-
-        public void setIcon(Drawable icon) {
-            this.icon = icon;
-        }
-        //endregion
-    }
 }

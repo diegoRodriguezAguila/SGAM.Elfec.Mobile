@@ -7,7 +7,11 @@ import com.elfec.sgam.settings.AppPreferences;
 import com.elfec.sgam.web_service.RestEndpointFactory;
 import com.elfec.sgam.web_service.api_endpoint.DeviceSessionService;
 
+import java.net.HttpURLConnection;
+
 import rx.Observable;
+
+import static com.elfec.sgam.helpers.utils.ExceptionChecker.isHttpCodeException;
 
 /**
  * Created by drodriguez on 13/05/2016.
@@ -27,7 +31,7 @@ public class DeviceSessionManager {
                 .logIn(PhysicalDeviceBuilder.standard()
                         .getDeviceIdentifier())
                 .map(deviceSession -> {
-                    AppPreferences.instance().setDeviceSessionId(deviceSession.getId());
+                    setCurrentDeviceSession(deviceSession.getId());
                     return deviceSession;
                 });
     }
@@ -48,6 +52,12 @@ public class DeviceSessionManager {
                             .create(DeviceSessionService.class,
                                     SessionManager.instance().getLoggedInUser())
                             .logOut(sessionId);
+                })//if not found, session was already destroyed
+                .onErrorResumeNext(t -> {
+                    if (isHttpCodeException(t, HttpURLConnection.HTTP_NOT_FOUND)) {
+                        return Observable.just(null);
+                    }
+                    return Observable.error(t);
                 })
                 .map(v -> {
                     closeSession();
@@ -56,9 +66,25 @@ public class DeviceSessionManager {
     }
 
     /**
+     * Sets the current device session id
+     * @param sessionId device session id
+     */
+    public void setCurrentDeviceSession(String sessionId) {
+        AppPreferences.instance().setDeviceSessionId(sessionId);
+    }
+
+    /**
+     * Gets the current device session id
+     * @return current device session id, null if no session is set
+     */
+    public String currentDeviceSessionId(){
+        return AppPreferences.instance().getDeviceSessionId();
+    }
+
+    /**
      * Closes the local sessión
      */
     public void closeSession() {
-        AppPreferences.instance().setDeviceSessionId(null);
+        setCurrentDeviceSession(null);
     }
 }

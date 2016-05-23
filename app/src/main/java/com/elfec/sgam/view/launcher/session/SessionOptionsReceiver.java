@@ -4,18 +4,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.elfec.sgam.R;
 import com.elfec.sgam.helpers.ui.ContextUtils;
+import com.elfec.sgam.settings.AppPreferences;
 import com.elfec.sgam.view.adapter.listview.SessionOptionAdapter;
-
-import static com.elfec.sgam.view.adapter.listview.SessionOptionAdapter.*;
+import com.elfec.sgam.view.launcher.LauncherMain;
+import com.elfec.sgam.view.launcher.session.options.IOptionHandler;
 
 /**
  * Receiver for the options button on user notification
@@ -24,17 +22,19 @@ public class SessionOptionsReceiver extends BroadcastReceiver {
     private static boolean mAreOptionsShown;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        if (mAreOptionsShown){
-            closeNotificationsPanel(context);
+    public void onReceive(Context cont, Intent intent) {
+        if (mAreOptionsShown || LauncherMain.getGetMainView().isClosingSession()){
+            closeNotificationsPanel(cont);
             return;
         }
         mAreOptionsShown = true;
-        context = ContextUtils.wrapContext(context);
+        final Context context =
+                ContextUtils.wrapContext(AppPreferences.getApplicationContext());
         ListView listView = getDialogOptionsView(context);
-        TextView title = getDialogTitleView(context);
         AlertDialog dialog = new AlertDialog.Builder(context)
-                .setCustomTitle(title).setView(listView)
+                .setTitle(R.string.title_session_options)
+                .setIcon(R.drawable.session_options_d)
+                .setView(listView)
                 .setNegativeButton(R.string.btn_cancel, null)
                 .setOnDismissListener(d -> mAreOptionsShown = false)
                 .setCancelable(true).create();
@@ -43,18 +43,12 @@ public class SessionOptionsReceiver extends BroadcastReceiver {
         listView.setOnItemClickListener((parent, view, position, id) -> {
             SessionOption opt = (SessionOption) listView
                     .getAdapter().getItem(position);
+            IOptionHandler handler = opt.getHandler();
+            if(handler!=null)
+                handler.handle(context);
             dialog.dismiss();
         });
-        closeNotificationsPanel(context);
-    }
-
-    @NonNull
-    private TextView getDialogTitleView(Context context) {
-        TextView title = (TextView) LayoutInflater.from(context).inflate(R.layout.title_view, null, false);
-        title.setText(R.string.title_session_options);
-        title.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable
-                .session_options_d), null, null, null);
-        return title;
+        closeNotificationsPanel(cont);
     }
 
     /**

@@ -11,6 +11,13 @@
     <!-- Session Options -->
     <string name="title_session_options">Opciones de sesión</string>
     <string name="ses_opt_close_session">Cerrar sesión</string>
+    <!-- Close Session -->
+    <string name="msg_confirm_close_session">¿Está seguro que desea cerrar la sesión actual?\n\n
+        Tome en cuenta que para cerrarla necesitará conexión a la red de la empresa y ésta también
+        será necesaria en caso de querer abrir una nueva sesión.
+    </string>
+    <string name="msg_closing_device_session">Cerrando sesión remota de dispositivo&#8230;</string>
+    <string name="msg_closing_session">Cerrando sesión&#8230;</string>
 
     <!-- Login -->
     <string name="title_login">Ingreso al sistema</string>
@@ -54,5 +61,6 @@
         Si requiere utilizar ésta aplicación contáctese con la unidad de T.I. para solicitar
         los permisos necesarios]]>
     </string>
+
 
 </resources>

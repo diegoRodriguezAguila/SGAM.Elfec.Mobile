@@ -11,6 +11,7 @@
         android:id="@+id/img_user_photo"
         android:layout_width="56dp"
         android:layout_height="56dp"
+        android:contentDescription="@string/hint_username"
         android:src="@drawable/user_default" />
     <LinearLayout
         android:layout_marginLeft="12dp"
@@ -37,12 +38,12 @@
     <TextView android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_weight="1"/>
-    <Button
+    <ImageButton
         android:id="@+id/btn_user_options"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:textSize="22sp"
-        android:textStyle="bold"
+        android:contentDescription="@string/hint_username"
+        android:foregroundGravity="center"
         android:background="@drawable/btn_notification"
-        android:text="@string/vertical_ellipsis"/>
+        android:src="@drawable/options"/>
 </LinearLayout>
