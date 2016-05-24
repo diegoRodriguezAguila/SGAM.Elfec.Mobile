@@ -45,7 +45,8 @@ public class Main extends AppCompatActivity implements IMainView, OnDesktopInter
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (intent != null && intent.getExtras().getBoolean(CLOSE_SESSION_KEY))
+        if (intent != null && intent.getExtras() != null && intent.getExtras().getBoolean
+                (CLOSE_SESSION_KEY))
             goToCloseSession();
         else goToDesktop();
     }
@@ -124,8 +125,8 @@ public class Main extends AppCompatActivity implements IMainView, OnDesktopInter
         getApplicationContext().startActivity(i);
     }
 
-    private void goToCloseSession(){
-        if (!mIsClosingSession && !(mCurrentFragment instanceof CloseSessionFragment)){
+    private void goToCloseSession() {
+        if (!mIsClosingSession && !(mCurrentFragment instanceof CloseSessionFragment)) {
             mIsClosingSession = true;
             CloseSessionFragment fragment = CloseSessionFragment.newInstance();
             getSupportFragmentManager().beginTransaction()

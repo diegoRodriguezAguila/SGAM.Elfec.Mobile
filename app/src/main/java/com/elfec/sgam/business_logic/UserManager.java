@@ -39,8 +39,22 @@ public class UserManager {
     public Observable<User> requestUser(User user, boolean withRoles){
         if(!user.isAuthenticable())
             throw new IllegalArgumentException("user must be authenticable");
+        RestEndpointFactory.invalidateCache();
         return RestEndpointFactory.create(UserService.class, user)
                 .getUser(user.getUsername(), withRoles?QUERY_ROLES:null);
+    }
+
+    /**
+     * Se conecta a la API para obtener las reglas de directivas
+     * de usuario que aplican al usuario proporcionado
+     * @param user usuario, el usuario tiene que ser autenticable
+     *             porque utiliza su token para contectarse a los ws. Eso se puede
+     *             verificar con el metodo {@link User#isAuthenticable()}
+     * @return observable de lista de reglas
+     */
+    public Observable<List<Rule>> requestPolicyRules(User user){
+        return RestEndpointFactory.create(UserService.class, user)
+                .getPolicyRules(user.getUsername(), QUERY_POLICY_ID);
     }
 
     /**
@@ -56,6 +70,19 @@ public class UserManager {
                 .getPolicyRules(current.getUsername(), QUERY_POLICY_ID);
     }
 
+
+    /**
+     * Syncroniza las reglas de directivas que aplican al usuario proporcionado
+     * se conecta a la API y los guarda localmente
+     * @param user usuario
+     * @return observable de lista de reglas
+     */
+    public Observable<List<Rule>> syncPolicyRules(User user){
+        return requestPolicyRules(user)
+                .flatMap(rules -> new PolicyDataStorage()
+                        .saveUserPolicyRules(user.getUsername(), rules));
+    }
+
     /**
      * Syncroniza las reglas de directivas que aplican al usuario
      * logeado actual, se conecta a la API y los guarda localmente
@@ -64,9 +91,7 @@ public class UserManager {
     public Observable<List<Rule>> syncPolicyRules(){
         final User current = SessionManager.instance()
                 .getLoggedInUser();
-        return requestPolicyRules()
-                .flatMap(rules -> new PolicyDataStorage()
-                            .saveUserPolicyRules(current.getUsername(), rules));
+        return syncPolicyRules(current);
     }
 
     public List<String> getPemitedPackages(){

@@ -6,10 +6,12 @@ import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.elfec.sgam.business_logic.UserManager;
 import com.elfec.sgam.local_storage.UserDataStorage;
 import com.elfec.sgam.model.Role;
+import com.elfec.sgam.model.User;
 
 import rx.schedulers.Schedulers;
 
@@ -45,17 +47,22 @@ public class UserSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        new UserManager().requestUser(mUserAccountManager.accountToUser(account), true)
+        UserManager uManager = new UserManager();
+        final User userToSync = mUserAccountManager.accountToUser(account);
+        uManager.requestUser(userToSync, true)
                 .subscribeOn(Schedulers.immediate())
                 .flatMap(new UserDataStorage()::saveUser)
-                .subscribe(user -> {
-                    syncResult.stats.numEntries++;
-                    for (Role rol : user.getRoles()) {
+                .zipWith(uManager.syncPolicyRules(userToSync), (usr, rules) -> {
+                    syncResult.stats.numEntries++;//user entry
+                    for (Role rol : usr.getRoles()) {
                         syncResult.stats.numEntries++;
                         syncResult.stats.numEntries += rol.getPermissions().size();
                     }
-                }, t -> {
-                    syncResult.stats.numIoExceptions++;
-                });
+                    syncResult.stats.numEntries += rules.size();
+                    return syncResult.stats.numEntries;
+                })
+                .subscribe(updatedEntries ->
+                                Log.d("Updated Entries", "Count: " + updatedEntries),
+                        t -> syncResult.stats.numIoExceptions++);
     }
 }

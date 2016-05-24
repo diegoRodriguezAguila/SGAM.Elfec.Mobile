@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.web_services.deserializer.EnumJsonDeserializer;
 import com.elfec.sgam.model.web_services.deserializer.UriJsonDeserializer;
+import com.elfec.sgam.web_service.api_endpoint.SessionService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import java.util.HashMap;
+import java.util.WeakHashMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -44,7 +45,15 @@ public class RestEndpointFactory {
     /**
      * Caché para clientes http, para evitar redundancia de creación
      */
-    private static HashMap<String, OkHttpClient> sClients = new HashMap<>();
+    private static WeakHashMap<String, OkHttpClient> sClients = new WeakHashMap<>();
+
+    /**
+     * Clears the clients caché. You must call this method always you need to update
+     * something related to token and requests authentication
+     */
+    public static void invalidateCache(){
+        sClients.clear();
+    }
 
     /**
      * Crea un endpoint Rest  con la url especificada
@@ -87,7 +96,9 @@ public class RestEndpointFactory {
      */
     public static <T> T create(@NonNull String url, @NonNull Class<T> endpoint, @Nullable
         User authUser) {
-
+        //Always invalidate if it's session endpoint
+        if(endpoint == SessionService.class)
+            invalidateCache();
         return getBuilder()
                 .baseUrl(url)
                 .client(getClient(authUser))
