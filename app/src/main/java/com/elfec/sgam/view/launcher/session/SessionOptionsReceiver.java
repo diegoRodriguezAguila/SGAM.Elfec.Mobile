@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.ListView;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.helpers.ui.AppCompatAlertDialogUtils;
 import com.elfec.sgam.helpers.ui.ContextUtils;
 import com.elfec.sgam.settings.AppPreferences;
 import com.elfec.sgam.view.adapter.listview.SessionOptionAdapter;
@@ -40,6 +41,7 @@ public class SessionOptionsReceiver extends BroadcastReceiver {
                 .setCancelable(true).create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
+        AppCompatAlertDialogUtils.setTitleFont(dialog);
         listView.setOnItemClickListener((parent, view, position, id) -> {
             SessionOption opt = (SessionOption) listView
                     .getAdapter().getItem(position);

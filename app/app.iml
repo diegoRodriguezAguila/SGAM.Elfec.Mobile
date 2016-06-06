@@ -151,8 +151,8 @@
     <orderEntry type="library" exported="" name="jackson-core-2.4.3" level="project" />
     <orderEntry type="library" exported="" name="retrofit-2.0.0-beta4" level="project" />
     <orderEntry type="library" exported="" name="adapter-rxjava-2.0.0-beta4" level="project" />
-    <orderEntry type="library" exported="" name="minlog-1.3.0" level="project" />
     <orderEntry type="library" exported="" name="okhttp-3.0.1" level="project" />
+    <orderEntry type="library" exported="" name="minlog-1.3.0" level="project" />
     <orderEntry type="library" exported="" name="kryo-serializers-0.33" level="project" />
     <orderEntry type="library" exported="" name="materialish-progress-1.5" level="project" />
     <orderEntry type="library" exported="" name="rxandroid-1.1.0" level="project" />

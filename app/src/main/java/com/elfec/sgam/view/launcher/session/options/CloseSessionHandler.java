@@ -5,6 +5,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.WindowManager;
 
 import com.elfec.sgam.R;
+import com.elfec.sgam.helpers.ui.AppCompatAlertDialogUtils;
 import com.elfec.sgam.view.launcher.LauncherMain;
 
 /**
@@ -27,5 +28,6 @@ public class CloseSessionHandler implements IOptionHandler {
                 .setCancelable(true).create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();
+        AppCompatAlertDialogUtils.setTitleFont(dialog);
     }
 }
