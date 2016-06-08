@@ -1,41 +1,30 @@
 package com.elfec.sgam.messaging;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-
-import com.elfec.sgam.R;
-import com.elfec.sgam.settings.AppPreferences;
+import com.elfec.sgam.messaging.handlers.INotificationHandler;
+import com.elfec.sgam.messaging.handlers.NotificationHandlerFactory;
 
 import rx.Observable;
-import rx_gcm.GcmReceiverUIBackground;
+import rx_gcm.GcmReceiverData;
 import rx_gcm.Message;
 
 /**
- * Receives the notification for user showing
+ * Class for gcm notifications handling
  */
-public class GcmNotificationReceiver implements GcmReceiverUIBackground {
+public class GcmNotificationReceiver implements GcmReceiverData {
+
+    public static final String NOTIFICATION_TYPE_KEY = "type";
+
     @Override
-    public void onNotification(Observable<Message> oMessage) {
-        oMessage.subscribe(message -> {
-            Log.d("PROCESANDO MENSAJE", message.payload().toString());
-            Bundle payload = message.payload();
-            String title = payload.getString("title");
-            String body = payload.getString("message");
-            Log.d("MENSAJE",String.format("Titulo: %s1, Mensage: %s2",title, body));
-            Notification.Builder builder = new Notification.Builder(AppPreferences
-                    .getApplicationContext());
-            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Notification notif = builder.setContentText(body).setContentTitle(title)
-                    .setSound(alarmSound)
-                    .setSmallIcon(R.drawable.window).build();
-            NotificationManager mNotificationManager = (NotificationManager) AppPreferences
-                    .getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(23, notif);
+    public Observable<Message> onNotification(Observable<Message> oMessage) {
+        return oMessage.map(message -> {
+            String type = message.payload().getString(NOTIFICATION_TYPE_KEY);
+            if (type != null) {
+                INotificationHandler handler = NotificationHandlerFactory.create(type);
+                if (handler != null)
+                    handler.handleNotification(message.payload());
+            }
+            return message;
         });
     }
+
 }

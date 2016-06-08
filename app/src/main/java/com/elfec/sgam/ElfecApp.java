@@ -8,9 +8,10 @@ import android.support.v7.app.AlertDialog;
 import android.view.WindowManager;
 
 import com.elfec.sgam.helpers.alarm.AlarmHelper;
+import com.elfec.sgam.helpers.ui.AppCompatAlertDialogUtils;
 import com.elfec.sgam.helpers.ui.ContextUtils;
-import com.elfec.sgam.messaging.GcmNotificationHandler;
 import com.elfec.sgam.messaging.GcmNotificationReceiver;
+import com.elfec.sgam.messaging.GcmNotificationBgReceiver;
 import com.elfec.sgam.settings.AppPreferences;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -39,8 +40,8 @@ public class ElfecApp extends Application {
         JodaTimeAndroid.init(this);
         AppPreferences.init(this);
         Paper.init(this);
-        RxGcm.Notifications.register(this, GcmNotificationHandler.class,
-                GcmNotificationReceiver.class).subscribe();
+        RxGcm.Notifications.register(this, GcmNotificationReceiver.class,
+                GcmNotificationBgReceiver.class).subscribe();
         setUnhandledErrorsReset();
     }
 
@@ -75,6 +76,7 @@ public class ElfecApp extends Application {
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
                 dialog.show();
+                AppCompatAlertDialogUtils.setTitleFont(dialog);
                 Looper.loop();
 
             }
