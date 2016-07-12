@@ -94,10 +94,23 @@ public class ApplicationManager {
      * Downloads an apk from an application installation
      *
      * @param installation app installation request
+     * @param downloadListener listener for download progress
+     * @return observable of file, the file could be null if couldn't be saved successfully
+     */
+    public Observable<File> downloadApk(Installation installation,
+                                        ApkDownloadListener downloadListener) {
+        return downloadApk(installation.getPackageName(),
+                installation.getVersion(), downloadListener);
+    }
+
+    /**
+     * Downloads an apk from an application installation
+     *
+     * @param installation app installation request
      * @return observable of file, the file could be null if couldn't be saved successfully
      */
     public Observable<File> downloadApk(Installation installation) {
-        return downloadApk(installation.getPackageName(), installation.getVersion());
+        return downloadApk(installation.getPackageName(), installation.getVersion(), null);
     }
 
     /**
@@ -107,14 +120,20 @@ public class ApplicationManager {
      * @param version     app version
      * @return observable of file, the file could be null if couldn't be saved successfully
      */
-    public Observable<File> downloadApk(String packageName, String version) {
+    public Observable<File> downloadApk(String packageName, String version,
+                                        ApkDownloadListener downloadListener) {
         return RestEndpointFactory.create(ApplicationService.class, SessionManager.instance()
                 .getLoggedInUser())
                 .downloadApk(packageName, version)
                 .map(responseBody -> new FileDownloader()
-                        .downloadFileToDisk(responseBody,
-                                Installation.getInstallationFileName(packageName, version)));
+                        .downloadFileToDisk(responseBody, getInstallerFileName(packageName,
+                                version), downloadListener));
 
+    }
+
+    private String getInstallerFileName(String packageName, String version) {
+        return InstallationManager.INSTALLER_DIR + File.separator + Installation.getInstallationFileName
+                (packageName, version);
     }
 
     @NonNull
@@ -129,15 +148,19 @@ public class ApplicationManager {
         return app;
     }
 
+    /**
+     * Download listener for apks, only receives onProgress when
+     * percentage changes
+     */
     public static abstract class ApkDownloadListener implements FileDownloadListener {
         private static final short FULL = 100;
         private short mPercentage = 0;
 
         @Override
         public void onProgress(long fileSizeDownloaded, long totalFileSize) {
-            double decPercentage = fileSizeDownloaded / totalFileSize;
+            double decPercentage = (double)fileSizeDownloaded / (double)totalFileSize;
             short percentage = (short) (decPercentage * FULL);
-            if (percentage > mPercentage) {//it advanced
+            if (percentage > mPercentage) {//it changes
                 mPercentage = percentage;
                 onProgress(mPercentage, fileSizeDownloaded);
             }

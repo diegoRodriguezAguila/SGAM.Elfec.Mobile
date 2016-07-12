@@ -126,6 +126,8 @@ public class PolicyDataStorage {
      * @return string key for the policy
      */
     private String getPolicyKey(String username, PolicyType policyType) {
+        if(username==null)
+            return null;
         return username
                 .concat(policyType.toString());
     }

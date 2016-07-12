@@ -22,7 +22,7 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemA
 import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -38,7 +38,7 @@ public class ApplicationsFragment extends Fragment {
 
     private OnApplicationsInteractionListener mListener;
 
-    @Bind(R.id.recycler_view)
+    @BindView(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;

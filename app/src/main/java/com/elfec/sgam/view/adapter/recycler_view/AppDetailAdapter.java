@@ -65,6 +65,11 @@ public class AppDetailAdapter extends RecyclerView.Adapter<AppDetailViewHolder>
     }
 
     @Override
+    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
+        return true;
+    }
+
+    @Override
     public boolean onCheckCanStartDrag(AppDetailViewHolder holder, int position, int x, int y) {
         VibrationHelper.shortVibrate();
         return true;

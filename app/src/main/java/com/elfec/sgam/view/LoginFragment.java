@@ -28,7 +28,7 @@ import com.elfec.sgam.view.launcher.LauncherApps;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -51,21 +51,21 @@ public class LoginFragment extends Fragment implements ILoginView{
 
     private Handler mHandler;
 
-    @Bind(R.id.txt_username)
+    @BindView(R.id.txt_username)
     protected EditText mTxtUsername;
-    @Bind(R.id.txt_password)
+    @BindView(R.id.txt_password)
     protected EditText mTxtPassword;
-    @Bind(R.id.layout_login_form)
+    @BindView(R.id.layout_login_form)
     protected LinearLayout mLayoutLoginForm;
-    @Bind(R.id.snackbar_position)
+    @BindView(R.id.snackbar_position)
     protected CoordinatorLayout mSnackbarPosition;
-    @Bind(R.id.layout_loading)
+    @BindView(R.id.layout_loading)
     protected LinearLayout mLayoutLoading;
-    @Bind(R.id.txt_waiting_message)
+    @BindView(R.id.txt_waiting_message)
     protected TextView mTxtWaitingMessage;
-    @Bind(R.id.layout_errors)
+    @BindView(R.id.layout_errors)
     protected LinearLayout mLayoutErrors;
-    @Bind(R.id.txt_error_message)
+    @BindView(R.id.txt_error_message)
     protected TextView mTxtErrorMessage;
     private Animation slideLeftAnim;
 

@@ -7,13 +7,13 @@ import com.elfec.sgam.R;
 import com.elfec.sgam.helpers.utils.DrawableHelper;
 import com.elfec.sgam.view.launcher.session.SessionOption;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * ViewHolder for session options
  */
 public class SessionOptionViewHolder {
-    @Bind(R.id.lbl_session_option)
+    @BindView(R.id.lbl_session_option)
     protected TextView mLblOption;
 
     public SessionOptionViewHolder(View root) {
@@ -21,7 +21,7 @@ public class SessionOptionViewHolder {
     }
 
     /**
-     * Binds session option
+     * BindViews session option
      * @param sessionOption session option
      */
     public void bindSessionOption(SessionOption sessionOption) {

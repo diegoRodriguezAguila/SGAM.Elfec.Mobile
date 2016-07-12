@@ -5,4 +5,5 @@ package com.elfec.sgam.business_logic;
  * Installation manager
  */
 public class InstallationManager {
+    public static final String INSTALLER_DIR = "installers";
 }

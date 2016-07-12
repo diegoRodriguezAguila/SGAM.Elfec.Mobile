@@ -12,18 +12,18 @@ import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.view.launcher.ApplicationTools;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Viewholder for applications
  */
 public class AppDetailViewHolder extends AbstractDraggableItemViewHolder {
-    @Bind(R.id.layout_background)
+    @BindView(R.id.layout_background)
     protected LinearLayout mBackground;
-    @Bind(R.id.img_app_icon)
+    @BindView(R.id.img_app_icon)
     protected ImageView mImgAppIcon;
-    @Bind(R.id.txt_app_name)
+    @BindView(R.id.txt_app_name)
     protected TextView mTxtAppName;
 
 

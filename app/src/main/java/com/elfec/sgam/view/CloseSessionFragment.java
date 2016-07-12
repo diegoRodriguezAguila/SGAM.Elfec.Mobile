@@ -16,7 +16,7 @@ import com.elfec.sgam.R;
 import com.elfec.sgam.presenter.CloseSessionPresenter;
 import com.elfec.sgam.presenter.views.ICloseSessionView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -33,13 +33,13 @@ public class CloseSessionFragment extends Fragment implements ICloseSessionView 
     private OnSessionInteractionListener mListener;
     private CloseSessionPresenter mPresenter;
 
-    @Bind(R.id.layout_loading)
+    @BindView(R.id.layout_loading)
     protected LinearLayout mLayoutLoading;
-    @Bind(R.id.txt_waiting_message)
+    @BindView(R.id.txt_waiting_message)
     protected TextView mTxtWaitingMessage;
-    @Bind(R.id.layout_errors)
+    @BindView(R.id.layout_errors)
     protected LinearLayout mLayoutErrors;
-    @Bind(R.id.txt_error_message)
+    @BindView(R.id.txt_error_message)
     protected TextView mTxtErrorMessage;
     private Animation slideLeftAnim;
 

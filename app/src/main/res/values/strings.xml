@@ -62,5 +62,13 @@
         los permisos necesarios]]>
     </string>
 
+    <!-- Installation Notification -->
+    <string name="msg_starting_download">Iniciando descarga de aplicación&#8230;</string>
+    <string name="msg_download_progress">Descargando aplicación %1$s/%2$s Kb</string>
+    <string name="msg_download_completed">Descarga completa. La aplicación está lista
+        para ser instalada, haga click para instalarla</string>
+
+    <string name="msg_uninstall_pending">Aplicación pendiente de desinstalación. Haga click para
+        desinstalar</string>
 
 </resources>

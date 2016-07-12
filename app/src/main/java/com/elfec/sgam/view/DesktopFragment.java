@@ -18,7 +18,7 @@ import com.elfec.sgam.helpers.utils.PaletteHelper;
 
 import org.joda.time.DateTime;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -34,13 +34,13 @@ public class DesktopFragment extends Fragment {
 
 
     private OnDesktopInteractionListener mListener;
-    @Bind(R.id.desktop_background)
+    @BindView(R.id.desktop_background)
     protected View mBackground;
-    @Bind(R.id.date)
+    @BindView(R.id.date)
     protected TextView mTxtDate;
-    @Bind(R.id.desktop_bar)
+    @BindView(R.id.desktop_bar)
     protected View mToolBar;
-    @Bind(R.id.desktop_bar_border)
+    @BindView(R.id.desktop_bar_border)
     protected View mToolBarBorder;
 
     private WallpaperManager mWallpaperManager;

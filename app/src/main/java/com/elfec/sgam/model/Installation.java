@@ -1,5 +1,6 @@
 package com.elfec.sgam.model;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.elfec.sgam.model.enums.InstallationStatus;
@@ -10,8 +11,10 @@ import com.elfec.sgam.model.enums.InstallationStatus;
  */
 public class Installation {
     private String id;
+    private String appName;
     private String packageName;
     private String version;
+    private Uri iconUrl;
     private String imei;
     private InstallationStatus status;
 
@@ -20,9 +23,11 @@ public class Installation {
 
     public Installation(Bundle bundle) {
         id = bundle.getString("id");
+        appName = bundle.getString("app_name");
         packageName = bundle.getString("package");
         version = bundle.getString("version");
         setStatus(bundle.getString("status"));
+        iconUrl = Uri.parse(bundle.getString("icon_url"));
     }
 
     /**
@@ -41,6 +46,14 @@ public class Installation {
         return String.format("%s1 - v.%s2.apk", packageName, version);
     }
 
+    /**
+     * Gets the app's name with the version
+     * @return ie. <i>Cool App v.1.0.3</i>
+     */
+    public String getVersionedAppName(){
+        return String.format("%s v.%s", appName, version);
+    }
+
     //region Getters Setters
     public String getId() {
         return id;
@@ -48,6 +61,14 @@ public class Installation {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     public String getPackageName() {
@@ -64,6 +85,14 @@ public class Installation {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public Uri getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(Uri iconUrl) {
+        this.iconUrl = iconUrl;
     }
 
     public String getImei() {

@@ -30,7 +30,7 @@ public class FileDownloader {
         }
 
         @Override
-        public void onCompleted() {
+        public void onCompleted(File d) {
         }
         //endregion
     };
@@ -61,6 +61,7 @@ public class FileDownloader {
                 listener = sDummyListener;
             File downloadFile = new File(AppPreferences.getApplicationContext()
                     .getExternalFilesDir(null) + File.separator + path);
+            createDirIfNecessary(downloadFile);
             InputStream inputStream = null;
             OutputStream outputStream = null;
             try {
@@ -81,7 +82,7 @@ public class FileDownloader {
                             fileSize);
                 }
                 outputStream.flush();
-                listener.onCompleted();
+                listener.onCompleted(downloadFile);
                 return downloadFile;
             } catch (IOException e) {
                 return null;
@@ -99,6 +100,24 @@ public class FileDownloader {
     }
 
     /**
+     * Creates the dir for the file if needed
+     * @param file file path
+     * @return true if success
+     */
+    private boolean createDirIfNecessary(File file){
+        if (!file.exists()) {
+            try {
+                if (!file.createNewFile()) {
+                    return false;
+                }
+            } catch (IOException e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Listener for a download progress
      */
     public interface FileDownloadListener {
@@ -106,6 +125,6 @@ public class FileDownloader {
 
         void onProgress(long fileSizeDownloaded, long totalFileSize);
 
-        void onCompleted();
+        void onCompleted(File downloadedFile);
     }
 }
