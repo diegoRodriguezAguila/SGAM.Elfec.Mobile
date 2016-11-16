@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.elfec.sgam.BuildConfig;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.model.web_services.deserializer.EnumJsonDeserializer;
 import com.elfec.sgam.model.web_services.deserializer.UriJsonDeserializer;
@@ -37,7 +38,7 @@ public class RestEndpointFactory {
      * La URL de los web services de SGAM, si fuera necesario conectar a otro webservice
      * se puede pasar otra URL
      */
-    public static final String BASE_URL = "http://192.168.50.56:3000/api/";
+    public static final String BASE_URL = BuildConfig.WS_SERVER_URL;
     /**
      * Caché para el builder, para evitar redundancia de creación
      */
