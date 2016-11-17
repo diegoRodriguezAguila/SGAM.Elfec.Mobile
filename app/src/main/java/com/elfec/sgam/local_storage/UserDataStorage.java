@@ -1,5 +1,6 @@
 package com.elfec.sgam.local_storage;
 
+import com.cesarferreira.rxpaper.RxPaper;
 import com.elfec.sgam.model.User;
 
 import rx.Observable;

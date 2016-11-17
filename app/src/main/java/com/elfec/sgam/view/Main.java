@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.elfec.sgam.ElfecApp;
 import com.elfec.sgam.R;
 import com.elfec.sgam.presenter.views.IMainView;
 import com.elfec.sgam.security.SessionManager;
@@ -35,7 +34,6 @@ public class Main extends AppCompatActivity implements IMainView, OnDesktopInter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ElfecApp.setUiContext(this);
         LauncherMain.init(this);
         mDesktopFragment = DesktopFragment.newInstance();
         mApplicationsFragment = ApplicationsFragment.newInstance();

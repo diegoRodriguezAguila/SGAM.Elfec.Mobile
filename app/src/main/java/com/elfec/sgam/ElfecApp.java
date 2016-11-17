@@ -1,21 +1,23 @@
 package com.elfec.sgam;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.Looper;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.WindowManager;
 
+import com.cesarferreira.rxpaper.RxPaper;
 import com.elfec.sgam.helpers.alarm.AlarmHelper;
 import com.elfec.sgam.helpers.ui.AppCompatAlertDialogUtils;
 import com.elfec.sgam.helpers.ui.ContextUtils;
-import com.elfec.sgam.messaging.GcmNotificationReceiver;
 import com.elfec.sgam.messaging.GcmNotificationBgReceiver;
+import com.elfec.sgam.messaging.GcmNotificationReceiver;
 import com.elfec.sgam.settings.AppPreferences;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import org.joda.time.DateTime;
+
+import de.javakaffee.kryoserializers.jodatime.JodaDateTimeSerializer;
 import io.paperdb.Paper;
 import rx_gcm.internal.RxGcm;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -25,12 +27,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  */
 public class ElfecApp extends Application {
 
-    /**
-     * Reference to the first context/activity
-     * enabled to instance dialogs with UI
-     */
-    private static Context sUiContext;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -39,7 +35,8 @@ public class ElfecApp extends Application {
                 .setDefaultFontPath("fonts/segoe_ui.ttf").setFontAttrId(R.attr.fontPath).build());
         JodaTimeAndroid.init(this);
         AppPreferences.init(this);
-        Paper.init(this);
+        RxPaper.init(this);
+        Paper.addSerializer(DateTime.class, new JodaDateTimeSerializer());
         RxGcm.Notifications.register(this, GcmNotificationReceiver.class,
                 GcmNotificationBgReceiver.class).subscribe();
         setUnhandledErrorsReset();
@@ -81,26 +78,6 @@ public class ElfecApp extends Application {
 
             }
         }.start();
-    }
-
-    /**
-     * Sets the current Ui Context. This method is normally first called
-     * on activity {@link com.elfec.sgam.view.Main}
-     * @param context ui context
-     */
-    public static void setUiContext(Context context) {
-        sUiContext = context;
-    }
-
-    /**
-     * Gets the Ui Context. This context should be merely used
-     * to inflate views and show dialogs
-     * @return context
-     */
-    @NonNull
-    public static Context getUiContext() {
-        return sUiContext == null ? ContextUtils
-                .wrapContext(AppPreferences.getApplicationContext()) : sUiContext;
     }
 
 }

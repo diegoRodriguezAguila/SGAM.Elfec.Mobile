@@ -1,5 +1,6 @@
 package com.elfec.sgam.local_storage;
 
+import com.cesarferreira.rxpaper.RxPaper;
 import com.elfec.sgam.model.Rule;
 import com.elfec.sgam.model.enums.PolicyType;
 
@@ -13,16 +14,12 @@ import java.util.Map;
 import io.paperdb.Book;
 import rx.Observable;
 
+
 /**
  * Local storage data layer
  */
 public class PolicyDataStorage {
     public static final String POLICY_BOOK = "policy.book";
-    private RxPaper mBook;
-
-    public PolicyDataStorage(){
-        mBook = RxPaper.book(POLICY_BOOK);
-    }
 
     /**
      * Saves the policy rules that applies to the user
@@ -41,7 +38,7 @@ public class PolicyDataStorage {
                     for (Rule rule : rules) {
                         mapRules.get(rule.getPolicyId()).add(rule);
                     }
-                    Book book = mBook.getBook();
+                    Book book = RxPaper.book(POLICY_BOOK).getBook();
                     for (Map.Entry<PolicyType, List<Rule>> entry: mapRules.entrySet()) {
                         book.write(getPolicyKey(username, entry.getKey()), entry.getValue());
                     }
@@ -64,7 +61,7 @@ public class PolicyDataStorage {
      */
     public Observable<List<Rule>> saveUserPolicyRules(String username, PolicyType policyType,
                                                       List<Rule> rules) {
-        return mBook.write(getPolicyKey(username, policyType), rules);
+        return RxPaper.book(POLICY_BOOK).write(getPolicyKey(username, policyType), rules);
     }
 
     /**
@@ -74,7 +71,7 @@ public class PolicyDataStorage {
      * @return observable with a list of rules
      */
     public Observable<List<Rule>> getUserPolicyRules(String username, PolicyType policyType) {
-        return mBook.read(getPolicyKey(username, policyType));
+        return RxPaper.book(POLICY_BOOK).read(getPolicyKey(username, policyType));
     }
 
     /**
@@ -87,7 +84,7 @@ public class PolicyDataStorage {
     public Observable<List<Rule>> addUserPolicyRules(String username, PolicyType policyType,
                                                       Rule... newRules) {
         final String policyKey = getPolicyKey(username, policyType);
-        Observable<List<Rule>> currentRules = mBook.read(policyKey);
+        Observable<List<Rule>> currentRules = RxPaper.book(POLICY_BOOK).read(policyKey);
         if(newRules.length==0)
             return currentRules;
         return currentRules.map(rules -> {
@@ -95,7 +92,7 @@ public class PolicyDataStorage {
                 rules = new ArrayList<>();
             Collections.addAll(rules, newRules);
             return rules;
-        }).flatMap(rules -> mBook.write(policyKey, rules));
+        }).flatMap(rules -> RxPaper.book(POLICY_BOOK).write(policyKey, rules));
     }
 
     /**
@@ -108,7 +105,7 @@ public class PolicyDataStorage {
     public Observable<List<Rule>> deleteUserPolicyRules(String username, PolicyType policyType,
                                                      Rule... deleteRules) {
         final String policyKey = getPolicyKey(username, policyType);
-        Observable<List<Rule>> currentRules = mBook.read(policyKey);
+        Observable<List<Rule>> currentRules = RxPaper.book(POLICY_BOOK).read(policyKey);
         if(deleteRules.length==0)
             return currentRules;
         return currentRules.map(rules -> {
@@ -116,7 +113,7 @@ public class PolicyDataStorage {
                 rules = new ArrayList<>();
             else rules.removeAll(Arrays.asList(deleteRules));
             return rules;
-        }).flatMap(rules -> mBook.write(policyKey, rules));
+        }).flatMap(rules -> RxPaper.book(POLICY_BOOK).write(policyKey, rules));
     }
 
     /**

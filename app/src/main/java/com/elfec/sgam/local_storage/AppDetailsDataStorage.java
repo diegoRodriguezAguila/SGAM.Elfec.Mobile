@@ -1,5 +1,6 @@
 package com.elfec.sgam.local_storage;
 
+import com.cesarferreira.rxpaper.RxPaper;
 import com.elfec.sgam.model.AppDetail;
 
 import java.util.List;
@@ -12,11 +13,6 @@ import rx.Observable;
 public class AppDetailsDataStorage {
     public static final String APP_DETAIL_BOOK = "app_detail.book";
     private static final String KEY = "apps_cache";
-    private RxPaper mBook;
-
-    public AppDetailsDataStorage(){
-        mBook = RxPaper.book(APP_DETAIL_BOOK);
-    }
 
     /**
      * Saves the policy rules of the specific type that applies to the user.
@@ -24,7 +20,7 @@ public class AppDetailsDataStorage {
      * @return observable with a list of rules
      */
     public Observable<List<AppDetail>> saveAppsCache(List<AppDetail> apps) {
-        return mBook.write(KEY, apps);
+        return RxPaper.book(APP_DETAIL_BOOK).write(KEY, apps);
     }
 
     /**
@@ -32,6 +28,6 @@ public class AppDetailsDataStorage {
      * @return apps caché
      */
     public Observable<List<AppDetail>> getAppsCache() {
-        return mBook.read(KEY);
+        return RxPaper.book(APP_DETAIL_BOOK).read(KEY);
     }
 }
