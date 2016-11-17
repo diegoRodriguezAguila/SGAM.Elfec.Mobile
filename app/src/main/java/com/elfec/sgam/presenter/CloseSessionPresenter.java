@@ -30,21 +30,20 @@ public class CloseSessionPresenter {
         DeviceSessionManager devSession = new DeviceSessionManager();
         String currentDeviceId = devSession.currentDeviceSessionId();
         devSession.logOutDevice()
-                .flatMap(v -> {
-                    mView.updateWaiting(R.string.msg_closing_session);
-                    return SessionManager.instance().remoteLogOut();
-                })
-                .compose(applySchedulers())
-                .subscribe(v -> {
-                    mView.hideWaiting();
-                    mView.onSessionClosed();
-                }, t -> {
-                    //restore session on errors
-                    devSession.setCurrentDeviceSession(currentDeviceId);
-                    mView.hideWaiting();
-                    t.printStackTrace();
-                    mView.showError(ServiceErrorFactory.fromThrowable(t));
-                });
+            .flatMap(v -> {
+                mView.updateWaiting(R.string.msg_closing_session);
+                return SessionManager.instance().remoteLogOut();
+            })
+            .compose(applySchedulers())
+            .subscribe(v -> {
+                mView.hideWaiting();
+                mView.onSessionClosed();
+            }, t -> {
+                //restore session on errors
+                devSession.setCurrentDeviceSession(currentDeviceId);
+                mView.hideWaiting();
+                mView.showError(ServiceErrorFactory.fromThrowable(t));
+            });
 
     }
 }

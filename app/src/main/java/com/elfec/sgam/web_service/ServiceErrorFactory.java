@@ -23,6 +23,7 @@ public class ServiceErrorFactory {
      * @return excepción correspondiente al error recibido
      */
     public static Exception fromThrowable(Throwable throwable){
+        throwable.printStackTrace();
         if (throwable instanceof JsonMappingException)
             return new DataFormatException("La información recibida del servidor no es válida, " +
                     "detalles: "+throwable.getMessage());

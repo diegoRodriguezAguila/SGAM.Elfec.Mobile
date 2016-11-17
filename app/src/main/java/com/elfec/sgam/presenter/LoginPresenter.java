@@ -35,48 +35,47 @@ public class LoginPresenter {
      * Inicia el proceso de logeo del usuario
      */
     public void logIn() {
-        if (!mView.getUsername().isEmpty() && !mView.getPassword().isEmpty()) {
-            mView.showWaiting();
-            final DeviceManager deviceManager = new DeviceManager();
-            final DeviceSessionManager devSession = new DeviceSessionManager();
-            SessionManager.instance()
-                    .remoteLogIn(mView.getUsername(), mView.getPassword())
-                    .flatMap(user -> {
-                        mView.updateWaiting(R.string.msg_validating_device);
-                        return deviceManager.validateDevice();
-                    })
-                    .compose(registerDeviceIfNecessary(deviceManager))
-                    .flatMap(device -> {
-                        mView.updateWaiting(R.string.msg_syncing_gcm_token);
-                        return deviceManager.syncGcmToken();
-                    })
-                    .flatMap(v -> {
-                        mView.updateWaiting(R.string.msg_getting_policy_rules);
-                        return new UserManager().syncPolicyRules();
-                    })
-                    .flatMap(rules->{
-                        mView.updateWaiting(R.string.msg_device_login);
-                        return devSession.logInDevice();
-                    })
-                    .flatMap(v -> {
-                        mView.updateWaiting(R.string.msg_getting_apps);
-                        return new ApplicationManager().getUserPermittedApps();
-                    })
-                    .compose(applySchedulers())
-                    .subscribe(apps -> {
-                        mView.hideWaiting();
-                        mView.userLoggedInSuccessfully(apps);
-                    }, t -> {
-                        //close session at any error
-                        SessionManager.instance().closeSession();
-                        devSession.closeSession();
-
-                        mView.hideWaiting();
-                        t.printStackTrace();
-                        mView.showLoginErrors(ServiceErrorFactory.fromThrowable(t));
-                    });
-
-        } else mView.notifyErrorsInFields();
+        if (mView.getUsername().isEmpty() || mView.getPassword().isEmpty()) {
+            mView.notifyErrorsInFields();
+            return;
+        }
+        mView.showWaiting();
+        final DeviceManager deviceManager = new DeviceManager();
+        final DeviceSessionManager devSession = new DeviceSessionManager();
+        SessionManager.instance()
+            .remoteLogIn(mView.getUsername(), mView.getPassword())
+            .flatMap(user -> {
+                mView.updateWaiting(R.string.msg_validating_device);
+                return deviceManager.validateDevice();
+            })
+            .compose(registerDeviceIfNecessary(deviceManager))
+            .flatMap(device -> {
+                mView.updateWaiting(R.string.msg_syncing_gcm_token);
+                return deviceManager.syncGcmToken();
+            })
+            .flatMap(v -> {
+                mView.updateWaiting(R.string.msg_getting_policy_rules);
+                return new UserManager().syncPolicyRules();
+            })
+            .flatMap(rules -> {
+                mView.updateWaiting(R.string.msg_device_login);
+                return devSession.logInDevice();
+            })
+            .flatMap(v -> {
+                mView.updateWaiting(R.string.msg_getting_apps);
+                return new ApplicationManager().getUserPermittedApps();
+            })
+            .compose(applySchedulers())
+            .subscribe(apps -> {
+                mView.hideWaiting();
+                mView.userLoggedInSuccessfully(apps);
+            }, t -> {
+                //close session at any error
+                SessionManager.instance().closeSession();
+                devSession.closeSession();
+                mView.hideWaiting();
+                mView.showLoginErrors(ServiceErrorFactory.fromThrowable(t));
+            });
     }
 
     /**
@@ -90,14 +89,14 @@ public class LoginPresenter {
     private <T> Observable.Transformer<T, T>
     registerDeviceIfNecessary(DeviceManager deviceManager) {
         return observable -> observable.onErrorResumeNext(t -> {
-            if (isHttpCodeException(t, HttpURLConnection.HTTP_NOT_FOUND)) {
-                mView.updateWaiting(R.string.msg_registering_device);
-                return deviceManager.registerDevice()
-                        .map(device -> {
-                            throw new AuthPendingDeviceException();
-                        });
+            if (!isHttpCodeException(t, HttpURLConnection.HTTP_NOT_FOUND)) {
+                return Observable.error(t);
             }
-            return Observable.error(t);
+            mView.updateWaiting(R.string.msg_registering_device);
+            return deviceManager.registerDevice()
+                    .map(device -> {
+                        throw new AuthPendingDeviceException();
+                    });
         });
     }
 

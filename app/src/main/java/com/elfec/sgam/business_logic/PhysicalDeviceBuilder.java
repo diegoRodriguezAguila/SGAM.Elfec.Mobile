@@ -2,6 +2,7 @@ package com.elfec.sgam.business_logic;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.graphics.Point;
@@ -17,6 +18,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.elfec.sgam.helpers.file.FileHelper;
+import com.elfec.sgam.helpers.utils.MemoryUtils;
 import com.elfec.sgam.model.Device;
 import com.elfec.sgam.settings.AppPreferences;
 
@@ -36,24 +38,26 @@ public class PhysicalDeviceBuilder {
      * utilizando el contexto de la applicacion:
      * {@link AppPreferences#getApplicationContext()}
      */
-    public static PhysicalDeviceBuilder standard(){
+    public static PhysicalDeviceBuilder standard() {
         return new PhysicalDeviceBuilder();
     }
+
     /**
      * Construye un nuevo {@link PhysicalDeviceBuilder}
      * utilizando el contexto de la applicacion.
      * Para utilizarlo usar el metodo {@link #standard()}
      */
-    private PhysicalDeviceBuilder(){
+    private PhysicalDeviceBuilder() {
         this.mContext = AppPreferences.getApplicationContext();
     }
 
     /**
      * Construye un nuevo {@link PhysicalDeviceBuilder}
      * con el context proporcionado
+     *
      * @param context contexto
      */
-    public PhysicalDeviceBuilder(Context context){
+    public PhysicalDeviceBuilder(Context context) {
         this.mContext = context;
     }
 
@@ -63,7 +67,8 @@ public class PhysicalDeviceBuilder {
      *
      * @return Device
      */
-    public Device buildDevice(){
+    @SuppressLint("HardwareIds")
+    public Device buildDevice() {
         BluetoothAdapter thisDevice = BluetoothAdapter.getDefaultAdapter();
         WifiInfo wifiInfo = ((WifiManager) mContext.getSystemService(Context.WIFI_SERVICE)).getConnectionInfo();
         DisplayMetrics dm = new DisplayMetrics();
@@ -131,6 +136,7 @@ public class PhysicalDeviceBuilder {
      *
      * @return entero representando la version en el manifest
      */
+    @SuppressLint("HardwareIds")
     private String getImei() {
         return ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE))
                 .getDeviceId();
@@ -141,6 +147,7 @@ public class PhysicalDeviceBuilder {
      *
      * @return Android Id
      */
+    @SuppressLint("HardwareIds")
     private String getAndroidId() {
         return Settings.Secure.getString(mContext.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
@@ -166,12 +173,13 @@ public class PhysicalDeviceBuilder {
      */
     private Double getSDMemoryCardSize() {
         File extSDCard = FileHelper.getExternalSDCardDirectory(mContext);
-        if (extSDCard != null) {
-            StatFs stat = new StatFs(extSDCard.getPath());
-            long bytesTotal = (long) stat.getBlockSize() * (long) stat.getBlockCount();
-            return Math.round((bytesTotal / 1073741824d) * 100) / 100.0d;
+        if (extSDCard == null) {
+            return null;
         }
-        return null;
+        StatFs stat = new StatFs(extSDCard.getPath());
+        long bytesTotal = (long) stat.getBlockSize() * (long) stat.getBlockCount();
+        double realSize = Math.round((bytesTotal / 1073741824d) * 100) / 100.0d;
+        return MemoryUtils.getRetailMemorySize(realSize);
     }
 
     /**

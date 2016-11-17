@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.elfec.sgam.helpers.utils.ExceptionChecker;
 import com.elfec.sgam.helpers.utils.RxGcmHelper;
-import com.elfec.sgam.messaging.GcmNotificationReceiver;
 import com.elfec.sgam.messaging.GcmNotificationBgReceiver;
+import com.elfec.sgam.messaging.GcmNotificationReceiver;
 import com.elfec.sgam.messaging.RefreshTokenReceiver;
 import com.elfec.sgam.model.Device;
 import com.elfec.sgam.model.exceptions.AuthPendingDeviceException;
