@@ -1,25 +1,20 @@
 package com.elfec.sgam.business_logic;
 
-import android.app.Application;
-
 import com.elfec.sgam.helpers.utils.ExceptionChecker;
-import com.elfec.sgam.helpers.utils.RxGcmHelper;
-import com.elfec.sgam.messaging.GcmNotificationBgReceiver;
-import com.elfec.sgam.messaging.GcmNotificationReceiver;
 import com.elfec.sgam.messaging.RefreshTokenReceiver;
 import com.elfec.sgam.model.Device;
 import com.elfec.sgam.model.exceptions.AuthPendingDeviceException;
 import com.elfec.sgam.model.exceptions.UnauthorizedDeviceException;
-import com.elfec.sgam.model.web_services.GcmToken;
+import com.elfec.sgam.model.web_services.FcmToken;
 import com.elfec.sgam.model.web_services.HttpCodes;
 import com.elfec.sgam.security.SessionManager;
 import com.elfec.sgam.settings.AppPreferences;
-import com.elfec.sgam.web_service.RestEndpointFactory;
+import com.elfec.sgam.web_service.ServiceGenerator;
 import com.elfec.sgam.web_service.api_endpoint.DeviceService;
 
 import rx.Observable;
 import rx.schedulers.Schedulers;
-import rx_gcm.internal.RxGcm;
+import rx_fcm.internal.RxFcm;
 
 /**
  * Lógica de negocio de dispositivo
@@ -32,7 +27,7 @@ public class DeviceManager {
      * @return observable de dispositivo
      */
     public Observable<Device> validateDevice() {
-        return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
+        return ServiceGenerator.create(DeviceService.class, SessionManager.instance()
                 .getLoggedInUser())
                 .getDevice(new PhysicalDeviceBuilder(
                         AppPreferences.getApplicationContext())
@@ -47,58 +42,56 @@ public class DeviceManager {
      */
     public Observable<Device> registerDevice() {
         final Device physicalDevice = PhysicalDeviceBuilder.standard().buildDevice();
-        return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
+        return ServiceGenerator.create(DeviceService.class, SessionManager.instance()
                 .getLoggedInUser())
                 .registerDevice(physicalDevice)
-                .flatMap(device -> syncGcmToken())
+                .flatMap(device -> syncFcmToken())
                 .flatMap(voids -> Observable.just(physicalDevice));
     }
 
     /**
-     * Gets the gcm token and synchronizes it with the api server
+     * Gets the fcm token and synchronizes it with the api server
      * @return void Observable
      */
-    public Observable<Void> syncGcmToken(){
-        return RxGcmHelper.register((Application) AppPreferences.getApplicationContext(),
-                        GcmNotificationReceiver.class,
-                        GcmNotificationBgReceiver.class)
-        .flatMap(this::registerGcmToken)
-                .doOnCompleted(() -> RxGcm.Notifications
+    public Observable<Void> syncFcmToken(){
+        return RxFcm.Notifications.currentToken()
+        .flatMap(this::registerFcmToken)
+                .doOnCompleted(() -> RxFcm.Notifications
                         .onRefreshToken(RefreshTokenReceiver.class));
     }
 
     /**
-     * Registers the specified gcm token for this device in the server, if the
+     * Registers the specified fcm token for this device in the server, if the
      * registration fails because the token was already registered for this device,
      * it sends an update token request.
      * @param token token
      * @return observable
      */
-    public Observable<Void> registerGcmToken(String token) {
-        return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
+    public Observable<Void> registerFcmToken(String token) {
+        return ServiceGenerator.create(DeviceService.class, SessionManager.instance()
                 .getLoggedInUser())
-                .registerGcmToken(PhysicalDeviceBuilder.standard()
+                .registerFcmToken(PhysicalDeviceBuilder.standard()
                         .getDeviceIdentifier(),
-                        GcmToken.from(token))
+                        FcmToken.from(token))
                 .onErrorResumeNext(t -> {
                     if(ExceptionChecker.isHttpCodeException(t, HttpCodes.UNPROCESSABLE_ENTITY))
-                            return updateGcmToken(token);
+                            return updateFcmToken(token);
                     return Observable.error(t);
                 })
                 .subscribeOn(Schedulers.io());
     }
 
     /**
-     * Updates the specified gcm token for this device in the server
+     * Updates the specified fcm token for this device in the server
      * @param token token
      * @return observable
      */
-    public Observable<Void> updateGcmToken(String token) {
-        return RestEndpointFactory.create(DeviceService.class, SessionManager.instance()
+    public Observable<Void> updateFcmToken(String token) {
+        return ServiceGenerator.create(DeviceService.class, SessionManager.instance()
                 .getLoggedInUser())
-                .updateGcmToken(PhysicalDeviceBuilder.standard()
+                .updateFcmToken(PhysicalDeviceBuilder.standard()
                                 .getDeviceIdentifier(),
-                        GcmToken.from(token))
+                        FcmToken.from(token))
                 .subscribeOn(Schedulers.io());
     }
 

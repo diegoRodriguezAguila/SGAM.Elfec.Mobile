@@ -35,6 +35,12 @@
     <string name="msg_getting_apps">Cargando aplicaciones&#8230;</string>
     <string name="msg_account_registered">Cuenta agregada exitosamente!</string>
 
+    <!-- Permissions -->
+    <string name="title_permissions_are_mandatory">Permisos obligatorios</string>
+    <string name="msg_permissions_are_mandatory">Uno o varios de los permisos requeridos no
+    fueron concedidos. Todos los permisos son obligatorios,
+    debe concederlos todos para poder continuar.</string>
+
     <!-- Desktop -->
     <string name="date_format">EEEE, d \'de\' MMMM</string>
 

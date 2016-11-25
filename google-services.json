@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "389436613430",
+    "firebase_url": "https://sgam-ee9e0.firebaseio.com",
+    "project_id": "sgam-ee9e0",
+    "storage_bucket": "sgam-ee9e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389436613430:android:7ade32d2636d8992",
+        "android_client_info": {
+          "package_name": "com.elfec.sgam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389436613430-e5j2nk6bd736slveg6pccf08bsfm6l8u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elfec.sgam",
+            "certificate_hash": "DC5C8A58453F2D211D8989357F9844F038E49CEF"
+          }
+        },
+        {
+          "client_id": "389436613430-8315pcc6drka9ldkg39ksri6uqksr4as.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbgLIYoV1-D1SQe4TAx2e8LbxMVttTDmw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389436613430-8315pcc6drka9ldkg39ksri6uqksr4as.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,7 @@
 package com.elfec.sgam.web_service.api_endpoint;
 
 import com.elfec.sgam.model.Device;
-import com.elfec.sgam.model.web_services.GcmToken;
+import com.elfec.sgam.model.web_services.FcmToken;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,9 +22,9 @@ public interface DeviceService {
     Observable<Device> registerDevice(@Body Device device);
 
     @POST("devices/{imei}/gcm_token")
-    Observable<Void> registerGcmToken(@Path("imei") String imei, @Body GcmToken token);
+    Observable<Void> registerFcmToken(@Path("imei") String imei, @Body FcmToken token);
 
     @PATCH("devices/{imei}/gcm_token")
-    Observable<Void> updateGcmToken(@Path("imei") String imei, @Body GcmToken token);
+    Observable<Void> updateFcmToken(@Path("imei") String imei, @Body FcmToken token);
 
 }

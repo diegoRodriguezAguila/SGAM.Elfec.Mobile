@@ -4,7 +4,7 @@ import com.elfec.sgam.local_storage.PolicyDataStorage;
 import com.elfec.sgam.model.Rule;
 import com.elfec.sgam.model.User;
 import com.elfec.sgam.security.SessionManager;
-import com.elfec.sgam.web_service.RestEndpointFactory;
+import com.elfec.sgam.web_service.ServiceGenerator;
 import com.elfec.sgam.web_service.api_endpoint.UserService;
 
 import java.util.List;
@@ -39,8 +39,8 @@ public class UserManager {
     public Observable<User> requestUser(User user, boolean withRoles){
         if(!user.isAuthenticable())
             throw new IllegalArgumentException("user must be authenticable");
-        RestEndpointFactory.invalidateCache();
-        return RestEndpointFactory.create(UserService.class, user)
+        ServiceGenerator.invalidateCache();
+        return ServiceGenerator.create(UserService.class, user)
                 .getUser(user.getUsername(), withRoles?QUERY_ROLES:null);
     }
 
@@ -53,7 +53,7 @@ public class UserManager {
      * @return observable de lista de reglas
      */
     public Observable<List<Rule>> requestPolicyRules(User user){
-        return RestEndpointFactory.create(UserService.class, user)
+        return ServiceGenerator.create(UserService.class, user)
                 .getPolicyRules(user.getUsername(), QUERY_POLICY_ID);
     }
 
@@ -66,7 +66,7 @@ public class UserManager {
         User current = SessionManager.instance()
                 .getLoggedInUser();
 
-        return RestEndpointFactory.create(UserService.class, current)
+        return ServiceGenerator.create(UserService.class, current)
                 .getPolicyRules(current.getUsername(), QUERY_POLICY_ID);
     }
 

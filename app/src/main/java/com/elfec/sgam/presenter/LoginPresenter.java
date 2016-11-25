@@ -51,7 +51,7 @@ public class LoginPresenter {
             .compose(registerDeviceIfNecessary(deviceManager))
             .flatMap(device -> {
                 mView.updateWaiting(R.string.msg_syncing_gcm_token);
-                return deviceManager.syncGcmToken();
+                return deviceManager.syncFcmToken();
             })
             .flatMap(v -> {
                 mView.updateWaiting(R.string.msg_getting_policy_rules);

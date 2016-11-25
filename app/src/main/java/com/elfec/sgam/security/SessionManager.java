@@ -9,7 +9,7 @@ import com.elfec.sgam.model.exceptions.BadSessionException;
 import com.elfec.sgam.model.exceptions.InvalidPasswordException;
 import com.elfec.sgam.model.web_services.RemoteSession;
 import com.elfec.sgam.settings.AppPreferences;
-import com.elfec.sgam.web_service.RestEndpointFactory;
+import com.elfec.sgam.web_service.ServiceGenerator;
 import com.elfec.sgam.web_service.api_endpoint.SessionService;
 
 import java.lang.ref.SoftReference;
@@ -99,7 +99,7 @@ public class SessionManager {
      * @return observable de user
      */
     public Observable<User> remoteLogIn(final String username, final String password) {
-        return RestEndpointFactory
+        return ServiceGenerator
                 .create(SessionService.class)
                 .logIn(new RemoteSession(username, password))
                 .flatMap(new UserDataStorage()::saveUser)
@@ -139,7 +139,7 @@ public class SessionManager {
                         throw new BadSessionException();
                     return token;
                 })
-                .flatMap(RestEndpointFactory
+                .flatMap(ServiceGenerator
                         .create(SessionService.class)
                         ::logOut)
                 .map(v -> {

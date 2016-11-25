@@ -1,24 +1,12 @@
 package com.elfec.sgam.web_service;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.elfec.sgam.BuildConfig;
+import com.elfec.sgam.helpers.utils.JacksonUtils;
 import com.elfec.sgam.model.User;
-import com.elfec.sgam.model.web_services.deserializer.EnumJsonDeserializer;
-import com.elfec.sgam.model.web_services.deserializer.UriJsonDeserializer;
 import com.elfec.sgam.web_service.api_endpoint.SessionService;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.util.WeakHashMap;
 
@@ -32,7 +20,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * Factory para obtener el Endpoint de los webservices
  * Utilizando la configuración de RestAdapter necesaria
  */
-public class RestEndpointFactory {
+public class ServiceGenerator {
 
     /**
      * La URL de los web services de SGAM, si fuera necesario conectar a otro webservice
@@ -52,7 +40,7 @@ public class RestEndpointFactory {
      * Clears the clients caché. You must call this method always you need to update
      * something related to token and requests authentication
      */
-    public static void invalidateCache(){
+    public static void invalidateCache() {
         sClients.clear();
     }
 
@@ -68,7 +56,7 @@ public class RestEndpointFactory {
     }
 
     /**
-     * Crea un endpoint Rest  con la url por defecto {@link RestEndpointFactory#BASE_URL}
+     * Crea un endpoint Rest  con la url por defecto {@link ServiceGenerator#BASE_URL}
      *
      * @return Endpoint
      */
@@ -77,11 +65,12 @@ public class RestEndpointFactory {
     }
 
     /**
-     * Crea un endpoint Rest  con la url por defecto {@link RestEndpointFactory#BASE_URL}
+     * Crea un endpoint Rest  con la url por defecto {@link ServiceGenerator#BASE_URL}
      * y con los headers de autenticación con token necesarios
-     * @param service endpoint
+     *
+     * @param service  endpoint
      * @param authUser credenciales de autenticación
-     * @param <T> endpoint type
+     * @param <T>      endpoint type
      * @return endpoint instance
      */
     public static <T> T create(@NonNull Class<T> service, User authUser) {
@@ -96,9 +85,9 @@ public class RestEndpointFactory {
      * @return Instancia de endpoint
      */
     public static <T> T create(@NonNull String url, @NonNull Class<T> endpoint, @Nullable
-        User authUser) {
+            User authUser) {
         //Always invalidate if it's session endpoint
-        if(endpoint == SessionService.class)
+        if (endpoint == SessionService.class)
             invalidateCache();
         return getBuilder()
                 .baseUrl(url)
@@ -108,29 +97,16 @@ public class RestEndpointFactory {
 
     /**
      * Obtiene el builder para retrofit
+     *
      * @return {@link retrofit2.Retrofit.Builder}
      */
     @NonNull
     private static Retrofit.Builder getBuilder() {
-        if(sBuilder==null)
+        if (sBuilder == null) {
             sBuilder = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(JacksonConverterFactory.create(
-                        new ObjectMapper().setPropertyNamingStrategy(
-                                PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
-                                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .registerModule(new SimpleModule().addDeserializer(Uri.class, new
-                        UriJsonDeserializer())
-                .setDeserializerModifier(new BeanDeserializerModifier() {
-                            @Override
-                            public JsonDeserializer<Enum<?>> modifyEnumDeserializer
-                                    (DeserializationConfig config, final JavaType type,
-                                     BeanDescription beanDesc, final JsonDeserializer<?>
-                                             deserializer) {
-                                return new EnumJsonDeserializer(type);
-                            }
-                        }))));
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addConverterFactory(JacksonConverterFactory.create(JacksonUtils.generateMapper()));
+        }
         return sBuilder;
     }
 
@@ -143,9 +119,9 @@ public class RestEndpointFactory {
      */
     @NonNull
     private static OkHttpClient getClient(@Nullable final User authUser) {
-        String username = authUser!=null? authUser.getUsername() : null;
+        String username = authUser != null ? authUser.getUsername() : null;
         OkHttpClient client = sClients.get(username);
-        if(client==null){
+        if (client == null) {
             client = buildClient(authUser);
             sClients.put(username, client);
         }

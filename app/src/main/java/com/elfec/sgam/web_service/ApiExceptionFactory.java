@@ -32,7 +32,7 @@ public class ApiExceptionFactory {
      */
     public static ApiException build(ResponseBody errorBody){
         ObjectMapper mapper = new ObjectMapper().setPropertyNamingStrategy(
-                PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+                PropertyNamingStrategy.SNAKE_CASE);
         ApiException error = null;
         try {
             error = mapper.readValue(errorBody.string(),

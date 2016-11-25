@@ -4,13 +4,13 @@ import com.elfec.sgam.messaging.handlers.INotificationHandler;
 import com.elfec.sgam.messaging.handlers.NotificationHandlerFactory;
 
 import rx.Observable;
-import rx_gcm.GcmReceiverData;
-import rx_gcm.Message;
+import rx_fcm.FcmReceiverData;
+import rx_fcm.Message;
 
 /**
  * Class for gcm notifications handling
  */
-public class GcmNotificationReceiver implements GcmReceiverData {
+public class FcmNotificationReceiver implements FcmReceiverData {
 
     public static final String NOTIFICATION_TYPE_KEY = "type";
 

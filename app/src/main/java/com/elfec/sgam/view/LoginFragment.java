@@ -7,6 +7,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,18 @@ import com.elfec.sgam.model.AppDetail;
 import com.elfec.sgam.presenter.LoginPresenter;
 import com.elfec.sgam.presenter.views.ILoginView;
 import com.elfec.sgam.view.launcher.LauncherApps;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.GET_ACCOUNTS;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +47,7 @@ import butterknife.OnClick;
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment implements ILoginView{
+public class LoginFragment extends Fragment implements ILoginView {
 
     private OnLoginInteractionListener mListener;
 
@@ -50,6 +57,8 @@ public class LoginFragment extends Fragment implements ILoginView{
     private LoginPresenter presenter;
 
     private Handler mHandler;
+
+    private RxPermissions mRxPermissions;
 
     @BindView(R.id.txt_username)
     protected EditText mTxtUsername;
@@ -87,11 +96,6 @@ public class LoginFragment extends Fragment implements ILoginView{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -101,7 +105,7 @@ public class LoginFragment extends Fragment implements ILoginView{
         mTxtPassword.setTransformationMethod(MetroPasswordTransformationMethod.getInstance());
         presenter = new LoginPresenter(this);
         mTxtUsername.setText("drodriguez");
-        mTxtPassword.setText("Rasta1234");
+        mTxtPassword.setText("Rasta$#\"!");
         return view;
     }
 
@@ -110,6 +114,7 @@ public class LoginFragment extends Fragment implements ILoginView{
         super.onAttach(context);
         if (context instanceof OnLoginInteractionListener) {
             mListener = (OnLoginInteractionListener) context;
+            mRxPermissions = new RxPermissions(getActivity());
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnLoginInteractionListener");
@@ -120,6 +125,7 @@ public class LoginFragment extends Fragment implements ILoginView{
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mRxPermissions = null;
     }
 
     //region Interface Methods
@@ -145,7 +151,7 @@ public class LoginFragment extends Fragment implements ILoginView{
         mHandler.post(() -> {
             mLayoutLoading.clearAnimation();
             mLayoutLoading.setVisibility(View.GONE);
-            mTxtErrorMessage.setText( MessageListFormatter
+            mTxtErrorMessage.setText(MessageListFormatter
                     .formatHTMLFromErrors(validationErrors));
             mLayoutErrors.setVisibility(View.VISIBLE);
             mLayoutErrors.startAnimation(slideLeftAnim);
@@ -155,7 +161,7 @@ public class LoginFragment extends Fragment implements ILoginView{
     @Override
     public void userLoggedInSuccessfully(List<AppDetail> apps) {
         LauncherApps.instance().setAppsCache(apps);
-        if(mListener!=null)
+        if (mListener != null)
             mListener.onUserAuthenticated();
     }
 
@@ -190,10 +196,19 @@ public class LoginFragment extends Fragment implements ILoginView{
      */
     @OnClick(R.id.btn_login)
     public void btnLoginClick(View v) {
-        if (ButtonClicksHelper.canClickButton()) {
-            KeyboardHelper.hideKeyboard(getView());
-            presenter.logIn();
+        if (!ButtonClicksHelper.canClickButton()) {
+            return;
         }
+        KeyboardHelper.hideKeyboard(getView());
+        mRxPermissions.request(GET_ACCOUNTS, READ_PHONE_STATE,
+                CAMERA, WRITE_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        presenter.logIn();
+                    } else {
+                        showPermissionsRequired();
+                    }
+                });
     }
 
     /**
@@ -207,6 +222,13 @@ public class LoginFragment extends Fragment implements ILoginView{
         mTxtPassword.setText("");
         mLayoutLoginForm.setVisibility(View.VISIBLE);
         mLayoutLoginForm.startAnimation(slideLeftAnim);
+    }
+
+    public void showPermissionsRequired(){
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.title_permissions_are_mandatory)
+                .setMessage(R.string.msg_permissions_are_mandatory)
+                .setPositiveButton(R.string.btn_ok, null).show();
     }
 
 

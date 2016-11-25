@@ -4,7 +4,7 @@ import com.elfec.sgam.business_logic.PhysicalDeviceBuilder;
 import com.elfec.sgam.helpers.utils.ObservableUtils;
 import com.elfec.sgam.model.web_services.DeviceSession;
 import com.elfec.sgam.settings.AppPreferences;
-import com.elfec.sgam.web_service.RestEndpointFactory;
+import com.elfec.sgam.web_service.ServiceGenerator;
 import com.elfec.sgam.web_service.api_endpoint.DeviceSessionService;
 
 import java.net.HttpURLConnection;
@@ -25,7 +25,7 @@ public class DeviceSessionManager {
      * @return observable de device session
      */
     public Observable<DeviceSession> logInDevice() {
-        return RestEndpointFactory
+        return ServiceGenerator
                 .create(DeviceSessionService.class, SessionManager.instance()
                         .getLoggedInUser())
                 .logIn(PhysicalDeviceBuilder.standard()
@@ -48,7 +48,7 @@ public class DeviceSessionManager {
                 .flatMap(sessionId -> {
                     if (sessionId == null)
                         return ObservableUtils.from(()-> null);
-                    return RestEndpointFactory
+                    return ServiceGenerator
                             .create(DeviceSessionService.class,
                                     SessionManager.instance().getLoggedInUser())
                             .logOut(sessionId);

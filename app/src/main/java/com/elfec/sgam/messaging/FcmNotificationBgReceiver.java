@@ -12,13 +12,13 @@ import com.elfec.sgam.R;
 import com.elfec.sgam.settings.AppPreferences;
 
 import rx.Observable;
-import rx_gcm.GcmReceiverUIBackground;
-import rx_gcm.Message;
+import rx_fcm.FcmReceiverUIBackground;
+import rx_fcm.Message;
 
 /**
  * Receives the notification for user showing
  */
-public class GcmNotificationBgReceiver implements GcmReceiverUIBackground {
+public class FcmNotificationBgReceiver implements FcmReceiverUIBackground {
     @Override
     public void onNotification(Observable<Message> oMessage) {
         oMessage.subscribe(message -> {

@@ -17,7 +17,7 @@ import com.elfec.sgam.model.enums.PolicyType;
 import com.elfec.sgam.security.SessionManager;
 import com.elfec.sgam.security.policies.PolicyManager;
 import com.elfec.sgam.settings.AppPreferences;
-import com.elfec.sgam.web_service.RestEndpointFactory;
+import com.elfec.sgam.web_service.ServiceGenerator;
 import com.elfec.sgam.web_service.api_endpoint.ApplicationService;
 
 import java.io.File;
@@ -122,7 +122,7 @@ public class ApplicationManager {
      */
     public Observable<File> downloadApk(String packageName, String version,
                                         ApkDownloadListener downloadListener) {
-        return RestEndpointFactory.create(ApplicationService.class, SessionManager.instance()
+        return ServiceGenerator.create(ApplicationService.class, SessionManager.instance()
                 .getLoggedInUser())
                 .downloadApk(packageName, version)
                 .map(responseBody -> new FileDownloader()

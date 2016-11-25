@@ -7,7 +7,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/elfec/sgam/model/Role.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/elfec/sgam/model/User.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/elfec/sgam/view/Login.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/elfec/sgam/web_service/RestEndpointFactory.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/elfec/sgam/web_service/ServiceGenerator.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/build.gradle" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>

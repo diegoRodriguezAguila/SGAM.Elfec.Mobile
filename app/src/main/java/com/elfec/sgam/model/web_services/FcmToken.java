@@ -3,24 +3,24 @@ package com.elfec.sgam.model.web_services;
 /**
  * Wrapper object for gcm token
  */
-public class GcmToken {
+public class FcmToken {
     private String token;
 
-    public GcmToken(){
+    public FcmToken(){
 
     }
 
-    public GcmToken(String token){
+    public FcmToken(String token){
         this.token = token;
     }
 
     /**
-     * Creates a new GcmToken wrapper with the specified token
+     * Creates a new FcmToken wrapper with the specified token
      * @param token specified token
-     * @return {@link GcmToken} instance
+     * @return {@link FcmToken} instance
      */
-    public static GcmToken from(String token){
-        return new GcmToken(token);
+    public static FcmToken from(String token){
+        return new FcmToken(token);
     }
 
     public String getToken() {

@@ -3,6 +3,7 @@ package com.elfec.sgam.business_logic;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.graphics.Point;
@@ -24,6 +25,9 @@ import com.elfec.sgam.settings.AppPreferences;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Se encarga de construir este dispositivo con sus datos reales
@@ -32,6 +36,8 @@ import java.math.BigDecimal;
 public class PhysicalDeviceBuilder {
 
     private Context mContext;
+    private static final String GOOGLE_ACCOUNT = "com.google";
+    private static final String DEFAULT_MAC_ADDRESS = "02:00:00:00:00:00";
 
     /**
      * Construye un nuevo {@link PhysicalDeviceBuilder}
@@ -67,18 +73,77 @@ public class PhysicalDeviceBuilder {
      *
      * @return Device
      */
-    @SuppressLint("HardwareIds")
     public Device buildDevice() {
         BluetoothAdapter thisDevice = BluetoothAdapter.getDefaultAdapter();
-        WifiInfo wifiInfo = ((WifiManager) mContext.getSystemService(Context.WIFI_SERVICE)).getConnectionInfo();
+
         DisplayMetrics dm = new DisplayMetrics();
         ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
         String screenResolution = "" + dm.widthPixels + "x" + dm.heightPixels;
 
-        return new Device(thisDevice.getName(), getDeviceIdentifier(), Build.SERIAL, wifiInfo.getMacAddress(),
-                thisDevice.getAddress(), Build.VERSION.RELEASE,
+        return new Device(thisDevice.getName(), getDeviceIdentifier(), Build.SERIAL,
+                getWifiMacAddress(), getBluetoothMacAddress(thisDevice), Build.VERSION.RELEASE,
                 Build.getRadioVersion(), Build.BRAND, Build.MODEL, getScreenSize(), screenResolution,
                 getBackCameraResolutionInMp(), getSDMemoryCardSize(), getPrimaryGmail());
+    }
+
+    /**
+     * Gets the device's bluetooth mac address
+     * @param thisDevice bluetooth adapter
+     * @return mac address
+     */
+    @SuppressLint("HardwareIds")
+    private String getBluetoothMacAddress(BluetoothAdapter thisDevice) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return thisDevice.getAddress();
+        }
+        try {
+            return android.provider.Settings.Secure.getString(mContext.getContentResolver(),
+                    "bluetooth_address");
+        } catch (Throwable t) {
+            return DEFAULT_MAC_ADDRESS;
+        }
+    }
+
+    /**
+     * Gets the device's wifi mac address
+     * @return mac address
+     */
+    @SuppressLint("HardwareIds")
+    private String getWifiMacAddress(){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            WifiInfo wifiInfo = ((WifiManager) mContext
+                    .getSystemService(Context.WIFI_SERVICE)).getConnectionInfo();
+            wifiInfo.getMacAddress();
+        }
+        return getWifiMacAddressApi23();
+    }
+
+    @TargetApi(23)
+    private String getWifiMacAddressApi23() {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:",b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+            return DEFAULT_MAC_ADDRESS;
+        }
+        return DEFAULT_MAC_ADDRESS;
     }
 
     /**
@@ -160,7 +225,7 @@ public class PhysicalDeviceBuilder {
      */
     private String getPrimaryGmail() {
         AccountManager accountManager = AccountManager.get(mContext);
-        Account[] accounts = accountManager.getAccountsByType("com.google");
+        Account[] accounts = accountManager.getAccountsByType(GOOGLE_ACCOUNT);
         if (accounts.length > 0)
             return accounts[0].name.trim().toLowerCase();
         return null;
